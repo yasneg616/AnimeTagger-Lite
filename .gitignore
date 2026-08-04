@@ -1,0 +1,36 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv*/
+venv/
+dist/
+build/
+dist-stage5/
+*.egg-info/
+*.log
+
+# Local runtime state is created per user and must not be versioned.
+config/
+logs/
+
+# Model weights are user-supplied and must never be committed.
+*.onnx
+models/*
+!models/wd-vit-tagger-v3/
+models/wd-vit-tagger-v3/*
+!models/wd-vit-tagger-v3/README.md
+
+# User-provided real validation images are local-only acceptance inputs.
+validation-images/
+
+# Formal release reports are tracked, but generated binaries and extracted
+# portable trees are distributed separately and exceed normal Git limits.
+release/portable/
+release/*.zip
+release/_build/
+release/_pyinstaller/
+
+# Ephemeral GitHub authentication probes must never be committed.
+.gh-auth-probe.txt

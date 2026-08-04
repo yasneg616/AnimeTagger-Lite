@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anime-tagger-lite"
+dynamic = ["version"]
+description = "Offline WD14 ONNX anime tagger and prompt builder for Windows"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24,<3",
+    "Pillow>=10,<13",
+    "pillow-heif>=0.16,<2",
+    "PySide6>=6.7,<7",
+]
+
+[project.optional-dependencies]
+cpu = ["onnxruntime>=1.17,<2"]
+gpu = ["onnxruntime-gpu[cuda,cudnn]>=1.21,<2"]
+dev = ["pytest>=8,<10", "pytest-qt>=4.4,<5"]
+
+[project.scripts]
+anime-tagger = "app.main:main"
+anime-tagger-gui = "app.ui.application:main"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "app.__version__"}
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+markers = [
+    "smoke: requires a real local WD14 ONNX model",
+]

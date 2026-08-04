@@ -1,0 +1,42 @@
+{
+  "application": "AnimeTagger Lite",
+  "version": "1.0.0",
+  "variant": "cpu",
+  "build_time_utc": "2026-08-03T17:15:13Z",
+  "python_version": "3.11.9",
+  "python_architecture": "64bit",
+  "pyinstaller_version": "6.21.0",
+  "onnx_runtime_distribution": "onnxruntime",
+  "onnx_runtime_version": "1.28.0",
+  "git_commit": "unavailable",
+  "portable_directory_name": "AnimeTaggerLite-1.0.0-win64-cpu-portable",
+  "portable_files": 217,
+  "portable_bytes": 203064710,
+  "archive_name": "AnimeTaggerLite-1.0.0-win64-cpu-portable.zip",
+  "archive_bytes": 78922383,
+  "archive_sha256": "efc21ba19da6205eeb2a166e89a1cc83ec9d742e53d9db37f962fff9296c2e7c",
+  "runtime_distributions": {
+    "numpy": "2.4.6",
+    "Pillow": "12.3.0",
+    "pillow-heif": "1.5.0",
+    "PySide6": "6.11.1",
+    "PySide6-Essentials": "6.11.1",
+    "shiboken6": "6.11.1",
+    "onnxruntime": "1.28.0",
+    "PyInstaller": "6.21.0"
+  },
+  "preflight": {
+    "pip_check": "No broken requirements found.",
+    "compileall": "passed",
+    "pytest": "395 passed in 8.89s",
+    "cli_help": "passed",
+    "batch_cli_help": "passed",
+    "gui_offscreen": "passed",
+    "provider": "CPUExecutionProvider",
+    "inference_time_ms": 306.463,
+    "output_count": 10861,
+    "validation_images": 6,
+    "validation_image_hashes_unchanged": true,
+    "model_sha256": "35f23693620b668f4d53fd3c62bf65e40af739bc52c7eb0fbc49258b58d065b6"
+  }
+}

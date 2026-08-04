@@ -1,0 +1,6 @@
+# Default, portable CPU runtime. Do not install alongside onnxruntime-gpu.
+numpy>=1.24,<3
+Pillow>=10,<13
+pillow-heif>=0.16,<2
+PySide6>=6.7,<7
+onnxruntime>=1.17,<2

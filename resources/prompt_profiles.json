@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "raw": {
+      "prefix_tags": [],
+      "add_prefix_default": false,
+      "sort_mode": "confidence",
+      "allowed_groups": null,
+      "remove_tags": []
+    },
+    "anime": {
+      "prefix_tags": [
+        "masterpiece",
+        "best quality",
+        "amazing quality"
+      ],
+      "add_prefix_default": true,
+      "sort_mode": "group",
+      "allowed_groups": null,
+      "remove_tags": []
+    },
+    "pony": {
+      "prefix_tags": [],
+      "add_prefix_default": false,
+      "sort_mode": "group",
+      "allowed_groups": null,
+      "remove_tags": []
+    },
+    "lora_caption": {
+      "prefix_tags": [],
+      "add_prefix_default": false,
+      "sort_mode": "group",
+      "allowed_groups": [
+        "count",
+        "subject",
+        "character",
+        "hair",
+        "eyes_face",
+        "body",
+        "clothing",
+        "accessories",
+        "pose_action",
+        "expression",
+        "composition",
+        "background",
+        "lighting"
+      ],
+      "remove_tags": [
+        "masterpiece",
+        "best quality",
+        "amazing quality"
+      ]
+    }
+  }
+}

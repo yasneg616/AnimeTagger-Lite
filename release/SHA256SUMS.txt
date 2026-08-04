@@ -1,0 +1,23 @@
+AnimeTagger Lite release checksums
+Version: 1.0.0
+Generated: 2026-08-03T17:17:54Z
+
+[CPU]
+File: AnimeTaggerLite-1.0.0-win64-cpu-portable.zip
+SHA-256: efc21ba19da6205eeb2a166e89a1cc83ec9d742e53d9db37f962fff9296c2e7c
+Build type: cpu
+Python: 3.11.9
+PyInstaller: 6.21.0
+ONNX Runtime: onnxruntime 1.28.0
+Build time: 2026-08-03T17:15:13Z
+Git commit: unavailable
+
+[CUDA]
+File: AnimeTaggerLite-1.0.0-win64-cuda-portable.zip
+SHA-256: 83d5b6a56feab1d4dade2c74d7def3cabaf7df65b67f270a4ab66a5e5bd11ec8
+Build type: cuda
+Python: 3.11.9
+PyInstaller: 6.21.0
+ONNX Runtime: onnxruntime-gpu 1.28.0
+Build time: 2026-08-03T17:17:54Z
+Git commit: unavailable

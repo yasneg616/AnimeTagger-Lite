@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "variant": "cuda",
+  "provider": "CUDAExecutionProvider",
+  "model_load_ms": 780.576,
+  "model_reload_ms": 451.582,
+  "session_count_during_batch": 1,
+  "session_count_after_explicit_reload": 2,
+  "real_prediction_calls": 25,
+  "first_inference_ms": 218.443,
+  "subsequent_average_ms": 33.315,
+  "process_memory": {
+    "before_load": {
+      "working_set_mib": 36.605,
+      "peak_working_set_mib": 41.855
+    },
+    "after_load": {
+      "working_set_mib": 421.418,
+      "peak_working_set_mib": 787.727
+    },
+    "after_batch": {
+      "working_set_mib": 792.027,
+      "peak_working_set_mib": 856.086
+    },
+    "after_release": {
+      "working_set_mib": 757.676,
+      "peak_working_set_mib": 856.086
+    }
+  },
+  "gpu_memory": {
+    "before_load": {
+      "gpu": "NVIDIA GeForce RTX 4080 Laptop GPU",
+      "driver": "610.74",
+      "system_used_mib": 3749,
+      "total_mib": 12282,
+      "process_used_mib": null
+    },
+    "after_load": {
+      "gpu": "NVIDIA GeForce RTX 4080 Laptop GPU",
+      "driver": "610.74",
+      "system_used_mib": 4453,
+      "total_mib": 12282,
+      "process_used_mib": null
+    },
+    "after_batch": {
+      "gpu": "NVIDIA GeForce RTX 4080 Laptop GPU",
+      "driver": "610.74",
+      "system_used_mib": 4964,
+      "total_mib": 12282,
+      "process_used_mib": null
+    },
+    "after_release": {
+      "gpu": "NVIDIA GeForce RTX 4080 Laptop GPU",
+      "driver": "610.74",
+      "system_used_mib": 3914,
+      "total_mib": 12282,
+      "process_used_mib": null
+    }
+  },
+  "images": 6,
+  "non_recursive": 3,
+  "recursive": 6,
+  "dry_run": "passed",
+  "pause": "passed",
+  "resume": "passed",
+  "cancel": {
+    "discovered": 0,
+    "pending": 0,
+    "analyzing": 0,
+    "exporting": 0,
+    "completed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "cancelled": 5,
+    "missing": 0,
+    "total": 6
+  },
+  "manifest_recovery": "passed",
+  "retry_without_reinference": "passed",
+  "caption_policies": {
+    "skip": "skipped",
+    "overwrite": "completed",
+    "backup_and_overwrite": "completed",
+    "append_trigger": "completed",
+    "merge": "completed"
+  },
+  "output_modes": [
+    "beside",
+    "mirror",
+    "flat"
+  ],
+  "trigger_positions": {
+    "first": "passed",
+    "last": "passed"
+  },
+  "positive_negative_txt": "passed",
+  "json": "passed",
+  "csv": "passed",
+  "manifest": "passed",
+  "source_hashes_unchanged": true,
+  "copy_hashes_unchanged": true,
+  "temporary_files": 0,
+  "residual_threads": 0,
+  "completed_at_utc": "2026-08-03T15:58:58Z"
+}

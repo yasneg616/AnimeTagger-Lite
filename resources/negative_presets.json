@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "presets": {
+    "basic": [
+      "low quality",
+      "worst quality",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "logo"
+    ],
+    "quality_only": [
+      "low quality",
+      "worst quality",
+      "blurry"
+    ]
+  },
+  "defect_tags": [
+    "watermark",
+    "text",
+    "signature",
+    "logo",
+    "jpeg artifacts",
+    "blurry",
+    "lowres",
+    "mosaic censoring",
+    "censored",
+    "scan artifacts"
+  ]
+}

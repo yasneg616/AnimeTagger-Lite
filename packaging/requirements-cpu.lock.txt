@@ -1,0 +1,9 @@
+# Formal Windows CPU build environment, generated from the verified Python 3.11.9 environment.
+numpy==2.4.6
+onnxruntime==1.28.0
+Pillow==12.3.0
+pillow-heif==1.5.0
+PySide6==6.11.1
+pytest==9.1.1
+pytest-qt==4.5.0
+PyInstaller==6.21.0
