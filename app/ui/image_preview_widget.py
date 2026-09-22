@@ -18,6 +18,8 @@ class ImagePreviewWidget(QWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setObjectName("imagePreview")
+        self.setProperty("card", True)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self._pixmap = QPixmap()
         self._scale = 1.0
         self._fit_mode = True
@@ -33,6 +35,7 @@ class ImagePreviewWidget(QWidget):
         self._scroll.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         controls = QHBoxLayout()
+        controls.addStretch(1)
         for text, tooltip, handler in (
             ("适应", "缩放以适应预览区域", self.fit_to_window),
             ("1:1", "按预览像素原始大小显示", self.actual_size),
@@ -47,9 +50,13 @@ class ImagePreviewWidget(QWidget):
         controls.addStretch(1)
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addLayout(controls)
+        layout.setContentsMargins(14, 14, 14, 14)
+        title = QLabel("图片预览")
+        title.setProperty("heading", True)
+        layout.addWidget(title)
         layout.addWidget(self._scroll, 1)
+        layout.addLayout(controls)
+        self._scroll.setFrameShape(QScrollArea.Shape.NoFrame)
 
     @property
     def has_image(self) -> bool:

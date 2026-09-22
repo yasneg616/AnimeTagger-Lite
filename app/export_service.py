@@ -186,6 +186,7 @@ class ExportService:
             "application_version": __version__,
             "source_image": str(inference.image_path),
             "model_name": inference.model_info.files.directory.name,
+            "backend": inference.model_info.backend,
             "model_path": str(inference.model_info.files.model_path),
             "execution_provider": inference.model_info.active_provider,
             "inference_time_ms": round(inference.inference_seconds * 1000.0, 3),

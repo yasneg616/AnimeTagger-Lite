@@ -38,6 +38,7 @@ class ModelInfo:
     output_count: int
     active_provider: str
     provider_warning: str | None
+    backend: str = "wd_v3"
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,6 +53,14 @@ class InferenceResult:
     model_info: ModelInfo
     predictions: tuple[TagPrediction, ...]
     inference_seconds: float
+
+    @property
+    def grouped(self) -> dict[str, tuple[TagPrediction, ...]]:
+        """Unfiltered structured scores; unsupported groups remain empty."""
+        groups = {category.value: tuple(p for p in self.predictions if p.tag.category is category)
+                  for category in TagCategory}
+        groups["raw"] = self.predictions
+        return groups
 
 
 def _clean_runtime_error(error: BaseException) -> str:
@@ -214,7 +223,7 @@ class WD14Engine:
             return self._model_info
 
         files = resolve_model_files(self._model_dir)
-        tags = load_selected_tags(files.tags_path)
+        tags = self._load_tags(files.tags_path)
         runtime = self._get_runtime()
         available = tuple(runtime.get_available_providers())
         selection = select_execution_providers(self._device, available)
@@ -289,7 +298,7 @@ class WD14Engine:
             )
 
         try:
-            input_name, output_name, input_size, output_count = _inspect_session(
+            input_name, output_name, input_size, output_count = self._inspect_session(
                 session,
                 tags,
             )
@@ -350,7 +359,7 @@ class WD14Engine:
         assert self._session is not None
         assert self._tags is not None
 
-        tensor = preprocess_image(
+        tensor = self._preprocess_image(
             Path(image_path),
             model_info.input_size,
             options=image_options,
@@ -409,3 +418,7 @@ class WD14Engine:
         self._session = None
         self._tags = None
         self._model_info = None
+
+    _inspect_session = staticmethod(_inspect_session)
+    _preprocess_image = staticmethod(preprocess_image)
+    _load_tags = staticmethod(load_selected_tags)

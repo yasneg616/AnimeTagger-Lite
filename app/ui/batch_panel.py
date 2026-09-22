@@ -126,8 +126,15 @@ class BatchPanel(QWidget):
         scan_form.addRow("输出目录", output_row)
 
         self.profile_combo = QComboBox()
-        for profile in ("raw", "anime", "pony", "lora_caption"):
+        for profile in ("raw", "anime", "pony", "krea2", "lora_caption"):
             self.profile_combo.addItem(profile, profile)
+        self.profile_combo.addItem(
+            "CyberIllustrious 半写实", "cyberillustrious_semireal"
+        )
+        self.profile_combo.setToolTip(
+            "关闭 LoRA Caption 模式后可选；保留识别标签并加入"
+            "适量半写实材质、光照与镜头描述。"
+        )
         self.lora_check = QCheckBox("LoRA Caption 模式")
         self.lora_check.setObjectName("batchLoraMode")
         self.lora_check.setChecked(True)
@@ -148,7 +155,9 @@ class BatchPanel(QWidget):
             settings_value(self.base_settings, "character_threshold")
         )
         self.max_tags_spin = QSpinBox()
-        self.max_tags_spin.setRange(1, 1000)
+        self.max_tags_spin.setRange(0, 1_000_000)
+        self.max_tags_spin.setSpecialValueText("不限")
+        self.max_tags_spin.setToolTip("0 表示不限制最大标签数")
         self.max_tags_spin.setValue(self.base_settings.max_tags)
         self.character_check = QCheckBox("保留 Character 标签")
         self.character_check.setChecked(self.base_settings.include_character_tags)

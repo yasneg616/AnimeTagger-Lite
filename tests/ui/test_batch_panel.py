@@ -60,9 +60,10 @@ def _scan(panel: BatchPanel, root: Path, qtbot) -> None:
 
 
 def test_main_window_has_independent_batch_page(batch_window) -> None:
-    assert batch_window.pages.count() == 2
+    assert batch_window.pages.count() == 3
     assert batch_window.pages.tabText(0) == "单图"
     assert batch_window.pages.tabText(1) == "批处理"
+    assert batch_window.pages.tabText(2) == "随机 Prompt"
     assert batch_window.batch_panel.objectName() == "batchPanel"
     assert (
         batch_window.batch_panel.options_scroll.widget()
@@ -163,6 +164,24 @@ def test_lora_controls_build_safe_settings_snapshot(
     assert request.settings.negative_mode == "none"
     assert not request.settings.include_rating
     assert request.settings.trigger_word == "style_token"
+
+
+def test_batch_panel_lists_krea2_profile(batch_window) -> None:
+    assert batch_window.batch_panel.profile_combo.findData("krea2") >= 0
+
+
+def test_batch_panel_can_build_cyberillustrious_request(
+    batch_window,
+    tmp_path: Path,
+) -> None:
+    panel = batch_window.batch_panel
+    panel.add_root(tmp_path)
+    panel.lora_check.setChecked(False)
+    panel.profile_combo.setCurrentIndex(
+        panel.profile_combo.findData("cyberillustrious_semireal")
+    )
+
+    assert panel._build_request().settings.profile == "cyberillustrious_semireal"
 
 
 def test_running_state_locks_semantic_options(fake_panel, qtbot, tmp_path: Path) -> None:

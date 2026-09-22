@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import io
 from importlib import metadata
 import json
 import os
@@ -62,6 +63,13 @@ RUNTIME_DISTRIBUTIONS = {
 # license therefore belong in the portable package's license inventory.
 EMBEDDED_BUILD_DISTRIBUTIONS = ("PyInstaller",)
 
+TAGGER_DISTRIBUTIONS = (
+    "torch", "torchvision", "timm", "safetensors", "huggingface-hub",
+    "filelock", "fsspec", "sympy", "mpmath", "networkx", "jinja2",
+    "MarkupSafe", "PyYAML", "packaging", "typing-extensions", "tqdm",
+    "httpx", "httpcore", "h11", "anyio", "certifi", "idna", "click",
+)
+
 CONFIRMED_QT_LICENSE_TEXTS = {
     "GPL-3.0.txt": (
         PROJECT_ROOT / "packaging" / "license-texts" / "GPL-3.0.txt",
@@ -78,31 +86,33 @@ FORBIDDEN_PARTS = {
     ".pytest_cache",
     "__pycache__",
     "build",
-    "huggingface_hub",
     "pytest",
     "pytest_qt",
     "tensorflow",
     "tests",
-    "torch",
     "validation-images",
 }
 
 
 def _contains_stream_marker(path: Path, markers: tuple[bytes, ...]) -> bytes | None:
+    with path.open("rb") as handle:
+        return _stream_marker(handle, markers)
+
+
+def _stream_marker(handle, markers: tuple[bytes, ...]) -> bytes | None:
     if not markers:
         return None
     overlap = max(len(marker) for marker in markers) - 1
     previous = b""
-    with path.open("rb") as handle:
-        while True:
-            chunk = handle.read(4 * 1024 * 1024)
-            if not chunk:
-                return None
-            haystack = (previous + chunk).lower()
-            for marker in markers:
-                if marker in haystack:
-                    return marker
-            previous = haystack[-overlap:] if overlap > 0 else b""
+    while True:
+        chunk = handle.read(4 * 1024 * 1024)
+        if not chunk:
+            return None
+        haystack = (previous + chunk).lower()
+        for marker in markers:
+            if marker in haystack:
+                return marker
+        previous = haystack[-overlap:] if overlap > 0 else b""
 
 
 def _sensitive_build_markers() -> tuple[bytes, ...]:
@@ -130,7 +140,10 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build one audited AnimeTagger Lite onedir portable variant."
     )
     parser.add_argument("--variant", choices=("cpu", "cuda"), required=True)
+    parser.add_argument("--onefile", action="store_true", help="Bundle the runtime into one EXE; models and editable resources stay beside it.")
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
+    parser.add_argument("--include-models", action="store_true",
+                        help="Include the three existing local tagger models with SHA-256 verification.")
     parser.add_argument(
         "--archive",
         action="store_true",
@@ -204,7 +217,10 @@ def verify_environment(variant: str) -> dict[str, str]:
     )
 
     versions: dict[str, str] = {}
-    for name in RUNTIME_DISTRIBUTIONS[variant]:
+    for name in ("torch", "torchvision", "timm", "safetensors"):
+        if _distribution(name) is None:
+            raise RuntimeError(f"Multi-backend build requires {name}; install requirements-tagger-torch.txt.")
+    for name in (*RUNTIME_DISTRIBUTIONS[variant], *TAGGER_DISTRIBUTIONS):
         distribution = _distribution(name)
         if distribution is not None:
             versions[name] = distribution.version
@@ -386,6 +402,7 @@ def run_pyinstaller(
     clean: bool,
     *,
     debug_console: bool,
+    onefile: bool = False,
 ) -> Path:
     work_root = output_root / "_build" / variant
     dist_root = output_root / "_pyinstaller" / variant
@@ -405,6 +422,7 @@ def run_pyinstaller(
     environment = os.environ.copy()
     environment["ANIMETAGGER_BUILD_VARIANT"] = variant
     environment["ANIMETAGGER_DEBUG_CONSOLE"] = "1" if debug_console else "0"
+    environment["ANIMETAGGER_ONEFILE"] = "1" if onefile else "0"
     subprocess.run(
         command,
         cwd=PROJECT_ROOT,
@@ -412,6 +430,12 @@ def run_pyinstaller(
         check=True,
     )
     built = dist_root / PORTABLE_NAME
+    if onefile:
+        executable = dist_root / f"{PORTABLE_NAME}.exe"
+        if not executable.is_file():
+            raise RuntimeError(f"PyInstaller did not create {executable}.")
+        built.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(executable, built / executable.name)
     if not built.is_dir():
         raise RuntimeError(f"PyInstaller did not create {built}.")
     return built
@@ -445,6 +469,8 @@ def _license_candidates(
     for relative in files:
         name = Path(str(relative)).name.casefold()
         parts = {part.casefold() for part in Path(str(relative)).parts}
+        if name.endswith((".pyc", ".pyo")):
+            continue
         if (
             name.startswith(("license", "copying", "notice", "authors"))
             or "licenses" in parts
@@ -546,6 +572,8 @@ def stage_distribution(
     variant: str,
     version: str,
     versions: dict[str, str],
+    *,
+    include_models: bool = False,
 ) -> Path:
     project_license = PROJECT_ROOT / "LICENSE"
     if not project_license.is_file():
@@ -561,6 +589,15 @@ def stage_distribution(
     _remove_tree_within(destination, output_root)
     shutil.copytree(built, destination)
 
+    # PyInstaller may collect vendor test packages (e.g. torch.fx.passes.tests).
+    # Audit forbids any path segment named "tests", so strip them after copy.
+    internal = destination / "_internal"
+    if internal.is_dir():
+        for package in ("torch", "timm", "torchvision"):
+            for tests_dir in (internal / package).rglob("tests"):
+                if tests_dir.is_dir():
+                    shutil.rmtree(tests_dir, ignore_errors=True)
+
     _copy_tree_contents(PROJECT_ROOT / "resources", destination / "resources")
     model_destination = destination / "models" / "wd-vit-tagger-v3"
     model_destination.mkdir(parents=True)
@@ -568,6 +605,23 @@ def stage_distribution(
         PROJECT_ROOT / "packaging" / "MODEL_README.txt",
         model_destination / "README.txt",
     )
+    from app.inference.backends import BACKENDS, DEFAULT_BACKEND, resolve_backend_files
+    model_hashes = {}
+    for backend, spec in BACKENDS.items():
+        target = destination / spec.directory
+        target.mkdir(parents=True, exist_ok=True)
+        if include_models:
+            source = PROJECT_ROOT / spec.directory
+            files = resolve_backend_files(source, backend)
+            names = [files.model_path.name, files.tags_path.name]
+            if backend == DEFAULT_BACKEND:
+                names.append("config.json")
+            elif backend == "pixai_v0_9":
+                names.append("preprocess.json")
+            for name in names:
+                shutil.copy2(source / name, target / name)
+                relative = (target / name).relative_to(destination).as_posix()
+                model_hashes[relative] = sha256_file(source / name)
     shutil.copy2(
         PROJECT_ROOT / "packaging" / "README.portable.txt",
         destination / "README.txt",
@@ -600,8 +654,12 @@ def stage_distribution(
         "variant": variant,
         "python": sys.version.split()[0],
         "runtime_distributions": license_components,
-        "model_included": False,
+        "model_included": include_models,
+        "model_sha256": model_hashes,
+        "tagger_backends": list(BACKENDS),
+        "canary_torch_version": versions.get("torch"),
         "portable": True,
+        "program_layout": "onedir" if (destination / "_internal").is_dir() else "onefile",
     }
     (destination / "BUILD-MANIFEST.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
@@ -616,11 +674,9 @@ def portable_artifact_name(version: str, variant: str) -> str:
     return f"AnimeTaggerLite-{version}-win64-{variant}-portable"
 
 
-def audit_distribution(root: Path, variant: str) -> dict[str, int]:
+def audit_distribution(root: Path, variant: str, *, model_hashes: dict[str, str] | None = None, onefile: bool = False) -> dict[str, int]:
     required = (
         "AnimeTaggerLite.exe",
-        "AnimeTaggerLiteCLI.exe",
-        "_internal",
         "resources",
         "models/wd-vit-tagger-v3/README.txt",
         "README.txt",
@@ -634,6 +690,8 @@ def audit_distribution(root: Path, variant: str) -> dict[str, int]:
         "data/batch-jobs",
         "data/temp",
     )
+    if not onefile:
+        required += ("AnimeTaggerLiteCLI.exe", "_internal")
     missing = [relative for relative in required if not (root / relative).exists()]
     if missing:
         raise RuntimeError(f"Portable directory is missing: {missing!r}")
@@ -643,6 +701,7 @@ def audit_distribution(root: Path, variant: str) -> dict[str, int]:
     cpu_runtime: list[str] = []
     gpu_runtime: list[str] = []
     qt_webengine: list[str] = []
+    foreign_icu: list[str] = []
     user_data_files: list[str] = []
     sensitive_content: list[str] = []
     markers = _sensitive_build_markers()
@@ -663,6 +722,10 @@ def audit_distribution(root: Path, variant: str) -> dict[str, int]:
                 model_files.append(str(relative))
             if "qtwebengine" in lower_name:
                 qt_webengine.append(str(relative))
+            if lower_name == "icuuc.dll" or (
+                lower_name.startswith("icudt") and lower_name.endswith(".dll")
+            ):
+                foreign_icu.append(str(relative))
             if relative.parts and relative.parts[0].casefold() == "data":
                 user_data_files.append(str(relative))
             if lower_name == "onnxruntime_providers_cuda.dll":
@@ -672,14 +735,29 @@ def audit_distribution(root: Path, variant: str) -> dict[str, int]:
                 and "providers_cuda" not in lower_name
             ):
                 cpu_runtime.append(str(relative))
-            if _contains_stream_marker(path, markers) is not None:
+            # Compressed bytes can coincidentally spell a short username.
+            # The onefile payload is audited after decompression below.
+            if not (onefile and relative.as_posix() == "AnimeTaggerLite.exe") and _contains_stream_marker(path, markers) is not None:
                 sensitive_content.append(str(relative))
     if forbidden:
         raise RuntimeError(f"Forbidden paths found: {forbidden[:10]!r}")
-    if model_files:
+    approved_models = model_hashes or {}
+    unexpected_models = [name for name in model_files if Path(name).as_posix() not in approved_models]
+    if unexpected_models:
         raise RuntimeError(f"Model weights found in release: {model_files!r}")
+    for relative, expected_hash in approved_models.items():
+        path = (root / relative).resolve()
+        if not path.is_relative_to((root / "models").resolve()):
+            raise RuntimeError(f"Model path is outside models/: {relative}")
+        if not path.is_file() or sha256_file(path) != expected_hash:
+            raise RuntimeError(f"Bundled model SHA-256 mismatch: {relative}")
     if qt_webengine:
         raise RuntimeError(f"QtWebEngine files found in release: {qt_webengine[:10]!r}")
+    if foreign_icu:
+        raise RuntimeError(
+            "Foreign ICU DLLs found in release: "
+            f"{foreign_icu[:10]!r}"
+        )
     if user_data_files:
         raise RuntimeError(
             f"Portable data directories are not empty: {user_data_files[:10]!r}"
@@ -689,13 +767,38 @@ def audit_distribution(root: Path, variant: str) -> dict[str, int]:
             "Development/user path markers found in release files: "
             f"{sensitive_content[:10]!r}"
         )
+    if onefile:
+        from PyInstaller.archive.readers import CArchiveReader
+        executable = root / "AnimeTaggerLite.exe"
+        reader = CArchiveReader(str(executable))
+        entries = [name.replace("\\", "/").casefold() for name in reader.toc]
+        with executable.open("rb") as handle:
+            prefix = handle.read(reader._start_offset)
+            handle.seek(reader._end_offset)
+            suffix = handle.read()
+        if _stream_marker(io.BytesIO(prefix + suffix), markers):
+            raise RuntimeError("Development/user path markers in EXE wrapper.")
+        for name in reader.toc:
+            payload = reader.extract(name)
+            if payload is not None and _stream_marker(io.BytesIO(payload), markers):
+                raise RuntimeError(f"Development/user path markers in embedded file: {name}")
+        banned = [name for name in entries if set(name.split("/")) & FORBIDDEN_PARTS or "qtwebengine" in name]
+        if banned:
+            raise RuntimeError(f"Forbidden embedded entries: {banned[:10]}")
+        gpu_runtime = [name for name in entries if name.endswith("onnxruntime_providers_cuda.dll")]
+        cpu_runtime = [name for name in entries if "onnxruntime" in name and name.endswith((".pyd", ".dll"))]
+        has_nvidia = any(name.startswith("nvidia/") for name in entries)
+        if variant == "cuda" and not has_nvidia:
+            raise RuntimeError("Onefile CUDA build is missing NVIDIA libraries.")
+        if variant == "cpu" and has_nvidia:
+            raise RuntimeError("Onefile CPU build contains NVIDIA libraries.")
     if variant == "cpu" and gpu_runtime:
         raise RuntimeError("CPU package contains a CUDA provider DLL.")
     if variant == "cpu" and (root / "_internal" / "nvidia").exists():
         raise RuntimeError("CPU package contains NVIDIA runtime files.")
     if variant == "cuda" and not gpu_runtime:
         raise RuntimeError("CUDA package does not contain its CUDA provider DLL.")
-    if variant == "cuda" and not (root / "_internal" / "nvidia").is_dir():
+    if variant == "cuda" and not onefile and not (root / "_internal" / "nvidia").is_dir():
         raise RuntimeError("CUDA package does not contain NVIDIA runtime files.")
     if not cpu_runtime:
         raise RuntimeError("ONNX Runtime binaries were not found.")
@@ -906,6 +1009,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         output_root,
         args.clean,
         debug_console=args.debug_console,
+        onefile=args.onefile,
     )
     portable = stage_distribution(
         built,
@@ -913,8 +1017,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.variant,
         version,
         versions,
+        include_models=args.include_models,
     )
-    audit = audit_distribution(portable, args.variant)
+    model_hashes = json.loads((portable / "BUILD-MANIFEST.json").read_text(encoding="utf-8"))["model_sha256"]
+    audit = audit_distribution(portable, args.variant, model_hashes=model_hashes, onefile=args.onefile)
     print(
         f"Portable: {portable}\n"
         f"Files: {audit['files']}\n"

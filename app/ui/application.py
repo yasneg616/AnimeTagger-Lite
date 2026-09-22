@@ -22,25 +22,9 @@ from app.runtime_paths import (
 
 logger = logging.getLogger(__name__)
 
-DARK_STYLESHEET = """
-QWidget { background: #202328; color: #e7e9ed; font-size: 10pt; }
-QMainWindow, QDialog { background: #1b1e22; }
-QToolBar { border: 0; spacing: 5px; padding: 5px; }
-QPushButton, QToolButton, QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit {
-    background: #30343b; border: 1px solid #484e58; border-radius: 4px;
-    padding: 5px;
-}
-QPushButton:hover, QToolButton:hover { background: #3b414a; }
-QPushButton:disabled, QToolButton:disabled { color: #70757e; }
-QPlainTextEdit, QTableView, QListWidget {
-    background: #17191d; border: 1px solid #3a3f47; selection-background-color: #365f86;
-}
-QHeaderView::section { background: #2b2f35; padding: 5px; border: 0; }
-QGroupBox { border: 1px solid #3a3f47; border-radius: 5px; margin-top: 8px; }
-QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; }
-QStatusBar { color: #bec5cf; }
-QSplitter::handle { background: #333840; }
-"""
+from app.ui.theme import ThemeColors, apply_theme, stylesheet
+
+DARK_STYLESHEET = stylesheet(ThemeColors())
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -112,7 +96,7 @@ def create_application(argv: Sequence[str] | None = None) -> QApplication:
     app.setApplicationVersion(__version__)
     app.setOrganizationName("AnimeTaggerLite")
     app.setStyle("Fusion")
-    app.setStyleSheet(DARK_STYLESHEET)
+    apply_theme(ThemeColors())
     return app
 
 

@@ -53,6 +53,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File packaging\clean.ps1
 ## 发行内容边界
 
 构建审计拒绝模型权重、`selected_tags.csv`、验证图片、tests、pytest、
-QtWebEngine、PyTorch、TensorFlow、Hugging Face Hub、用户配置/日志、绝对开发
+QtWebEngine、TensorFlow、用户配置/日志、绝对开发
 路径和 CPU/CUDA 混装。图片格式插件及 pillow-heif 原生库必须在隔离 Smoke
 中实际验证后才可发布。
+
+
+## 多后端增量打包
+
+所有新包包含 Canary 必需的 PyTorch/torchvision/timm/safetensors（以及被 timm 导入的 Hugging Face Hub），应先在对应环境安装 requirements-tagger-torch.txt。不会自动下载模型或远程代码。
+
+可使用 `python scripts/build_portable.py --variant cuda --output-root release/backend-update --include-models --archive --clean` 生成含三个本地模型的包。`--include-models` 只复制注册表对应目录中的配套权重/标签/配置，并记录、审计 SHA-256；默认不带模型时仍拒绝任何权重混入。ONNX CUDA 和 PyTorch CUDA 是独立能力；当前环境的 PyTorch 是 CPU 版。
+
+## 1.2.0 modern UI / single EXE
+
+Build with `python scripts/build_portable.py --variant cuda --onefile --include-models --archive --output-root release/modern-ui`. The program runtime is embedded in one EXE; models, editable resources and licenses remain external. CLI dispatch uses `AnimeTaggerLite.exe --cli`. Palette settings are stored in portable `data/config/ui.ini`.

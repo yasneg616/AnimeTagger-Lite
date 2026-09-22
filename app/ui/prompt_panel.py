@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Signal
+from app.ui.collapsible import CollapsibleSection
 from PySide6.QtWidgets import (
     QGroupBox,
     QHBoxLayout,
@@ -30,7 +31,8 @@ class PromptPanel(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self._build_section("positive", "正向提示词"))
-        layout.addWidget(self._build_section("negative", "反向提示词"))
+        self.negative_section = CollapsibleSection("反向提示词", self._build_section("negative", "编辑反向提示词"))
+        layout.addWidget(self.negative_section)
 
     def _build_section(self, kind: str, title: str) -> QGroupBox:
         group = QGroupBox(title)
@@ -41,9 +43,10 @@ class PromptPanel(QWidget):
         count = QLabel("0 字符 · 0 标签")
         notice = QLabel("")
         notice.setObjectName(f"{kind}PromptNotice")
-        notice.setStyleSheet("color: #e4b45d;")
+        notice.setProperty("muted", True)
+        notice.hide()
 
-        regenerate = QPushButton("恢复 / 重新生成")
+        regenerate = QPushButton("重新生成")
         regenerate.setToolTip("使用当前标签和设置恢复自动生成文本")
         copy = QPushButton("复制")
         regenerate.clicked.connect(
@@ -109,6 +112,7 @@ class PromptPanel(QWidget):
     def mark_stale(self) -> None:
         for kind in ("positive", "negative"):
             self._notices[kind].setText("标签或设置已变化，可重新生成。")
+            self._notices[kind].show()
 
     def set_edit_notice(self, kind: str, *, edited: bool, stale: bool) -> None:
         self._set_notice(kind, edited, stale)
@@ -121,6 +125,7 @@ class PromptPanel(QWidget):
         else:
             text = ""
         self._notices[kind].setText(text)
+        self._notices[kind].setVisible(bool(text))
 
     def _on_text_changed(self, kind: str) -> None:
         self._update_count(kind)

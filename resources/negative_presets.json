@@ -14,6 +14,27 @@
       "low quality",
       "worst quality",
       "blurry"
+    ],
+    "krea2_short": [
+      "extra limbs",
+      "malformed hands",
+      "duplicated subjects",
+      "text",
+      "watermark"
+    ],
+    "cyberillustrious_short": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "deformed anatomy",
+      "malformed hands",
+      "extra fingers",
+      "missing fingers",
+      "plastic skin",
+      "waxy skin",
+      "overprocessed skin",
+      "oversaturated"
     ]
   },
   "defect_tags": [

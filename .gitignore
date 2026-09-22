@@ -12,7 +12,7 @@ dist-stage5/
 *.log
 
 # Local runtime state is created per user and must not be versioned.
-config/
+/config/
 logs/
 
 # Model weights are user-supplied and must never be committed.
@@ -34,3 +34,7 @@ release/_pyinstaller/
 
 # Ephemeral GitHub authentication probes must never be committed.
 .gh-auth-probe.txt
+
+# Multi-backend portable rebuild outputs.
+/release/backend-update/
+/release/modern-ui/

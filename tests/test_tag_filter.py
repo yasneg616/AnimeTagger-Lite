@@ -7,7 +7,11 @@ import pytest
 
 from app.errors import TagProcessingError
 from app.inference.model_loader import TagCategory
-from app.prompts.filtering import FilterSettings, TagFilter
+from app.prompts.filtering import (
+    FilterSettings,
+    TagFilter,
+    is_censored_tag_name,
+)
 from app.prompts.models import TagResult
 
 
@@ -67,6 +71,92 @@ def test_rating_is_excluded_by_default() -> None:
     assert result.removed_tags[0].reason == "rating_disabled"
 
 
+def test_censored_tags_blocked_by_default_uncensored_allowed() -> None:
+    result = TagFilter().filter(
+        [
+            tag("1girl", 0.9),
+            tag("censored", 0.9),
+            tag("mosaic_censoring", 0.9),
+            tag("bar_censor", 0.95),
+            tag("uncensored", 0.8),
+            tag("uncensored_version", 0.8),
+        ],
+        FilterSettings(),
+    )
+
+    assert names(result) == ["1girl", "uncensored", "uncensored_version"]
+    blocked = {
+        record.tag.name
+        for record in result.removed_tags
+        if record.reason == "censored_blocked"
+    }
+    assert blocked == {"censored", "mosaic_censoring", "bar_censor"}
+
+
+def test_censored_block_overrides_always_include() -> None:
+    result = TagFilter().filter(
+        [tag("censored", 0.9), tag("solo", 0.8)],
+        FilterSettings(always_include_tags=("censored",)),
+    )
+
+    assert names(result) == ["solo"]
+    assert any(
+        record.tag.name == "censored" and record.reason == "censored_blocked"
+        for record in result.removed_tags
+    )
+
+
+def test_antonym_conflicts_are_blocked_by_default() -> None:
+    result = TagFilter().filter(
+        [
+            tag("short_hair", 0.9),
+            tag("very_long_hair", 0.8),
+            tag("1girl", 0.95),
+            tag("2girls", 0.7),
+        ],
+        FilterSettings(),
+    )
+
+    assert names(result) == ["1girl", "short_hair"]
+    reasons = {
+        record.tag.name: record.reason
+        for record in result.removed_tags
+        if record.reason == "antonym_conflict"
+    }
+    assert "very_long_hair" in reasons
+    assert "2girls" in reasons
+
+
+def test_antonym_conflicts_can_be_disabled() -> None:
+    result = TagFilter().filter(
+        [
+            tag("short_hair", 0.9),
+            tag("very_long_hair", 0.8),
+        ],
+        FilterSettings(block_antonym_conflicts=False),
+    )
+    assert "short_hair" in names(result)
+    assert "very_long_hair" in names(result)
+
+
+def test_block_censored_tags_can_be_disabled() -> None:
+    result = TagFilter().filter(
+        [tag("censored", 0.9), tag("uncensored", 0.8)],
+        FilterSettings(block_censored_tags=False),
+    )
+
+    assert names(result) == ["censored", "uncensored"]
+
+
+def test_is_censored_tag_name_classification() -> None:
+    assert is_censored_tag_name("censored")
+    assert is_censored_tag_name("Mosaic_Censoring")
+    assert is_censored_tag_name("bar censor")
+    assert not is_censored_tag_name("uncensored")
+    assert not is_censored_tag_name("uncensored focus")
+    assert not is_censored_tag_name("1girl")
+
+
 def test_include_rating_keeps_rating_above_its_own_threshold() -> None:
     result = TagFilter().filter(
         [
@@ -88,6 +178,13 @@ def test_max_tags_runs_after_threshold_filtering() -> None:
     assert names(result) == ["high"]
     reasons = {record.tag.name: record.reason for record in result.removed_tags}
     assert reasons == {"low": "below_threshold", "middle": "max_tags"}
+
+
+def test_max_tags_zero_means_unlimited() -> None:
+    tags = [tag(f"t{i}", 0.9 - i * 0.001) for i in range(200)]
+    result = TagFilter().filter(tags, FilterSettings(max_tags=0))
+    assert len(names(result)) == 200
+    assert not any(r.reason == "max_tags" for r in result.removed_tags)
 
 
 def test_underscore_normalization_and_deduplication() -> None:
@@ -190,7 +287,7 @@ def test_invalid_confidence_raises(confidence: float) -> None:
         {"character_threshold": 1.1},
         {"rating_threshold": -0.1},
         {"minimum_display_threshold": math.inf},
-        {"max_tags": 0},
+        {"max_tags": -1},
         {"max_tags": 1.5},
     ],
 )

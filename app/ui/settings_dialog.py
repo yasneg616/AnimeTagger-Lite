@@ -26,6 +26,8 @@ from PySide6.QtWidgets import (
 )
 
 from app.config.settings import AppSettings
+from app.inference.backends import BACKENDS
+import inspect
 from app.inference.providers import Device
 from app.services.tagging_service import ModelValidationResult
 
@@ -57,6 +59,17 @@ class SettingsDialog(QDialog):
         self._validate_callback = validate_model
         self.validation_result: ModelValidationResult | None = None
 
+        self._backend_settings = settings
+        self.backend_combo = QComboBox()
+        self.backend_combo.setObjectName("taggerBackendCombo")
+        for key, spec in BACKENDS.items():
+            self.backend_combo.addItem(spec.label, key)
+        self.backend_combo.setCurrentIndex(self.backend_combo.findData(settings.backend))
+        self.backend_combo.setToolTip("Canary：更新的标签词表，PyTorch/timm；PixAI：角色标签及作品映射，ONNX。")
+        self.top_k_spin = QSpinBox()
+        self.top_k_spin.setRange(0, 10000)
+        self.top_k_spin.setSpecialValueText("不额外限制")
+        self.top_k_spin.setValue(settings.top_k or 0)
         self.model_dir_edit = QLineEdit(settings.model_dir)
         self.model_dir_edit.setObjectName("modelDirEdit")
         browse = QPushButton("浏览…")
@@ -89,7 +102,9 @@ class SettingsDialog(QDialog):
         self.minimum_spin = _probability_spin(settings.minimum_display_threshold)
         self.defect_spin = _probability_spin(settings.defect_threshold)
         self.max_tags_spin = QSpinBox()
-        self.max_tags_spin.setRange(1, 10000)
+        self.max_tags_spin.setRange(0, 1_000_000)
+        self.max_tags_spin.setSpecialValueText("不限")
+        self.max_tags_spin.setToolTip("0 表示不限制最大标签数")
         self.max_tags_spin.setValue(settings.max_tags)
         self.include_rating_check = QCheckBox()
         self.include_rating_check.setChecked(settings.include_rating)
@@ -99,8 +114,15 @@ class SettingsDialog(QDialog):
         self.parentheses_check.setChecked(settings.unescape_parentheses)
 
         self.profile_combo = QComboBox()
-        for value in ("raw", "anime", "pony", "lora_caption"):
+        for value in ("raw", "anime", "pony", "krea2", "lora_caption"):
             self.profile_combo.addItem(value, value)
+        self.profile_combo.addItem(
+            "CyberIllustrious 半写实", "cyberillustrious_semireal"
+        )
+        self.profile_combo.setToolTip(
+            "保留 Illustrious / Danbooru 标签结构，并按图像内容加入克制的"
+            "半写实材质、光照和镜头词。"
+        )
         self.profile_combo.setCurrentIndex(
             self.profile_combo.findData(settings.profile)
         )
@@ -140,6 +162,7 @@ class SettingsDialog(QDialog):
         self.show_low_check.setChecked(settings.show_low_confidence)
 
         form = QFormLayout()
+        form.addRow("模型后端", self.backend_combo)
         form.addRow("模型目录", model_widget)
         form.addRow("", self.validation_label)
         form.addRow("设备模式", self.device_combo)
@@ -148,6 +171,7 @@ class SettingsDialog(QDialog):
         form.addRow("Rating 阈值", self.rating_spin)
         form.addRow("包含 Rating", self.include_rating_check)
         form.addRow("最大标签数", self.max_tags_spin)
+        form.addRow("后端 Top K", self.top_k_spin)
         form.addRow("最低显示置信度", self.minimum_spin)
         form.addRow("下划线转空格", self.underscore_check)
         form.addRow("反转义括号", self.parentheses_check)
@@ -181,6 +205,21 @@ class SettingsDialog(QDialog):
         self.device_combo.currentIndexChanged.connect(
             lambda _index: self._validation_timer.start()
         )
+        self.backend_combo.currentIndexChanged.connect(self._switch_backend)
+        self.validate_now()
+
+    def _switch_backend(self, _index):
+        current = replace(self._backend_settings, model_dir=self.model_dir_edit.text().strip(),
+                          general_threshold=self.general_spin.value(),
+                          character_threshold=self.character_spin.value(),
+                          rating_threshold=self.rating_spin.value(), top_k=self.top_k_spin.value() or None)
+        selected = current.select_backend(str(self.backend_combo.currentData()))
+        self._backend_settings = selected
+        self.model_dir_edit.setText(selected.model_dir)
+        self.general_spin.setValue(selected.general_threshold)
+        self.character_spin.setValue(selected.character_threshold)
+        self.rating_spin.setValue(selected.rating_threshold)
+        self.top_k_spin.setValue(selected.top_k or 0)
         self.validate_now()
 
     @property
@@ -192,9 +231,13 @@ class SettingsDialog(QDialog):
 
     def validate_now(self) -> ModelValidationResult:
         self._validation_timer.stop()
+        kwargs = {}
+        if "backend" in inspect.signature(self._validate_callback).parameters:
+            kwargs["backend"] = str(self.backend_combo.currentData())
         result = self._validate_callback(
             self.model_dir_edit.text().strip(),
             self.selected_device(),
+            **kwargs,
         )
         self.validation_result = result
         color = "#75d694" if result.valid else "#ef8585"
@@ -211,7 +254,7 @@ class SettingsDialog(QDialog):
         initial = self.model_dir_edit.text() or str(Path.cwd())
         selected = QFileDialog.getExistingDirectory(
             self,
-            "选择 WD14 模型目录",
+            "选择 Tagger 模型目录",
             initial,
         )
         if selected:
@@ -238,6 +281,9 @@ class SettingsDialog(QDialog):
             return
         self._result_settings = replace(
             self._original,
+            backend=str(self.backend_combo.currentData()),
+            backend_options=self._backend_settings.backend_options,
+            top_k=self.top_k_spin.value() or None,
             model_dir=model_dir,
             device=self.selected_device().value,
             general_threshold=self.general_spin.value(),

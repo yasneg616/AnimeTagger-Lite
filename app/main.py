@@ -11,7 +11,8 @@ from typing import Callable, Sequence
 
 from app import __version__
 from app.config.presets import NegativePresetCatalog, PromptProfileCatalog
-from app.config.settings import AppSettings, load_settings
+from app.inference.backends import BACKENDS, create_backend
+from app.config.settings import AppSettings, load_settings, PROJECT_ROOT
 from app.errors import AnimeTaggerError, ConfigurationError
 from app.export_service import ExportFormat, ExportService
 from app.image.image_loader import ImageLoadOptions, parse_background_color
@@ -39,6 +40,7 @@ CATEGORY_TITLES: dict[TagCategory, str] = {
     TagCategory.GENERAL: "General",
     TagCategory.CHARACTER: "Character",
     TagCategory.OTHER: "Other",
+    TagCategory.COPYRIGHT: "Copyright",
 }
 
 
@@ -85,9 +87,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("image", type=Path, help="要识别的一张图片路径")
     parser.add_argument(
         "--model-dir",
-        required=True,
         type=Path,
-        help="包含 model.onnx 和 selected_tags.csv 的本地目录",
+        help="所选后端本地模型目录；省略时使用配置路径",
     )
     parser.add_argument(
         "--device",
@@ -96,19 +97,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="推理设备：auto（默认，CUDA 优先）、cuda 或 cpu",
     )
     parser.add_argument(
-        "--general-threshold",
+        "--general-threshold", "--threshold-general",
         type=_probability,
         default=None,
         help="General/Unknown 标签阈值（默认由配置决定）",
     )
     parser.add_argument(
-        "--character-threshold",
+        "--character-threshold", "--threshold-character",
         type=_probability,
         default=None,
         help="Character 标签阈值（默认由配置决定）",
     )
     parser.add_argument(
-        "--rating-threshold",
+        "--rating-threshold", "--threshold-rating",
         type=_probability,
         default=None,
         help="Rating 标签阈值（默认由配置决定）",
@@ -127,7 +128,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--profile",
-        choices=("raw", "anime", "pony", "lora_caption"),
+        choices=(
+            "raw",
+            "anime",
+            "pony",
+            "krea2",
+            "cyberillustrious_semireal",
+            "lora_caption",
+        ),
         default=None,
         help="正向提示词 profile",
     )
@@ -211,6 +219,8 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="显示 DEBUG 日志；不会记录完整提示词或图片内容",
     )
+    parser.add_argument("--tagger-backend", choices=tuple(BACKENDS), help="本地模型后端（默认 wd_2026_canary）")
+    parser.add_argument("--top-k", type=_positive_integer, help="过滤后标签上限，与 --max-tags 取较小值")
     return parser
 
 
@@ -238,6 +248,7 @@ def render_result(
         TagCategory.GENERAL,
         TagCategory.CHARACTER,
         TagCategory.OTHER,
+        TagCategory.COPYRIGHT,
     ):
         values = grouped[category]
         title = CATEGORY_TITLES[category]
@@ -262,7 +273,17 @@ def render_result(
 
 def _settings_from_args(settings: AppSettings, args: argparse.Namespace) -> AppSettings:
     overrides: dict[str, object] = {}
+    if args.tagger_backend is None and settings.backend == "wd_2026_canary" and args.model_dir is not None and (args.model_dir / "model.onnx").is_file():
+        # Existing explicit local ONNX commands retain WD v3 semantics.
+        logging.getLogger(__name__).warning("旧 --model-dir ONNX 命令使用 wd_v3；新模型请显式指定 --tagger-backend。")
+        settings = replace(settings, backend="wd_v3")
+
+    if args.tagger_backend is not None:
+        settings = settings.select_backend(args.tagger_backend)
+    if args.model_dir is not None:
+        overrides["model_dir"] = str(args.model_dir)
     for field_name in (
+        "top_k",
         "general_threshold",
         "character_threshold",
         "rating_threshold",
@@ -368,10 +389,12 @@ def run(
     except ValueError as exc:
         raise ConfigurationError(f"背景色配置无效：{exc}") from exc
 
-    engine = engine_factory(
-        args.model_dir,
-        device=Device(args.device),
-    )
+    model_dir = args.model_dir or Path(settings.model_dir)
+    if args.model_dir is None and not model_dir.is_absolute():
+        model_dir = PROJECT_ROOT / model_dir
+    engine = (create_backend(settings.backend, model_dir, device=Device(args.device))
+              if engine_factory is WD14Engine
+              else engine_factory(model_dir, device=Device(args.device)))
     try:
         result = engine.predict(
             args.image,

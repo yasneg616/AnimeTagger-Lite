@@ -12,7 +12,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     executable = Path(sys.executable).stem.casefold()
     arguments = list(argv) if argv is not None else sys.argv[1:]
-    if executable.endswith("cli"):
+    if executable.endswith("cli") or (arguments and arguments[0] == "--cli"):
+        if arguments and arguments[0] == "--cli":
+            arguments.pop(0)
         from app.main import main as cli_main
 
         return cli_main(arguments)

@@ -1,23 +1,23 @@
-AnimeTagger Lite Windows 便携版
-================================
+AnimeTagger Lite 1.2.0 · 现代界面与调色盘
 
-这是完全离线的 onedir 便携发行包。解压后直接运行
-AnimeTaggerLite.exe；命令行和批处理入口为 AnimeTaggerLiteCLI.exe。
+双击 AnimeTaggerLite.exe 启动。右上角“调色盘”提供暮紫、海蓝、青松、暖砂、晴昼主题，
+也可自定义强调色、背景色、面板色。颜色实时预览，保存后自动记住，取消会恢复原配色。
+顶部选择模型后可加载；“模型管理”中仍可验证和释放模型。
+反向提示词、筛选和高级设置可展开，批处理与随机 Prompt 保留。
 
-模型不会包含在发行 ZIP 中，也不会被程序自动下载。请将官方
-SmilingWolf/wd-vit-tagger-v3 固定版本的两个文件放到：
+本次 single-EXE 版把 Python、Qt、推理运行库合并为一个程序，无需另装 Python。
+models、resources、LICENSES 和 portable.flag 请保留在 EXE 旁边，整个目录一起移动。
+模型已附带，无需重新下载。Canary 使用 CPU；WD v3 / PixAI 支持 CUDA。
+单 EXE 每次启动会解压运行库到临时目录，启动可能需要等待十几秒至数十秒。
+命令行使用 AnimeTaggerLite.exe --cli（替代单独的 AnimeTaggerLiteCLI.exe）。
+单文件发行版以 BUILD-MANIFEST.json 中 program_layout=onefile 为准。
 
-models/wd-vit-tagger-v3/model.onnx
-models/wd-vit-tagger-v3/selected_tags.csv
+具体操作见 QUICK_START.txt。
 
-程序数据只写入 data/config、data/logs、data/batch-jobs 和 data/temp。
-删除 models 目录不会删除或修改用户图片、Caption 或其他导出文件。
+发行类型由 BUILD-MANIFEST.json 标记：program_layout=onefile 为单 EXE 运行库，
+onedir 为传统 _internal 目录与独立 CLI 程序。model_included=true 才表示随包附带模型。
+CUDA 包还需要兼容的 NVIDIA 驱动；可在设置中选 CPU。
 
-CPU 包只包含 onnxruntime；CUDA 包只包含 onnxruntime-gpu 及其官方
-CUDA/cuDNN 运行库。CUDA 包仍需要兼容的 NVIDIA 驱动。
-
-AnimeTagger Lite 项目自身采用 MIT License，正文见 LICENSE。随包第三方组件
-继续分别遵守 LICENSES 和 THIRD_PARTY_NOTICES.txt 中的上游许可证；模型也
-继续独立遵守其上游许可证，不由项目 MIT License 重新授权。
-
-软件不会后台联网，不执行自动更新、遥测或模型下载。
+项目自身采用 MIT License，正文见 LICENSE。第三方组件分别遵守 LICENSES 和
+THIRD_PARTY_NOTICES.txt 中的许可证；模型独立遵守各自上游许可。
+软件离线运行，不执行后台自动更新、遥测或模型下载，不修改原图。

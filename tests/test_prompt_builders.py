@@ -190,6 +190,96 @@ def test_lora_caption_never_adds_quality_or_negative() -> None:
     assert result.settings_snapshot["effective_negative_mode"] == "none"
 
 
+def test_krea2_profile_builds_structured_natural_language() -> None:
+    settings = replace(
+        AppSettings(),
+        profile="krea2",
+        underscore_to_space=True,
+    )
+
+    result = processor().build(
+        [
+            tag("masterpiece", 0.99),
+            tag("1girl", 0.98),
+            tag("long_hair", 0.95),
+            tag("blue_eyes", 0.94),
+            tag("school_uniform", 0.93),
+            tag("standing", 0.92),
+            tag("smile", 0.91),
+            tag("close-up", 0.90),
+            tag("city", 0.89),
+            tag("night", 0.88),
+            tag("rim_light", 0.87),
+            tag("digital_art", 0.86),
+            tag("black_jacket", 0.85),
+        ],
+        settings,
+    )
+
+    assert result.profile_name == "krea2"
+    assert result.positive_prompt.startswith(
+        "A close-up anime illustration depicting one female character."
+    )
+    assert "Their appearance includes long hair and blue eyes." in result.positive_prompt
+    assert "Their clothing and accessories include school uniform." in result.positive_prompt
+    assert "a standing pose and a gentle smile" in result.positive_prompt
+    assert "an urban environment and a nighttime atmosphere" in result.positive_prompt
+    assert "a distinct rim light around the subject" in result.positive_prompt
+    assert "Rendered as digital illustration." in result.positive_prompt
+    assert "black jacket" in result.positive_prompt
+    assert "masterpiece" not in result.positive_prompt
+    assert "_" not in result.positive_prompt
+    assert len(result.positive_prompt.split("\n\n")) >= 8
+    assert {item.output_name for item in result.positive_tags} == {
+        "1girl",
+        "long hair",
+        "blue eyes",
+        "school uniform",
+        "standing",
+        "smile",
+        "close-up",
+        "city",
+        "night",
+        "rim light",
+        "digital art",
+        "black jacket",
+    }
+
+
+def test_krea2_profile_uses_short_optional_negative_preset() -> None:
+    settings = replace(
+        AppSettings(),
+        profile="krea2",
+        negative_mode="basic",
+        negative_preset="krea2_short",
+    )
+
+    result = processor().build([tag("1girl", 0.9)], settings)
+
+    assert result.negative_prompt == (
+        "extra limbs, malformed hands, duplicated subjects, text, watermark"
+    )
+
+
+def test_krea2_profile_keeps_trigger_position_and_empty_input_semantics() -> None:
+    settings = replace(
+        AppSettings(),
+        profile="krea2",
+        trigger_word="my_style",
+        trigger_word_position="last",
+        underscore_to_space=True,
+    )
+
+    result = processor().build([tag("1girl", 0.9)], settings)
+    empty = processor().build(
+        [tag("masterpiece", 0.9)],
+        replace(AppSettings(), profile="krea2"),
+    )
+
+    assert result.positive_prompt.endswith("\n\nmy style.")
+    assert empty.positive_prompt == ""
+
+
 def test_trigger_word_is_first() -> None:
     settings = replace(
         AppSettings(),

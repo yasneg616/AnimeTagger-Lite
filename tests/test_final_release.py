@@ -134,6 +134,8 @@ def test_spec_excludes_models_tests_and_qt_webengine() -> None:
     assert '"pyside6.qtqml"' in lowered
     assert "pyside6/plugins/imageformats/qpdf.dll" in lowered
     assert "onnxruntime_providers_tensorrt.dll" in lowered
+    assert 'file_name == "icuuc.dll"' in lowered
+    assert 'file_name.startswith("icudt")' in lowered
     assert '"_zh_cn.qm"' in lowered
     assert "console=debug_console" in lowered
     assert "upx=false" in lowered
@@ -194,6 +196,39 @@ def test_release_audit_rejects_model_files(tmp_path: Path) -> None:
     assert build_portable.audit_distribution(root, "cpu")["files"] > 0
     (root / "models" / "wd-vit-tagger-v3" / "model.onnx").write_bytes(b"x")
     with pytest.raises(RuntimeError, match="Model weights"):
+        build_portable.audit_distribution(root, "cpu")
+
+
+def test_release_audit_checks_explicit_bundled_model_hash(tmp_path: Path) -> None:
+    root = tmp_path / "portable"
+    _minimal_cpu_portable(root)
+    relative = "models/wd-vit-tagger-v3/model.onnx"
+    model = root / relative
+    model.write_bytes(b"verified model fixture")
+    hashes = {relative: build_portable.sha256_file(model)}
+    assert build_portable.audit_distribution(root, "cpu", model_hashes=hashes)["files"] > 0
+    model.write_bytes(b"corrupt")
+    with pytest.raises(RuntimeError, match="SHA-256 mismatch"):
+        build_portable.audit_distribution(root, "cpu", model_hashes=hashes)
+
+
+def test_release_model_allowlist_cannot_escape_models(tmp_path: Path) -> None:
+    root = tmp_path / "portable"
+    _minimal_cpu_portable(root)
+    with pytest.raises(RuntimeError, match="outside models"):
+        build_portable.audit_distribution(root, "cpu", model_hashes={"../outside.onnx": "bad"})
+
+
+@pytest.mark.parametrize("name", ("icuuc.dll", "icudt78.dll"))
+def test_release_audit_rejects_foreign_icu_dlls(
+    tmp_path: Path,
+    name: str,
+) -> None:
+    root = tmp_path / "portable"
+    _minimal_cpu_portable(root)
+    (root / "_internal" / name).write_bytes(b"foreign ICU")
+
+    with pytest.raises(RuntimeError, match="Foreign ICU DLLs"):
         build_portable.audit_distribution(root, "cpu")
 
 

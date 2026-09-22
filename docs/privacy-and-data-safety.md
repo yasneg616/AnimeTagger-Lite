@@ -8,7 +8,7 @@ Worker 都不发起网络请求。成品没有账户、API Key、遥测、崩溃
 
 模型下载只存在于用户/开发者主动执行的 `scripts/download_wd14_model.py`，且
 固定到官方 `SmilingWolf/wd-vit-tagger-v3` revision。该脚本不在程序启动时
-调用，也不把 `huggingface_hub` 加入运行依赖。
+调用。Canary 的 timm 依赖包含 `huggingface_hub`，但模型始终从本地加载。
 
 ## 图片与输出
 
@@ -19,8 +19,6 @@ Worker 都不发起网络请求。成品没有账户、API Key、遥测、崩溃
 - 暂停/取消只阻止下一项，当前同步推理完成后才落下完整输出。
 - 剪贴板只读取用户本次粘贴的图片/本地路径；会话临时副本在安全关闭后清理。
 
-完整批处理不变量见 `docs/data-safety.md`。
-
 ## 便携数据
 
 正式包存在 `portable.flag`，只在发行根的 `data/` 下保存：
@@ -28,7 +26,7 @@ Worker 都不发起网络请求。成品没有账户、API Key、遥测、崩溃
 | 路径 | 内容 |
 |---|---|
 | `data/config/settings.json` | 业务设置与最近目录 |
-| `data/config/ui.ini` | 窗口和表格状态 |
+| `data/config/ui.ini` | 窗口、表格状态与调色盘配色 |
 | `data/logs/` | 轮转运行日志 |
 | `data/batch-jobs/` | 便携批任务 Manifest/报告 |
 | `data/temp/` | 当前会话剪贴板临时图片 |
@@ -44,9 +42,10 @@ Worker 都不发起网络请求。成品没有账户、API Key、遥测、崩溃
 
 ## 发行审计
 
-正式构建拒绝：模型权重、`selected_tags.csv`、验证图片、tests、pytest、用户
-配置/日志、临时文件、绝对开发路径、用户名、Smoke 路径、QtWebEngine、
-PyTorch、TensorFlow、Hugging Face Hub 和 CPU/CUDA 混装。
+正式构建拒绝验证图片、tests、pytest、用户配置/日志、临时文件、绝对开发路径、
+用户名、Smoke 路径、QtWebEngine、TensorFlow 和 ONNX CPU/CUDA 包混装。
+仅显式启用 include-models 时附带已校验哈希的模型。Canary 所需 PyTorch/timm
+随包提供；单 EXE 的运行库在启动时解压至系统临时目录，退出后由引导程序清理。
 
 Defender 只做本机自定义扫描；不会关闭防护、添加排除项、修改策略或上传文件到
 第三方扫描网站。任何告警必须记录检测名并先检查打包模式、UPX、异常脚本或临时

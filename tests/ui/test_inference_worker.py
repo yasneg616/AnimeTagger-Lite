@@ -28,7 +28,7 @@ class FakeWorkerService:
     def is_model_loaded(self) -> bool:
         return self.loaded
 
-    def load_model(self, _path: Path, device: Device):
+    def load_model(self, _path: Path, device: Device, backend="wd_v3"):
         del device
         self.thread_objects.append(QThread.currentThread())
         self.loaded = True

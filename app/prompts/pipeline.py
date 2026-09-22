@@ -8,7 +8,9 @@ from typing import Iterable
 from app.config.presets import NegativePresetCatalog, PromptProfileCatalog
 from app.config.settings import AppSettings
 from app.inference.wd14_engine import TagPrediction
+from app.prompts.cyberillustrious_builder import CyberIllustriousPromptBuilder
 from app.prompts.filtering import FilterSettings, TagFilter
+from app.prompts.krea2_builder import Krea2PromptBuilder
 from app.prompts.models import (
     FilterResult,
     PromptBuildResult,
@@ -51,6 +53,8 @@ class PromptProcessor:
         self._negative_presets = negative_presets
         self._filter = tag_filter or TagFilter()
         self._positive_builder = PositivePromptBuilder(classifier)
+        self._krea2_builder = Krea2PromptBuilder()
+        self._cyber_builder = CyberIllustriousPromptBuilder()
         self._negative_builder = NegativePromptBuilder(negative_presets)
         # GUI quick settings often rebuild the same 10,861 WD14 tags while
         # changing only profile or negative-prompt options. Keep one prepared
@@ -152,10 +156,16 @@ class PromptProcessor:
             if profile.name == "lora_caption"
             else NegativeMode(settings.negative_mode)
         )
+        effective_negative_preset = (
+            "cyberillustrious_short"
+            if profile.prompt_format == "cyberillustrious_semireal"
+            and settings.negative_preset == "basic"
+            else settings.negative_preset
+        )
         negative = self._negative_builder.build(
             raw_classified,
             mode=effective_negative_mode,
-            preset_name=settings.negative_preset,
+            preset_name=effective_negative_preset,
             defect_threshold=settings.defect_threshold,
             user_terms=settings.user_negative_tags,
             normalizer_settings=normalizer_settings,
@@ -183,20 +193,81 @@ class PromptProcessor:
                     kept.append(tag)
             positive_tags = tuple(kept)
 
+        cyber_removed: tuple[RemovalRecord, ...] = ()
+        cyber_prompt: str | None = None
+        rescued_duplicates: tuple[RemovalRecord, ...] = ()
+        if profile.prompt_format == "cyberillustrious_semireal":
+            # The shared filter prefers the higher-confidence model row when
+            # an identical manual score tag is also present. In this profile,
+            # explicit user input must survive the later model-score cleanup.
+            model_score_keys = {
+                canonical_tag_key(tag.output_name)
+                for tag in positive_tags
+                if tag.source is TagSource.MODEL
+                and canonical_tag_key(tag.output_name).startswith("score ")
+            }
+            rescued_duplicates = tuple(
+                record
+                for record in filter_result.removed_tags
+                if record.reason == "duplicate"
+                and record.tag.source is TagSource.USER
+                and canonical_tag_key(record.tag.output_name) in model_score_keys
+            )
+            if rescued_duplicates:
+                positive_tags = tuple(
+                    (*positive_tags, *(record.tag for record in rescued_duplicates))
+                )
+            cyber = self._cyber_builder.build(
+                positive_tags,
+                trigger_word=settings.trigger_word,
+                trigger_word_position=settings.trigger_word_position,
+            )
+            positive_tags = cyber.tags
+            cyber_removed = cyber.removed_tags
+            cyber_prompt = cyber.prompt
+
+        filter_removals = filter_result.removed_tags
+        if rescued_duplicates:
+            rescued_ids = {id(record) for record in rescued_duplicates}
+            filter_removals = tuple(
+                record
+                for record in filter_removals
+                if id(record) not in rescued_ids
+            )
         removed_records = tuple(
-            (*filter_result.removed_tags, *positive.removed_tags, *conflict_removals)
+            (
+                *filter_removals,
+                *positive.removed_tags,
+                *conflict_removals,
+                *cyber_removed,
+            )
         )
         excluded_classified = self._classifier.assign_groups(
             filter_result.excluded_tags
         )
         snapshot = settings.snapshot()
         snapshot["effective_negative_mode"] = effective_negative_mode.value
+        if profile.prompt_format == "cyberillustrious_semireal":
+            snapshot["effective_negative_preset"] = effective_negative_preset
+        positive_prompt = (
+            cyber_prompt
+            if cyber_prompt is not None
+            else (
+                self._krea2_builder.build(
+                    positive_tags,
+                    trigger_word=settings.trigger_word,
+                    trigger_word_position=settings.trigger_word_position,
+                )
+                if profile.prompt_format == "krea2"
+                else ", ".join(tag.output_name for tag in positive_tags)
+            )
+        )
         return PromptBuildResult(
             raw_tags=raw_classified,
             filtered_tags=filtered_classified,
             positive_tags=positive_tags,
             negative_tags=negative.tags,
-            positive_prompt=", ".join(tag.output_name for tag in positive_tags),
+            positive_prompt=positive_prompt,
             negative_prompt=negative.prompt,
             removed_tags=removed_records,
             excluded_tags=excluded_classified,

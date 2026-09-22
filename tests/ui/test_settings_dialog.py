@@ -40,6 +40,8 @@ def test_settings_dialog_validates_on_creation(qtbot, tmp_path: Path) -> None:
     assert dialog.validation_result is not None
     assert dialog.validation_result.valid
     assert "基础验证通过" in dialog.validation_label.text()
+    assert dialog.profile_combo.findData("krea2") >= 0
+    assert dialog.profile_combo.findData("cyberillustrious_semireal") >= 0
 
 
 def test_settings_dialog_selects_cpu_device(qtbot, tmp_path: Path) -> None:

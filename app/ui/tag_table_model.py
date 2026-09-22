@@ -34,6 +34,7 @@ CATEGORY_LABELS = {
     TagCategory.RATING: "Rating",
     TagCategory.GENERAL: "General",
     TagCategory.CHARACTER: "Character",
+    TagCategory.COPYRIGHT: "Copyright",
     TagCategory.OTHER: "Other",
 }
 SOURCE_LABELS = {
@@ -111,7 +112,7 @@ class TagTableModel(QAbstractTableModel):
             if column is TagColumn.TAG:
                 return tag.output_name
             if column is TagColumn.CATEGORY:
-                return CATEGORY_LABELS[tag.category]
+                return CATEGORY_LABELS.get(tag.category, tag.category.value)
             if column is TagColumn.GROUP:
                 return tag.prompt_group.value if tag.prompt_group else "other"
             if column is TagColumn.CONFIDENCE:
@@ -119,7 +120,7 @@ class TagTableModel(QAbstractTableModel):
                     return "手动"
                 return f"{tag.confidence:.4f}"
             if column is TagColumn.SOURCE:
-                return SOURCE_LABELS[tag.source]
+                return SOURCE_LABELS.get(tag.source, tag.source.value)
         if role == TagRole.TAG:
             return tag.output_name
         if role == TagRole.CATEGORY:

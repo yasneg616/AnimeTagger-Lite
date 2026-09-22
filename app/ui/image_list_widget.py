@@ -37,9 +37,11 @@ class ImageListWidget(QListWidget):
         self.setObjectName("imageList")
         self.setAcceptDrops(True)
         self.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
-        self.setIconSize(QSize(80, 80))
+        self.setIconSize(QSize(70, 70))
         self.setSpacing(4)
-        self.setAlternatingRowColors(True)
+        self.setAlternatingRowColors(False)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setTextElideMode(Qt.TextElideMode.ElideMiddle)
 
     def add_image_item(self, image: ImageItem) -> None:
         item = QListWidgetItem()
@@ -54,7 +56,7 @@ class ImageListWidget(QListWidget):
             return
         label = STATUS_LABELS[image.status]
         item.setText(f"{image.display_name}\n{label}")
-        item.setForeground(STATUS_COLORS[image.status])
+        # Keep names readable in every custom theme; status is also written out.
         tooltip = str(image.source_path)
         if image.error_message:
             tooltip += f"\n{image.error_message}"

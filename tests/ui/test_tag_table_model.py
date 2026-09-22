@@ -44,6 +44,25 @@ def test_table_displays_tag_data() -> None:
     assert model.data(model.index(0, TagColumn.GROUP)) == "count"
 
 
+def test_table_displays_all_tag_categories() -> None:
+    tags = [
+        TagResult(f"tag_{category.value}", 0.9, category)
+        for category in TagCategory
+    ]
+    model = TagTableModel(tags)
+    for row, category in enumerate(TagCategory):
+        label = model.data(model.index(row, TagColumn.CATEGORY))
+        assert label is not None
+        assert label != ""
+
+
+def test_table_displays_copyright_category_label() -> None:
+    model = TagTableModel(
+        [TagResult("genshin_impact", 0.91, TagCategory.COPYRIGHT)]
+    )
+    assert model.data(model.index(0, TagColumn.CATEGORY)) == "Copyright"
+
+
 def test_toggle_enabled_emits_change(qtbot) -> None:
     model = TagTableModel(sample_tags())
     with qtbot.waitSignal(model.tags_changed):

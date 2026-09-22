@@ -27,6 +27,28 @@ def test_batch_help_parser_exposes_stage4_options() -> None:
         assert option in help_text
 
 
+def test_batch_parser_accepts_krea2_profile() -> None:
+    args = batch_cli.build_parser().parse_args(
+        ["images", "--model-dir", "models", "--profile", "krea2"]
+    )
+
+    assert args.profile == "krea2"
+
+
+def test_batch_parser_accepts_cyberillustrious_profile() -> None:
+    args = batch_cli.build_parser().parse_args(
+        [
+            "images",
+            "--model-dir",
+            "models",
+            "--profile",
+            "cyberillustrious_semireal",
+        ]
+    )
+
+    assert args.profile == "cyberillustrious_semireal"
+
+
 def test_batch_cli_exposes_shared_version(capsys: pytest.CaptureFixture[str]) -> None:
     with pytest.raises(SystemExit) as raised:
         batch_cli.build_parser().parse_args(["--version"])

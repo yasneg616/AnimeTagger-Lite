@@ -37,8 +37,10 @@ class ModelStatusWidget(QWidget):
         self.state = ModelUiState.UNCONFIGURED
         self._status = QLabel("模型：尚未配置")
         self._status.setObjectName("modelStatusLabel")
+        self._status.setWordWrap(True)
         self._provider = QLabel("Provider：—")
         self._provider.setObjectName("providerStatusLabel")
+        self._provider.setWordWrap(True)
 
         self.validate_button = QPushButton("验证模型")
         self.load_button = QPushButton("加载模型")
@@ -92,7 +94,7 @@ class ModelStatusWidget(QWidget):
 
     def set_loading(self) -> None:
         self.state = ModelUiState.LOADING
-        self._status.setText("模型：正在加载并验证 ONNX…")
+        self._status.setText("模型：正在加载并验证…")
         self.load_button.setEnabled(False)
         self.validate_button.setEnabled(False)
 

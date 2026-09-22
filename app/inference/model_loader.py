@@ -17,6 +17,7 @@ class TagCategory(str, Enum):
     RATING = "rating"
     GENERAL = "general"
     CHARACTER = "character"
+    COPYRIGHT = "copyright"
     OTHER = "other"
 
 
@@ -24,6 +25,7 @@ CATEGORY_BY_ID: dict[int, TagCategory] = {
     9: TagCategory.RATING,
     0: TagCategory.GENERAL,
     4: TagCategory.CHARACTER,
+    3: TagCategory.COPYRIGHT,
 }
 
 
@@ -88,7 +90,7 @@ def resolve_model_files(model_dir: Path) -> ModelFiles:
     )
 
 
-def load_selected_tags(csv_path: Path) -> tuple[TagMetadata, ...]:
+def load_selected_tags(csv_path: Path, *, allow_empty_names: bool = False) -> tuple[TagMetadata, ...]:
     """Parse model labels in exact CSV row order (the ONNX output order)."""
 
     path = Path(csv_path)
@@ -120,7 +122,7 @@ def load_selected_tags(csv_path: Path) -> tuple[TagMetadata, ...]:
             for index, row in enumerate(reader):
                 row_number = index + 2
                 name = (row.get(name_field) or "").strip()
-                if not name:
+                if not name and not allow_empty_names:
                     raise TagCsvError(
                         f"标签 CSV 第 {row_number} 行的 name 为空：{path}"
                     )

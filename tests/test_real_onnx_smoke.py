@@ -1,16 +1,21 @@
 from __future__ import annotations
 
 import os
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 from PIL import Image
 
+from app.config.presets import NegativePresetCatalog, PromptProfileCatalog
+from app.config.settings import AppSettings
 from app.image.image_loader import SUPPORTED_IMAGE_EXTENSIONS, preprocess_image
 from app.inference.model_loader import TagCategory, load_selected_tags
 from app.inference.providers import CPU_PROVIDER, CUDA_PROVIDER, Device
 from app.inference.wd14_engine import WD14Engine
 from app.main import main
+from app.prompts.pipeline import PromptProcessor, tag_results_from_predictions
+from app.prompts.tag_classifier import TagClassifier
 
 
 def _real_model_dir() -> Path:
@@ -144,3 +149,48 @@ def test_real_anime_image_cli_smoke(capsys: object) -> None:
     assert "Provider:" in captured.out
     assert "Positive:" in captured.out
     assert "Raw model tags:" in captured.out
+
+
+@pytest.mark.smoke
+def test_same_real_anime_image_compares_anime_pony_and_cyber_profiles() -> None:
+    """Compare three renderers on one user-supplied image and one real Session."""
+
+    model_dir = _real_model_dir()
+    if not all(
+        (model_dir / name).is_file()
+        for name in ("model.onnx", "selected_tags.csv")
+    ):
+        pytest.skip("未找到本地 WD14 模型，无法比较真实图片 profile")
+    image_path = _real_validation_image()
+    if image_path is None:
+        pytest.skip("未提供真实动漫图片，不能使用占位图验收语义输出")
+
+    engine = WD14Engine(model_dir, device=Device.CPU)
+    try:
+        predictions = engine.predict(image_path).predictions
+    finally:
+        engine.release()
+    resources = Path(__file__).resolve().parents[1] / "resources"
+    processor = PromptProcessor(
+        TagClassifier.from_json(resources / "tag_categories.json"),
+        PromptProfileCatalog.from_json(resources / "prompt_profiles.json"),
+        NegativePresetCatalog.from_json(resources / "negative_presets.json"),
+    )
+    raw = tag_results_from_predictions(predictions)
+    outputs = {
+        mode: processor.build(
+            raw,
+            replace(AppSettings(), profile=mode, underscore_to_space=True),
+        )
+        for mode in ("anime", "pony", "cyberillustrious_semireal")
+    }
+
+    assert outputs["anime"].raw_tags == outputs["pony"].raw_tags
+    assert outputs["pony"].raw_tags == outputs["cyberillustrious_semireal"].raw_tags
+    assert outputs["anime"].positive_prompt.startswith("masterpiece")
+    assert "semi-realistic" in outputs["cyberillustrious_semireal"].positive_prompt
+    assert "masterpiece" not in outputs["cyberillustrious_semireal"].positive_prompt
+    assert not any(
+        tag.source.value == "preset" and tag.output_name.startswith("score")
+        for tag in outputs["cyberillustrious_semireal"].positive_tags
+    )

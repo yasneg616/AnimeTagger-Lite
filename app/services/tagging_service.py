@@ -19,6 +19,7 @@ from app.inference.model_loader import (
     resolve_model_files,
 )
 from app.inference.providers import Device, select_execution_providers
+from app.inference.backends import create_backend, resolve_backend_files, load_backend_tags, DEFAULT_BACKEND
 from app.inference.wd14_engine import InferenceResult, ModelInfo, WD14Engine
 from app.prompts.models import PromptBuildResult, TagResult
 from app.prompts.pipeline import PromptProcessor, tag_results_from_predictions
@@ -88,12 +89,18 @@ class TaggingService:
         self._engine: WD14Engine | None = None
         self._model_dir: Path | None = None
         self._device: Device | None = None
+        self._backend: str | None = None
         self._engine_lock = threading.RLock()
 
     @property
     def is_model_loaded(self) -> bool:
         with self._engine_lock:
             return self._engine is not None and self._engine.is_loaded
+
+    @property
+    def loaded_backend(self) -> str | None:
+        with self._engine_lock:
+            return self._backend
 
     @property
     def model_info(self) -> ModelInfo | None:
@@ -104,6 +111,7 @@ class TaggingService:
         self,
         model_dir: str | Path,
         device: Device = Device.AUTO,
+        backend: str = "wd_v3",
     ) -> ModelValidationResult:
         """Perform a lightweight validation without constructing a session.
 
@@ -119,8 +127,15 @@ class TaggingService:
             )
         directory = resolve_model_directory(model_dir)
         try:
-            files = resolve_model_files(directory)
-            tags = load_selected_tags(files.tags_path)
+            files = resolve_backend_files(directory, backend)
+            tags = load_backend_tags(files.tags_path, backend)
+            if backend == DEFAULT_BACKEND:
+                import importlib.util
+                if any(importlib.util.find_spec(name) is None for name in ("torch", "timm", "safetensors")):
+                    raise ModelLoadError("Canary 缺少可选依赖，请安装 requirements-tagger-torch.txt。")
+                return ModelValidationResult(ModelValidationState.VALID,
+                    "Canary 文件验证通过；权重和 PyTorch 设备将在加载时完整验证。",
+                    directory=directory, files=files, tag_count=len(tags), requested_device=device)
             try:
                 import onnxruntime
             except ImportError as exc:
@@ -153,11 +168,14 @@ class TaggingService:
         self,
         model_dir: str | Path,
         device: Device = Device.AUTO,
+        backend: str = "wd_v3",
     ) -> ModelInfo:
         """Fully validate a candidate, then atomically replace the old engine."""
 
         directory = resolve_model_directory(model_dir)
-        candidate = self._engine_factory(directory, device=device)
+        candidate = (create_backend(backend, directory, device=device)
+                     if self._engine_factory is WD14Engine
+                     else self._engine_factory(directory, device=device))
         try:
             info = candidate.load()
         except Exception:
@@ -169,6 +187,7 @@ class TaggingService:
             self._engine = candidate
             self._model_dir = directory
             self._device = device
+            self._backend = backend
         if previous is not None and previous is not candidate:
             previous.release()
         return info
@@ -179,6 +198,7 @@ class TaggingService:
             self._engine = None
             self._model_dir = None
             self._device = None
+            self._backend = None
         if engine is not None:
             engine.release()
 
@@ -194,6 +214,8 @@ class TaggingService:
         with self._engine_lock:
             if self._engine is None or not self._engine.is_loaded:
                 raise ModelLoadError("模型尚未加载，请先在设置中验证并加载模型。")
+            if self._engine_factory is WD14Engine and settings.backend != self._backend:
+                raise ModelLoadError("所选后端与当前加载模型不同，请点击“加载模型”完成切换后再识别。")
             inference = self._engine.predict(
                 Path(image_path),
                 image_options=ImageLoadOptions(background=background),

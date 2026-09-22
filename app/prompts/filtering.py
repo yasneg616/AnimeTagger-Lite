@@ -14,6 +14,7 @@ from app.prompts.normalizer import (
     TagNormalizer,
     canonical_tag_key,
 )
+from app.prompts.tag_conflicts import CONFLICT_LOOKUP
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,6 +33,10 @@ class FilterSettings:
     unescape_parentheses: bool = True
     trim_whitespace: bool = True
     collapse_spaces: bool = True
+    # Default policy: drop every censor-related token; only "uncensored" may remain.
+    block_censored_tags: bool = True
+    # Default policy: forbid antonym/conflict pairs such as short_hair + very_long_hair.
+    block_antonym_conflicts: bool = True
 
     def __post_init__(self) -> None:
         for label, value in (
@@ -45,9 +50,9 @@ class FilterSettings:
         if (
             isinstance(self.max_tags, bool)
             or not isinstance(self.max_tags, int)
-            or self.max_tags <= 0
+            or self.max_tags < 0
         ):
-            raise TagProcessingError("max_tags 必须是大于 0 的整数。")
+            raise TagProcessingError("max_tags 必须是大于等于 0 的整数；0 表示不限制。")
 
     @property
     def normalizer_settings(self) -> NormalizerSettings:
@@ -59,8 +64,23 @@ class FilterSettings:
         )
 
 
+def is_censored_tag_name(name: str) -> bool:
+    """True for censor-related tags that must not enter positive prompts.
+
+    ``uncensored`` (and phrases that start with it) is the only allowed
+    censor-family token.
+    """
+
+    key = canonical_tag_key(name)
+    if not key:
+        return False
+    if key == "uncensored" or key.startswith("uncensored "):
+        return False
+    return "censor" in key
+
+
 def _threshold_for(tag: TagResult, settings: FilterSettings) -> float:
-    if tag.category is TagCategory.CHARACTER:
+    if tag.category in (TagCategory.CHARACTER, TagCategory.COPYRIGHT):
         category_threshold = settings.character_threshold
     elif tag.category is TagCategory.RATING:
         category_threshold = settings.rating_threshold
@@ -160,6 +180,16 @@ class TagFilter:
             ):
                 reasons[index] = None
 
+        # Step 5b: default censor policy wins over always-include. Only
+        # "uncensored" may survive among censor-family labels.
+        if settings.block_censored_tags:
+            for index, tag in enumerate(normalized):
+                name = tag.normalized_name
+                if name is None:
+                    continue
+                if is_censored_tag_name(name):
+                    reasons[index] = "censored_blocked"
+
         def ranking(index: int) -> tuple[int, float, int]:
             tag = normalized[index]
             assert tag.normalized_name is not None
@@ -168,6 +198,25 @@ class TagFilter:
 
         active = [index for index, reason in reasons.items() if reason is None]
         active.sort(key=ranking)
+
+        # Step 5c: forbid antonym/conflict pairs (e.g. short_hair + very_long_hair).
+        # Higher-ranked tags win; later conflicting members are removed.
+        if settings.block_antonym_conflicts:
+            consistent: list[int] = []
+            kept_keys: set[str] = set()
+            for index in active:
+                name = normalized[index].normalized_name
+                assert name is not None
+                key = canonical_tag_key(name)
+                group = CONFLICT_LOOKUP.get(key)
+                if group is not None and any(
+                    member in kept_keys for member in group if member != key
+                ):
+                    reasons[index] = "antonym_conflict"
+                    continue
+                kept_keys.add(key)
+                consistent.append(index)
+            active = consistent
 
         # Step 6: normalized-name deduplication.
         if settings.remove_duplicates:
@@ -185,9 +234,11 @@ class TagFilter:
             active = unique
 
         # Step 7: max_tags is applied only after every prior filter.
-        for index in active[settings.max_tags :]:
-            reasons[index] = "max_tags"
-        active = active[: settings.max_tags]
+        # max_tags == 0 means unlimited.
+        if settings.max_tags > 0:
+            for index in active[settings.max_tags :]:
+                reasons[index] = "max_tags"
+            active = active[: settings.max_tags]
 
         # Step 8: ranking is deterministic; ties retain original input order.
         filtered_tags = tuple(normalized[index] for index in active)

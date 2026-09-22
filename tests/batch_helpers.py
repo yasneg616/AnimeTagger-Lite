@@ -77,7 +77,7 @@ class FakeBatchTaggingService:
     def is_model_loaded(self) -> bool:
         return self.loaded
 
-    def load_model(self, _path: Path, _device: Device):
+    def load_model(self, _path: Path, _device: Device, backend="wd_v3"):
         self.load_calls += 1
         self.loaded = True
         return self.info

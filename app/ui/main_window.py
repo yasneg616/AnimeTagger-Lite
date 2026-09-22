@@ -18,10 +18,12 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QFormLayout,
     QHBoxLayout,
+    QHeaderView,
     QInputDialog,
     QLabel,
     QLineEdit,
     QMainWindow,
+    QMenu,
     QMessageBox,
     QProgressBar,
     QPushButton,
@@ -29,6 +31,9 @@ from PySide6.QtWidgets import (
     QTableView,
     QTabWidget,
     QToolBar,
+    QToolButton,
+    QScrollArea,
+    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
@@ -43,6 +48,10 @@ from app.config.settings import (
 from app.errors import AnimeTaggerError
 from app.export_service import ExportFormat
 from app.image.image_loader import SUPPORTED_IMAGE_EXTENSIONS
+from app.inference.backends import BACKENDS, backend_spec
+from app.ui.theme import ThemeColors, apply_theme
+from app.ui.palette_dialog import PaletteDialog
+from app.ui.collapsible import CollapsibleSection
 from app.inference.model_loader import TagCategory
 from app.inference.providers import Device
 from app.inference.wd14_engine import ModelInfo
@@ -57,6 +66,7 @@ from app.state.image_item import ImageItem, ImageStatus
 from app.state.project_state import AddPathsResult, ProjectState
 from app.ui.image_list_widget import ImageListWidget
 from app.ui.batch_panel import BatchPanel
+from app.ui.random_prompt_panel import RandomPromptPanel
 from app.ui.image_preview_widget import ImagePreviewWidget
 from app.ui.model_status_widget import ModelStatusWidget
 from app.ui.prompt_panel import PromptPanel
@@ -100,7 +110,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setObjectName("mainWindow")
         self.setWindowTitle(f"AnimeTagger Lite {__version__}")
-        self.resize(1440, 860)
+        self.resize(1540, 960)
 
         self.settings_path = (
             Path(settings_path)
@@ -129,6 +139,8 @@ class MainWindow(QMainWindow):
             )
         else:
             self.ui_settings = QSettings()
+        self.theme_colors = ThemeColors.load(self.ui_settings)
+        apply_theme(self.theme_colors)
         self._tags_updating = False
         self._quick_updating = False
         self._close_pending = False
@@ -176,30 +188,71 @@ class MainWindow(QMainWindow):
         self.settings_action.setObjectName("settingsAction")
         self.about_action = QAction("关于 AnimeTagger Lite", self)
         self.about_action.setObjectName("aboutAction")
+        self.palette_action = QAction("调色盘", self)
+        self.palette_action.triggered.connect(self._open_palette)
+        self.add_action.setShortcut("Ctrl+O")
+        self.paste_action.setShortcut("Ctrl+V")
+        for action in (self.add_action, self.paste_action, self.remove_action,
+                       self.clear_action, self.start_action, self.cancel_action,
+                       self.export_action, self.copy_combined_action):
+            self.addAction(action)
+
+    def _open_palette(self) -> None:
+        dialog = PaletteDialog(self.theme_colors, self)
+        if dialog.exec() == PaletteDialog.DialogCode.Accepted:
+            self.theme_colors = dialog.colors
+            self.theme_colors.save(self.ui_settings)
+
+    @staticmethod
+    def _action_button(action, *, primary=False):
+        button = QToolButton()
+        button.setDefaultAction(action)
+        button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        button.setProperty("primary", primary)
+        if primary:
+            button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        return button
+
+    @staticmethod
+    def _heading(text):
+        label = QLabel(text)
+        label.setProperty("heading", True)
+        return label
 
     def _build_toolbar(self) -> None:
         toolbar = QToolBar("主工具栏")
         toolbar.setObjectName("mainToolbar")
         toolbar.setMovable(False)
         toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
-        for action in (
-            self.add_action,
-            self.paste_action,
-            self.remove_action,
-            self.clear_action,
-        ):
-            toolbar.addAction(action)
-        toolbar.addSeparator()
-        toolbar.addAction(self.start_action)
-        toolbar.addAction(self.cancel_action)
-        toolbar.addSeparator()
-        toolbar.addAction(self.export_action)
-        toolbar.addAction(self.copy_combined_action)
-        toolbar.addSeparator()
+        brand = QLabel("◈  AnimeTagger Lite")
+        brand.setObjectName("brand")
+        toolbar.addWidget(brand)
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        toolbar.addWidget(spacer)
+        self.backend_combo = QComboBox()
+        self.backend_combo.setObjectName("quickBackendCombo")
+        for key, spec in BACKENDS.items():
+            self.backend_combo.addItem(spec.label, key)
+        self.backend_combo.setCurrentIndex(self.backend_combo.findData(self.settings.backend))
+        self.backend_combo.currentIndexChanged.connect(self._select_backend)
+        toolbar.addWidget(self.backend_combo)
+        self.quick_load = QPushButton("加载模型")
+        self.quick_load.clicked.connect(self._load_model)
+        toolbar.addWidget(self.quick_load)
+        self.model_badge = QLabel("未加载")
+        self.model_badge.setProperty("muted", True)
+        toolbar.addWidget(self.model_badge)
+        toolbar.addAction(self.palette_action)
         toolbar.addAction(self.settings_action)
         self.addToolBar(toolbar)
-        help_menu = self.menuBar().addMenu("帮助")
+        help_menu = QMenu(self)
         help_menu.addAction(self.about_action)
+        help_button = QToolButton()
+        help_button.setText("帮助")
+        help_button.setMenu(help_menu)
+        help_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        toolbar.addWidget(help_button)
 
         self.progress = QProgressBar()
         self.progress.setObjectName("queueProgress")
@@ -211,10 +264,28 @@ class MainWindow(QMainWindow):
     def _build_central_ui(self) -> None:
         self.image_list = ImageListWidget()
         left = QWidget()
+        left.setProperty("card", True)
         left_layout = QVBoxLayout(left)
-        left_layout.setContentsMargins(0, 0, 0, 0)
-        left_layout.addWidget(QLabel("图片列表（手动添加，可多选）"))
+        left_layout.setContentsMargins(12, 12, 12, 12)
+        left_layout.addWidget(self._heading("图片库"))
+        library_actions = QHBoxLayout()
+        library_actions.addWidget(self._action_button(self.add_action, primary=True))
+        library_actions.addWidget(self._action_button(self.paste_action))
+        more = QToolButton()
+        more.setText("···")
+        menu = QMenu(more)
+        menu.addAction(self.remove_action)
+        menu.addAction(self.clear_action)
+        more.setMenu(menu)
+        more.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        library_actions.addWidget(more)
+        left_layout.addLayout(library_actions)
         left_layout.addWidget(self.image_list, 1)
+        hint = QLabel("拖放图片到列表\nCtrl / Shift 多选 · Ctrl+V 粘贴")
+        hint.setProperty("muted", True)
+        hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        left_layout.addWidget(hint)
+        left.setMinimumWidth(245)
 
         self.preview = ImagePreviewWidget()
 
@@ -245,12 +316,6 @@ class MainWindow(QMainWindow):
         self.show_low_check = QCheckBox("显示低置信度")
         self.show_low_check.setChecked(self.settings.show_low_confidence)
 
-        filters = QHBoxLayout()
-        filters.addWidget(self.tag_search, 2)
-        filters.addWidget(self.category_filter, 1)
-        filters.addWidget(self.group_filter, 1)
-        filters.addWidget(self.show_low_check)
-
         self.tag_table = QTableView()
         self.tag_table.setObjectName("tagTable")
         self.tag_table.setModel(self.tag_proxy)
@@ -267,6 +332,14 @@ class MainWindow(QMainWindow):
         )
         self.tag_table.setAlternatingRowColors(True)
         self.tag_table.setWordWrap(False)
+        self.tag_table.setShowGrid(False)
+        self.tag_table.verticalHeader().hide()
+        self.tag_table.verticalHeader().setDefaultSectionSize(34)
+        self.tag_table.horizontalHeader().setSectionResizeMode(TagColumn.TAG, QHeaderView.ResizeMode.Stretch)
+        self.tag_table.setColumnWidth(TagColumn.ENABLED, 46)
+        self.tag_table.setColumnWidth(TagColumn.CONFIDENCE, 90)
+        self.tag_table.setColumnHidden(TagColumn.GROUP, True)
+        self.tag_table.setColumnHidden(TagColumn.SOURCE, True)
 
         self.add_tag_button = QPushButton("添加标签")
         self.add_tag_button.setObjectName("addTagButton")
@@ -281,9 +354,23 @@ class MainWindow(QMainWindow):
         tag_buttons.addStretch(1)
 
         tag_area = QWidget()
+        tag_area.setProperty("card", True)
         tag_layout = QVBoxLayout(tag_area)
-        tag_layout.setContentsMargins(0, 0, 0, 0)
-        tag_layout.addLayout(filters)
+        tag_layout.setContentsMargins(12, 12, 12, 12)
+        tag_layout.addWidget(self._heading("识别标签"))
+        search_row = QHBoxLayout()
+        search_row.addWidget(self.tag_search, 2)
+        search_row.addWidget(self.category_filter, 1)
+        tag_layout.addLayout(search_row)
+        filter_content = QWidget()
+        filter_layout = QHBoxLayout(filter_content)
+        filter_layout.setContentsMargins(0, 0, 0, 0)
+        filter_layout.addWidget(self.group_filter)
+        filter_layout.addWidget(self.show_low_check)
+        detail_check = QCheckBox("详细列")
+        detail_check.toggled.connect(lambda checked: [self.tag_table.setColumnHidden(c, not checked) for c in (TagColumn.GROUP, TagColumn.SOURCE)])
+        filter_layout.addWidget(detail_check)
+        tag_layout.addWidget(CollapsibleSection("筛选与显示", filter_content))
         tag_layout.addWidget(self.tag_table, 1)
         tag_layout.addLayout(tag_buttons)
 
@@ -298,37 +385,65 @@ class MainWindow(QMainWindow):
         self.right_splitter = QSplitter(Qt.Orientation.Vertical)
         self.right_splitter.setObjectName("rightSplitter")
         self.right_splitter.addWidget(tag_area)
-        self.right_splitter.addWidget(prompt_area)
-        self.right_splitter.setSizes([470, 360])
+        prompt_scroll = QScrollArea()
+        prompt_scroll.setWidgetResizable(True)
+        prompt_scroll.setFrameShape(QScrollArea.Shape.NoFrame)
+        prompt_scroll.setWidget(prompt_area)
+        self.right_splitter.addWidget(prompt_scroll)
+        self.right_splitter.setSizes([420, 420])
+        self.right_splitter.setChildrenCollapsible(False)
 
         right = QWidget()
         right_layout = QVBoxLayout(right)
         right_layout.setContentsMargins(0, 0, 0, 0)
-        right_layout.addWidget(self.model_status)
+        actions = QHBoxLayout()
+        actions.addWidget(self._action_button(self.start_action, primary=True), 1)
+        actions.addWidget(self._action_button(self.cancel_action))
+        actions.addWidget(self._action_button(self.export_action))
+        actions.addWidget(self._action_button(self.copy_combined_action))
+        right_layout.addLayout(actions)
+        self.model_section = CollapsibleSection("模型管理 · 加载 / 验证 / 释放", self.model_status)
+        right_layout.addWidget(self.model_section)
         right_layout.addWidget(self.right_splitter, 1)
+        right.setMinimumWidth(520)
 
         self.main_splitter = QSplitter(Qt.Orientation.Horizontal)
         self.main_splitter.setObjectName("mainSplitter")
         self.main_splitter.addWidget(left)
         self.main_splitter.addWidget(self.preview)
         self.main_splitter.addWidget(right)
-        self.main_splitter.setSizes([260, 520, 660])
+        self.main_splitter.setSizes([270, 600, 610])
+        self.main_splitter.setChildrenCollapsible(False)
         self.batch_panel = BatchPanel(
             self.controller,
             self.settings,
             self,
         )
+        self.random_prompt_panel = RandomPromptPanel(self.settings, self)
         self.pages = QTabWidget()
         self.pages.setObjectName("mainPages")
         self.pages.addTab(self.main_splitter, "单图")
         self.pages.addTab(self.batch_panel, "批处理")
-        self.setCentralWidget(self.pages)
+        self.pages.addTab(self.random_prompt_panel, "随机 Prompt")
+        workspace = QWidget()
+        workspace.setObjectName("workspace")
+        workspace_layout = QVBoxLayout(workspace)
+        workspace_layout.setContentsMargins(12, 0, 12, 8)
+        workspace_layout.addWidget(self.pages)
+        self.setCentralWidget(workspace)
 
     def _build_quick_settings(self) -> QWidget:
         widget = QWidget()
         self.profile_combo = QComboBox()
-        for value in ("raw", "anime", "pony", "lora_caption"):
+        for value in ("raw", "anime", "pony", "krea2", "lora_caption"):
             self.profile_combo.addItem(value, value)
+        self.profile_combo.addItem(
+            "CyberIllustrious 半写实", "cyberillustrious_semireal"
+        )
+        self.profile_combo.setToolTip(
+            "针对 CyberIllustrious Semi-Realistic 优化：保留 Danbooru 标签，"
+            "按主体与视觉信息重排，并按识别结果适量加入材质、光照和镜头描述。"
+        )
         self.general_spin = _probability_spin(
             self.settings.general_threshold,
             "立即使用当前 working_tags 重建提示词，不重新运行模型",
@@ -347,20 +462,39 @@ class MainWindow(QMainWindow):
         self.trigger_edit = QLineEdit()
         self.trigger_edit.setPlaceholderText("LoRA trigger word（可选）")
 
-        form = QFormLayout(widget)
-        form.setContentsMargins(0, 4, 0, 0)
+        widget.setProperty("card", True)
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.addWidget(self._heading("生成设置"))
+        form = QFormLayout()
         form.addRow("Profile", self.profile_combo)
-        form.addRow("General 阈值", self.general_spin)
-        form.addRow("Character 阈值", self.character_spin)
-        form.addRow("反向模式", self.negative_combo)
-        form.addRow("Trigger word", self.trigger_edit)
-        note = QLabel(
-            "快捷设置立即重建当前 working_tags；不重新推理，raw_tags 保持不变。"
-        )
-        note.setWordWrap(True)
-        note.setStyleSheet("color: #9da7b3;")
-        form.addRow("", note)
+        layout.addLayout(form)
+        thresholds = QHBoxLayout()
+        thresholds.addWidget(QLabel("通用阈值"))
+        thresholds.addWidget(self.general_spin, 1)
+        thresholds.addWidget(QLabel("角色阈值"))
+        thresholds.addWidget(self.character_spin, 1)
+        layout.addLayout(thresholds)
+        advanced = QWidget()
+        advanced_form = QFormLayout(advanced)
+        advanced_form.addRow("反向模式", self.negative_combo)
+        advanced_form.addRow("Trigger word", self.trigger_edit)
+        self.quick_advanced = CollapsibleSection("高级设置", advanced)
+        layout.addWidget(self.quick_advanced)
         return widget
+
+    def _select_backend(self) -> None:
+        backend = self.backend_combo.currentData()
+        if backend == self.settings.backend or self.controller.is_busy:
+            return
+        self.settings = self.settings.select_backend(backend)
+        self.batch_panel.set_base_settings(self.settings)
+        self.random_prompt_panel.set_settings(self.settings)
+        self._sync_quick_controls()
+        self._save_settings_safely(nonblocking=True)
+        self._validate_configured_model(show_status=True)
+        self.model_section.toggle.setChecked(True)
+        self._load_model()
 
     def _connect_signals(self) -> None:
         self.add_action.triggered.connect(self._choose_images)
@@ -617,6 +751,7 @@ class MainWindow(QMainWindow):
         result = self.service.validate_model_directory(
             self.settings.model_dir,
             Device(self.settings.device),
+            backend=self.settings.backend,
         )
         if not self.controller.is_model_loaded:
             self.model_status.set_validation(result)
@@ -633,12 +768,13 @@ class MainWindow(QMainWindow):
                 self,
                 "无法加载模型",
                 f"{validation.message}\n\n请在“设置”中选择包含 "
-                "model.onnx 和 selected_tags.csv 的目录。",
+                "所选后端权重和标签文件的目录。",
             )
             return
         if not self.controller.load_model(
             self.settings.model_dir,
             Device(self.settings.device),
+            backend=self.settings.backend,
         ):
             self.statusBar().showMessage("当前任务尚未结束，暂不能加载模型。", 4000)
         self._update_action_states()
@@ -652,6 +788,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def _on_model_loading(self) -> None:
         self.model_status.set_loading()
+        self.model_badge.setText("加载中…")
         self.statusBar().showMessage("正在后台加载并验证模型…")
         self._update_action_states()
 
@@ -659,6 +796,9 @@ class MainWindow(QMainWindow):
     def _on_model_loaded(self, info_object: object) -> None:
         if isinstance(info_object, ModelInfo):
             self.model_status.set_loaded(info_object)
+            self.model_badge.setText("● 已就绪")
+            self.model_badge.setToolTip(info_object.active_provider)
+            self.model_section.toggle.setChecked(False)
             message = f"模型已加载，当前使用 {info_object.active_provider}"
             if info_object.provider_warning:
                 message = f"{info_object.provider_warning} {message}"
@@ -668,6 +808,8 @@ class MainWindow(QMainWindow):
     @Slot(str, bool)
     def _on_model_load_failed(self, message: str, still_loaded: bool) -> None:
         self.model_status.set_failed(message, still_loaded=still_loaded)
+        self.model_badge.setText("原模型就绪" if still_loaded else "加载失败")
+        self.model_section.toggle.setChecked(True)
         QMessageBox.warning(
             self,
             "模型加载失败",
@@ -683,6 +825,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def _on_model_unloaded(self) -> None:
         self.model_status.set_released()
+        self.model_badge.setText("已释放")
         self.statusBar().showMessage("模型 Session 已释放。", 4000)
         self._update_action_states()
 
@@ -693,6 +836,21 @@ class MainWindow(QMainWindow):
                 self,
                 "模型尚未加载",
                 "请先验证并加载模型。界面可以在无模型时继续添加和预览图片。",
+            )
+            return
+        loaded_backend = self.service.loaded_backend
+        if loaded_backend is not None and loaded_backend != self.settings.backend:
+            try:
+                loaded_label = backend_spec(loaded_backend).label
+                selected_label = backend_spec(self.settings.backend).label
+            except Exception:
+                loaded_label = loaded_backend
+                selected_label = self.settings.backend
+            QMessageBox.warning(
+                self,
+                "后端与模型不一致",
+                f"当前已加载后端为「{loaded_label}」，设置中选择了「{selected_label}」。\n"
+                "请点击“加载模型”完成切换后再识别。",
             )
             return
         selected = self.image_list.selected_image_ids()
@@ -1003,8 +1161,10 @@ class MainWindow(QMainWindow):
             QSignalBlocker(self.character_spin),
             QSignalBlocker(self.negative_combo),
             QSignalBlocker(self.trigger_edit),
+            QSignalBlocker(self.backend_combo),
         ]
         try:
+            self.backend_combo.setCurrentIndex(self.backend_combo.findData(self.settings.backend))
             self.profile_combo.setCurrentIndex(
                 self.profile_combo.findData(self.settings.profile)
             )
@@ -1025,6 +1185,8 @@ class MainWindow(QMainWindow):
             self.trigger_edit.setVisible(
                 self.settings.profile == "lora_caption"
             )
+            if self.settings.profile == "lora_caption":
+                self.quick_advanced.toggle.setChecked(True)
         finally:
             del blockers
             self._quick_updating = False
@@ -1044,16 +1206,17 @@ class MainWindow(QMainWindow):
         )
         if dialog.exec() != SettingsDialog.DialogCode.Accepted:
             return
-        old_model = (self.settings.model_dir, self.settings.device)
+        old_model = (self.settings.model_dir, self.settings.device, self.settings.backend)
         self.settings = dialog.settings
         self.batch_panel.set_base_settings(self.settings)
+        self.random_prompt_panel.set_settings(self.settings)
         self._save_settings_safely(nonblocking=False)
         self.tag_proxy.set_minimum_confidence(
             self.settings.minimum_display_threshold
         )
         self.show_low_check.setChecked(self.settings.show_low_confidence)
         self._sync_quick_controls()
-        new_model = (self.settings.model_dir, self.settings.device)
+        new_model = (self.settings.model_dir, self.settings.device, self.settings.backend)
         if old_model != new_model and self.controller.is_model_loaded:
             self.model_status.set_failed(
                 "配置已更改；原模型仍保持加载，点击“加载模型”后才会切换",
@@ -1234,6 +1397,8 @@ class MainWindow(QMainWindow):
             )
         )
         self.settings_action.setEnabled(not busy)
+        self.backend_combo.setEnabled(not busy)
+        self.quick_load.setEnabled(not busy)
         self.add_tag_button.setEnabled(current is not None and not busy)
         self.delete_tag_button.setEnabled(current is not None and not busy)
         self.tag_table.setEnabled(not busy)
@@ -1254,13 +1419,14 @@ class MainWindow(QMainWindow):
         geometry = self.ui_settings.value("main/geometry")
         if isinstance(geometry, QByteArray):
             self.restoreGeometry(geometry)
-        main_state = self.ui_settings.value("main/splitter")
+        modern = self.ui_settings.value("main/layout_version") == "2"
+        main_state = self.ui_settings.value("main/splitter") if modern else None
         if isinstance(main_state, QByteArray):
             self.main_splitter.restoreState(main_state)
-        right_state = self.ui_settings.value("main/right_splitter")
+        right_state = self.ui_settings.value("main/right_splitter") if modern else None
         if isinstance(right_state, QByteArray):
             self.right_splitter.restoreState(right_state)
-        header_state = self.ui_settings.value("main/tag_header")
+        header_state = self.ui_settings.value("main/tag_header") if modern else None
         if isinstance(header_state, QByteArray):
             self.tag_table.horizontalHeader().restoreState(header_state)
         page_index = self.ui_settings.value("main/page", 0)
@@ -1270,6 +1436,7 @@ class MainWindow(QMainWindow):
             self.pages.setCurrentIndex(0)
 
     def _save_ui_state(self) -> None:
+        self.ui_settings.setValue("main/layout_version", "2")
         self.ui_settings.setValue("main/geometry", self.saveGeometry())
         self.ui_settings.setValue(
             "main/splitter",

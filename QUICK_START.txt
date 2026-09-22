@@ -1,59 +1,62 @@
-AnimeTagger Lite 快速开始
-===========================
+AnimeTagger Lite 1.2.0 · 现代界面与调色盘
 
-AnimeTagger Lite 是完全本地、离线运行的 Windows 便携软件。普通用户不需要
-安装 Python。
+双击 AnimeTaggerLite.exe 启动。右上角“调色盘”提供暮紫、海蓝、青松、暖砂、晴昼主题，
+也可自定义强调色、背景色、面板色。颜色实时预览，保存后自动记住，取消会恢复原配色。
+顶部选择模型后可加载；“模型管理”中仍可验证和释放模型。
+反向提示词、筛选和高级设置可展开，批处理与随机 Prompt 保留。
 
-一、选择发行包
---------------
+本次 single-EXE 版把 Python、Qt、推理运行库合并为一个程序，无需另装 Python。
+models、resources、LICENSES 和 portable.flag 请保留在 EXE 旁边，整个目录一起移动。
+模型已附带，无需重新下载。Canary 使用 CPU；WD v3 / PixAI 支持 CUDA。
+单 EXE 每次启动会解压运行库到临时目录，启动可能需要等待十几秒至数十秒。
+命令行使用 AnimeTaggerLite.exe --cli（替代单独的 AnimeTaggerLiteCLI.exe）。
+单文件发行版以 BUILD-MANIFEST.json 中 program_layout=onefile 为准。
 
-* NVIDIA 显卡且驱动兼容：优先选择 CUDA 版，识别速度更快。
-* 其他电脑或追求最高兼容性：选择 CPU 版，速度较慢但适用范围更广。
-* CPU 与 CUDA 两个 ZIP 必须分别解压，不能互相覆盖或混合 _internal 目录。
-* CUDA 版无法加载时，可以改用 CPU 版。
-
-二、解压
+一、解压
 --------
 
 把整个 ZIP 解压到当前用户有写入权限的目录，例如“文档”或其他数据盘目录。
 不要直接从 ZIP、Program Files、只读介质或只读网络共享中运行。
 
-三、准备模型
+二、模型
 ------------
 
-软件不会自动下载模型。请只从官方 Hugging Face 仓库准备以下两个文件：
+软件不会自动下载模型。查看 BUILD-MANIFEST.json 中的 model_included：
+true 表示本包已经带上三个模型，可以直接使用；false 时需自行准备配套文件。
 
-仓库：SmilingWolf/wd-vit-tagger-v3
-固定 revision：7f6b584d0bd3f55c4531f14ba3d4761b2bccdc0f
+默认：WD EVA02 2026 Canary
+目录：models/wd-eva02-tagger-2026-canary/
+文件：model.safetensors、config.json、selected_tags.csv
+来源：https://huggingface.co/ashen-sensored/wd-eva02-tagger-2026-canary
 
-model.onnx
-selected_tags.csv
+可选：PixAI Tagger v0.9（ONNX 转换版）
+目录：models/pixai-tagger-v0.9/
+文件：model.onnx、selected_tags.csv
+来源：https://huggingface.co/deepghs/pixai-tagger-v0.9-onnx
 
-放到解压目录中的：
+旧模型：WD v3
+目录：models/wd-vit-tagger-v3/
+文件：model.onnx、selected_tags.csv
+来源：https://huggingface.co/SmilingWolf/wd-vit-tagger-v3
 
-models\wd-vit-tagger-v3\model.onnx
-models\wd-vit-tagger-v3\selected_tags.csv
+模型许可证与软件许可证彼此独立；本包的模型哈希记录于 BUILD-MANIFEST.json。
+当前多后端包的 Canary 使用 PyTorch CPU；WD/PixAI 可使用 ONNX CUDA。
 
-model.onnx 期望 SHA-256：
-35f23693620b668f4d53fd3c62bf65e40af739bc52c7eb0fbc49258b58d065b6
-
-模型许可证与 AnimeTagger Lite 软件许可证彼此独立；模型不会进入发行 ZIP。
-
-四、开始识别
+三、开始识别
 ------------
 
 1. 双击 AnimeTaggerLite.exe。
-2. 打开“设置”，确认模型目录和设备。
-3. 点击“验证模型”，再点击“加载模型”。
+2. 打开“设置”，选择模型后端并确认模型目录和设备。
+3. 点击顶部“加载模型”（验证与释放位于“模型管理”）。
 4. 拖入或添加图片。
 5. 点击“开始识别”。
 6. 在右侧检查标签并复制正向或正负提示词。
 
-默认反向模式为 none，因此只会生成正向提示词。需要反向提示词时，把反向模式
+默认反向模式为 none，因此只会生成正向提示词。需要反向提示词时，在“生成设置 → 高级设置”中把反向模式
 改为 basic 或 cleanup_detected，并导出“正负 TXT”。LoRA Caption 模式按设计
 不生成反向提示词。
 
-五、数据与升级
+四、数据与升级
 --------------
 
 图片不会上传，软件不会后台联网、检查更新、发送遥测或修改原图。配置、窗口

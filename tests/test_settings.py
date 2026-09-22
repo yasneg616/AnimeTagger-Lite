@@ -99,7 +99,26 @@ def test_prompt_profile_resource_loads_all_required_profiles() -> None:
     assert catalog.get("raw").sort_mode == "confidence"
     assert catalog.get("anime").prefix_tags
     assert catalog.get("pony").name == "pony"
+    assert catalog.get("krea2").prompt_format == "krea2"
     assert catalog.get("lora_caption").allowed_groups
+
+
+def test_legacy_profile_resource_backfills_krea2_without_discarding_edits(
+    tmp_path: Path,
+) -> None:
+    payload = json.loads(
+        (RESOURCE_DIR / "prompt_profiles.json").read_text(encoding="utf-8")
+    )
+    payload["profiles"].pop("krea2")
+    payload["profiles"]["pony"]["prefix_tags"] = ["custom_score"]
+    legacy_path = tmp_path / "legacy-prompt-profiles.json"
+    legacy_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    catalog = PromptProfileCatalog.from_json(legacy_path)
+
+    assert not catalog.used_fallback
+    assert catalog.get("pony").prefix_tags == ("custom_score",)
+    assert catalog.get("krea2").prompt_format == "krea2"
 
 
 def test_negative_preset_resource_loads_defects() -> None:
@@ -109,4 +128,22 @@ def test_negative_preset_resource_loads_defects() -> None:
 
     assert not catalog.used_fallback
     assert "low quality" in catalog.get_preset("basic")
+    assert catalog.get_preset("krea2_short") == (
+        "extra limbs",
+        "malformed hands",
+        "duplicated subjects",
+        "text",
+        "watermark",
+    )
     assert "watermark" in catalog.defect_tags
+
+
+def test_krea2_is_a_valid_settings_profile() -> None:
+    assert AppSettings.from_mapping({"profile": "krea2"}).profile == "krea2"
+
+
+def test_cyberillustrious_is_opt_in_and_old_settings_still_load() -> None:
+    assert AppSettings.from_mapping({"profile": "cyberillustrious_semireal"}).profile == (
+        "cyberillustrious_semireal"
+    )
+    assert AppSettings.from_mapping({"general_threshold": 0.4}).profile == "raw"

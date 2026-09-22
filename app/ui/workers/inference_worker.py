@@ -92,13 +92,14 @@ class InferenceWorker(QObject):
     def prepare_batch(self) -> None:
         self._batch_control.reset()
 
-    @Slot(object, object)
-    def load_model(self, model_dir: object, device: object) -> None:
+    @Slot(object, object, object)
+    def load_model(self, model_dir: object, device: object, backend: object = "wd_v3") -> None:
         self.model_loading.emit()
         try:
             info = self._service.load_model(
                 Path(str(model_dir)),
                 device if isinstance(device, Device) else Device(str(device)),
+                backend=str(backend),
             )
         except Exception as exc:
             logger.exception("GUI 模型加载失败")
@@ -275,7 +276,7 @@ class InferenceController(QObject):
     fatal_error = Signal(str)
     stopped = Signal()
 
-    _load_requested = Signal(object, object)
+    _load_requested = Signal(object, object, object)
     _unload_requested = Signal()
     _queue_requested = Signal(object)
     _batch_scan_requested = Signal(object)
@@ -384,12 +385,12 @@ class InferenceController(QObject):
     def is_running(self) -> bool:
         return self._thread.isRunning()
 
-    def load_model(self, model_dir: str | Path, device: Device) -> bool:
+    def load_model(self, model_dir: str | Path, device: Device, backend: str = "wd_v3") -> bool:
         if self._busy or self._shutdown_started:
             return False
         self._busy = True
         self.busy_changed.emit(True)
-        self._load_requested.emit(str(model_dir), device)
+        self._load_requested.emit(str(model_dir), device, backend)
         return True
 
     def unload_model(self) -> bool:

@@ -26,6 +26,26 @@
       "allowed_groups": null,
       "remove_tags": []
     },
+    "krea2": {
+      "prefix_tags": [],
+      "add_prefix_default": false,
+      "sort_mode": "group",
+      "allowed_groups": null,
+      "remove_tags": [
+        "masterpiece",
+        "best quality",
+        "amazing quality"
+      ],
+      "prompt_format": "krea2"
+    },
+    "cyberillustrious_semireal": {
+      "prefix_tags": [],
+      "add_prefix_default": false,
+      "sort_mode": "group",
+      "allowed_groups": null,
+      "remove_tags": [],
+      "prompt_format": "cyberillustrious_semireal"
+    },
     "lora_caption": {
       "prefix_tags": [],
       "add_prefix_default": false,

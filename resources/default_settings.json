@@ -14,6 +14,8 @@
   "unescape_parentheses": true,
   "trim_whitespace": true,
   "collapse_spaces": true,
+  "block_censored_tags": true,
+  "block_antonym_conflicts": true,
   "profile": "raw",
   "add_profile_prefix": true,
   "negative_mode": "none",
@@ -24,11 +26,14 @@
   "remove_tags": [],
   "user_negative_tags": [],
   "background": "#FFFFFF",
-  "model_dir": "models/wd-vit-tagger-v3",
+  "model_dir": "models/wd-eva02-tagger-2026-canary",
   "device": "auto",
   "default_export_format": "txt",
   "default_export_dir": "",
   "recent_open_dir": "",
   "recent_export_dir": "",
-  "show_low_confidence": false
+  "show_low_confidence": false,
+  "backend": "wd_2026_canary",
+  "top_k": null,
+  "backend_options": {}
 }

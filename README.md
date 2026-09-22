@@ -1,9 +1,14 @@
 # AnimeTagger Lite
 
 AnimeTagger Lite 是面向 Windows 的轻量、本地、离线动漫图片标签识别和提示词
-整理工具。当前版本为 **1.0.0**：在阶段 1–4 的 WD14 ONNX
-推理、提示词、PySide6 桌面界面、文件夹批处理和 LoRA Caption 之上，完成
-Python 3.11、真实 CPU/CUDA、真实图片批处理与 Windows onedir 便携发行验收。
+整理工具。当前版本 **1.2.0**：三栏现代界面、五种预设主题和自定义调色盘，
+支持 Canary 2026、PixAI v0.9、WD v3，以及批处理、随机 Prompt 和多个提示词 Profile。
+
+顶部“调色盘”支持强调色、背景色、面板色实时预览；保存后持久化，取消恢复原色。
+单 EXE 版整合 Python、Qt 和推理运行库；模型与 resources 等配套文件保留在程序旁，
+复制时请移动整个发行目录。运行 `AnimeTaggerLite.exe`；命令行用 `AnimeTaggerLite.exe --cli`。
+构建方式和三后端说明见 [packaging/README.md](packaging/README.md) 与
+[docs/tagger-backends.md](docs/tagger-backends.md)。下方阶段记录为早期版本历史。
 
 当前仍没有网络 API、遥测、自动模型下载、自动更新或 Windows 安装程序。
 
@@ -38,7 +43,8 @@ Python 3.11、真实 CPU/CUDA、真实图片批处理与 Windows onedir 便携�
 - 排除、固定保留、规范化后去重、过滤后 `max_tags`。
 - 原始名称与规范化名称同时保留。
 - JSON 驱动的 16 组标签分类排序。
-- `raw`、`anime`、`pony`、`lora_caption` 正向 profile。
+- `raw`、`anime`、`pony`、`krea2`、
+  `cyberillustrious_semireal`、`lora_caption` 正向 profile。
 - `none`、`basic`、`cleanup_detected` 反向模式。
 - 缺陷冲突从最终正向提示词移除，但不删除原始模型结果。
 - 正向 TXT、正负 TXT 和结构化 JSON。
@@ -78,13 +84,11 @@ Python 3.11、真实 CPU/CUDA、真实图片批处理与 Windows onedir 便携�
   `BatchService`。
 - 图片永不删除、移动、重命名、覆盖或修改元数据；dry-run 完全不落盘。
 
-完整设计和安全不变量见
-[docs/stage4-batch-design.md](docs/stage4-batch-design.md) 与
-[docs/data-safety.md](docs/data-safety.md)。
+数据处理边界见 [隐私与数据安全](docs/privacy-and-data-safety.md)。
 
-## 阶段 5 模型准备与真实验收状态
+## 阶段 5 历史模型准备与 1.0.0 真实验收
 
-2026-07-30，Codex 已按用户本次明确授权，实际运行独立下载脚本，从官方
+2026-07-30，Codex 曾按用户明确授权运行独立下载脚本，从官方
 `SmilingWolf/wd-vit-tagger-v3` 的固定 revision
 `7f6b584d0bd3f55c4531f14ba3d4761b2bccdc0f` 下载并验证：
 
@@ -93,6 +97,10 @@ D:\tagger\models\wd-vit-tagger-v3\
 ├── model.onnx
 └── selected_tags.csv
 ```
+
+上面是当时的准备路径。清理旧文件后，当前本机已验证模型位于
+`D:\AnimeTaggerLite-1.1.0-win64-cuda-portable\models\wd-vit-tagger-v3`；
+本次源码开发只读取该位置，没有复制模型。
 
 `model.onnx` SHA-256 与官方记录一致；真实
 `CPUExecutionProvider` Session、448×448 NHWC 输入、10,861 个输出和
@@ -105,7 +113,7 @@ Python 3.10 CPU、Python 3.11 CPU 与 Python 3.11 CUDA 三个隔离环境的完�
 `release` 目录已通过 Microsoft Defender 终扫。最终 1.0.0 发行证据见
 [docs/real-model-validation.md](docs/real-model-validation.md) 和
 [docs/release-smoke-report.md](docs/release-smoke-report.md)；阶段 5 的历史证据见
-[docs/stage5-acceptance.md](docs/stage5-acceptance.md)。
+[tests/test_real_onnx_smoke.py](tests/test_real_onnx_smoke.py)。
 
 ## 环境
 
@@ -223,7 +231,7 @@ python -m app.ui --smoke-test
    ONNX 可读性、输入形状和 CSV/输出数量。
 4. 在左侧用 Ctrl/Shift 选择多张图片，点击“开始识别”。队列始终逐张执行。
 5. 在标签表中搜索、筛选、勾选或编辑；修改只更新当前图片，不重新推理。
-6. 切换 `raw`、`anime`、`pony`、`lora_caption` 或反向模式。快捷阈值使用
+6. 切换 `raw`、`anime`、`pony`、`krea2`、`lora_caption` 或反向模式。快捷阈值使用
    当前 `working_tags` 立即重建，不更改 `raw_tags`。
 7. 可手动编辑提示词。后续标签/设置变化只标记“可重新生成”，不会静默覆盖。
 8. 复制提示词，或用“导出当前”选择正向 TXT、正负 TXT、JSON。
@@ -342,6 +350,76 @@ python -m app.main "D:\images\sample.png" `
 Pony 默认前缀为空，不假定某套质量词永远正确。可在
 `resources/prompt_profiles.json` 中编辑。
 
+### Krea 2 自然语言提示词
+
+`krea2` profile 不输出传统的逗号标签流，也不添加 `masterpiece`、
+`best quality` 等质量套话。它将检测到的标签按以下顺序重组为英文自然语言段落：
+
+```text
+主体 → 外貌/服装 → 动作/表情 → 构图 → 环境 → 光线 → 色彩 → 风格/材质/景深
+```
+
+生成器只在内容描述中陈述实际保留的 WD14 标签；结尾会增加适合 Krea 2 的
+光影、色彩关系、笔触、边缘控制、材质和焦点层级指导。它不是视觉语言模型，
+不会凭空补写模型未检测到的具体道具或场景关系，生成后仍可在界面中手动编辑。
+
+```powershell
+python -m app.main "D:\images\sample.png" `
+  --model-dir "D:\tagger\models\wd-vit-tagger-v3" `
+  --profile krea2 `
+  --underscore-to-space
+```
+
+Krea 2 通常可以先不使用反向提示词。前端确实需要时，可选择项目提供的短预设：
+
+```powershell
+python -m app.main "D:\images\sample.png" `
+  --model-dir "D:\tagger\models\wd-vit-tagger-v3" `
+  --profile krea2 `
+  --negative-mode basic `
+  --negative-preset krea2_short
+```
+
+该短预设仅包含 `extra limbs`、`malformed hands`、`duplicated subjects`、
+`text` 和 `watermark`，不会自动塞入冗长的传统 SD 反向词表。
+
+### CyberIllustrious Semi-Realistic 标签提示词
+
+cyberillustrious_semireal 仍使用同一 WD ViT Tagger v3 的 General、
+Character 与 Rating 识别结果，不重新识图。它将保留的标签按主体、角色、
+外貌、表情、服饰、动作、构图、环境的顺序重排，按置信度消解冲突的取景标签，
+过滤模型自动产生的 Pony 评分词和质量词，并在末尾根据实际识别内容加入少量
+半写实材质、光照与镜头词。用户手动输入的评分标签不会被自动删除。
+
+~~~powershell
+python -m app.main "D:\images\sample.png" --model-dir "D:\AnimeTaggerLite-1.1.0-win64-cuda-portable\models\wd-vit-tagger-v3" --profile cyberillustrious_semireal --underscore-to-space
+~~~
+
+基本人物示例（各视觉词均来自识别标签）：
+
+~~~text
+1girl, solo, black hair, long hair, brown eyes, smile, white shirt, standing, upper body, indoors, semi-realistic, natural skin texture, detailed eyes, detailed hair, detailed fabric texture, cinematic lighting, depth of field
+~~~
+
+无人风景不会增加皮肤、眼睛、头发或服装材质词；可信的平面动漫风格标签会
+保留，且不会同时堆积冲突的摄影风格与镜头词。明显硬光或夜景不会被强行改成
+柔光。此阶段固定使用适中的半写实增强强度，没有新增 Low/High 控件。
+
+反向提示词继续遵循原来的 none、basic 和 cleanup_detected：none 完全不输出；
+选择 basic 且预设仍为默认 basic 时，Cyber profile 自动使用
+cyberillustrious_short 短预设；cleanup_detected 再按原有缺陷白名单和阈值
+追加真实检测到的问题。显式选择其他反向预设仍会受到尊重，低置信度标签不会
+被取反。
+
+~~~powershell
+python -m app.main "D:\images\sample.png" --model-dir "D:\AnimeTaggerLite-1.1.0-win64-cuda-portable\models\wd-vit-tagger-v3" --profile cyberillustrious_semireal --negative-mode basic
+~~~
+
+GUI 的单图页与设置对话框可选“CyberIllustrious 半写实”；批处理页需先关闭
+“LoRA Caption 模式”再选择该 profile。切换单图 profile 会使用已有
+working_tags 重建提示词，不会重新运行 ONNX。软件仍完全离线，模型与
+用户图片不会被复制到源码或发行 ZIP。
+
 ### 单图 LoRA caption
 
 ```powershell
@@ -446,10 +524,15 @@ python -m app.main "D:\images\sample.png" `
 - `raw`：只使用过滤、规范化和去重后的标签，按置信度稳定排序。
 - `anime`：可选质量前缀，然后按 16 个标签组排序。
 - `pony`：可编辑前缀，默认空。
+- `krea2`：把检测标签重组为分段自然语言，并补充构图、光影、色彩、笔触、
+  材质、焦点层级和景深方向；不添加传统质量套话。
+- `cyberillustrious_semireal`：重排识别标签、消解相互矛盾的取景和
+  风格词，按人物/场景内容增加克制的半写实材质、光照和镜头描述。
 - `lora_caption`：不加质量词；保留人物、外貌、服装、动作、表情和场景相关
   标签；支持 trigger word 和固定标签删除。
 
-输出以英文逗号加空格分隔，不产生空标签、重复逗号或尾逗号。
+除 `krea2` 外的 profile 以英文逗号加空格分隔，不产生空标签、重复逗号或
+尾逗号。`krea2` 输出可直接编辑和导出的英文自然语言段落。
 
 ## 反向提示词原则
 
@@ -561,7 +644,7 @@ schema 2 新增：
 |---|---|
 | `resources/default_settings.json` | 程序默认配置 |
 | `config/settings.json` | 业务设置与最近目录 |
-| `resources/prompt_profiles.json` | raw/anime/pony/lora_caption |
+| `resources/prompt_profiles.json` | raw/anime/pony/krea2/CyberIllustrious/lora_caption |
 | `resources/negative_presets.json` | 反向预设与缺陷白名单 |
 | `resources/tag_categories.json` | 16 组轻量分类规则 |
 
@@ -729,13 +812,8 @@ packaging/
 ├── requirements-cpu.lock.txt
 └── requirements-cuda.lock.txt
 tests/
-docs/stage2-design.md
-docs/stage3-ui-design.md
-docs/stage4-batch-design.md
-docs/data-safety.md
-docs/real-model-validation.md
-docs/release-smoke-report.md
-docs/stage5-acceptance.md
+docs/privacy-and-data-safety.md
+docs/tagger-backends.md
 ```
 
 ## 常见错误
@@ -814,3 +892,8 @@ AnimeTagger Lite 项目自身采用 MIT License：
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 中记录的上游许可证；本项目
 MIT License 不会替代、覆盖或重新授权这些组件。WD ViT Tagger v3 模型不进入
 发行 ZIP，并继续独立遵守其上游许可证。
+
+
+### 可切换模型后端
+
+源码已增加默认 WD EVA02 2026 Canary、可选 PixAI v0.9 和旧 WD v3 后端。模型文件、可选依赖、配置兼容、GUI/CLI 使用与验证方法见 [多后端说明](docs/tagger-backends.md)。已有便携包不随源码自动更新。

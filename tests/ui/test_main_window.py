@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -49,7 +50,7 @@ def complete_item(window: MainWindow, path: Path):
 
 def test_gui_starts_without_model_and_shows_missing_files(window) -> None:
     assert window.isVisible()
-    assert "model.onnx" in window.model_status.status_text
+    assert "model.safetensors" in window.model_status.status_text
     assert not window.start_action.isEnabled()
 
 
@@ -260,6 +261,39 @@ def test_lora_profile_forces_negative_none_and_shows_trigger(
     assert window.trigger_edit.isVisible()
 
 
+def test_krea2_profile_is_available_and_generates_prose(
+    window,
+    tmp_path: Path,
+) -> None:
+    path = make_image(tmp_path / "one.png")
+    window.add_paths([path])
+    item = complete_item(window, path)
+    window.profile_combo.setCurrentIndex(
+        window.profile_combo.findData("krea2")
+    )
+
+    assert window.settings.profile == "krea2"
+    assert item.generated_positive_prompt.startswith("An anime illustration")
+    assert "\n\n" in item.generated_positive_prompt
+
+
+def test_cyberillustrious_profile_is_available_and_rebuilds_without_inference(
+    window,
+    tmp_path: Path,
+) -> None:
+    path = make_image(tmp_path / "one.png")
+    window.add_paths([path])
+    item = complete_item(window, path)
+    raw_before = item.raw_tags
+    window.profile_combo.setCurrentIndex(
+        window.profile_combo.findData("cyberillustrious_semireal")
+    )
+
+    assert window.settings.profile == "cyberillustrious_semireal"
+    assert "semi-realistic" in item.generated_positive_prompt
+    assert item.raw_tags == raw_before
+
+
 def test_copy_positive_writes_clipboard(window, tmp_path: Path) -> None:
     path = make_image(tmp_path / "one.png")
     window.add_paths([path])
@@ -318,6 +352,36 @@ def test_export_default_refuses_existing_file(
     monkeypatch.setattr(QMessageBox, "warning", lambda *_args: None)
     assert not window.export_current_to(output, ExportFormat.TXT)
     assert output.read_text(encoding="utf-8") == "keep"
+
+
+def test_start_queue_blocks_backend_mismatch(
+    window,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    path = make_image(tmp_path / "one.png")
+    window.add_paths([path])
+    window.controller._model_loaded = True
+    window.service._backend = "wd_v3"
+    window.settings = replace(window.settings, backend="pixai_v0_9")
+    warnings: list[tuple[str, str]] = []
+    monkeypatch.setattr(
+        QMessageBox,
+        "warning",
+        lambda _parent, title, text: warnings.append((title, text)),
+    )
+    started: list[object] = []
+    monkeypatch.setattr(
+        window.controller,
+        "start_queue",
+        lambda entries: started.append(entries) or True,
+    )
+
+    window._start_selected_queue()
+
+    assert started == []
+    assert warnings and warnings[0][0] == "后端与模型不一致"
+    assert "加载模型" in warnings[0][1]
 
 
 def test_window_state_is_saved_to_qsettings(window) -> None:

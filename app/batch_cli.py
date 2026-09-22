@@ -19,6 +19,7 @@ from app.batch.models import (
     ScanOptions,
 )
 from app.batch.service import BatchRunControl, BatchService
+from app.inference.backends import BACKENDS
 from app.config.settings import AppSettings, load_settings
 from app.errors import (
     AnimeTaggerError,
@@ -103,7 +104,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--profile",
-        choices=("raw", "anime", "pony", "lora_caption"),
+        choices=(
+            "raw",
+            "anime",
+            "pony",
+            "krea2",
+            "cyberillustrious_semireal",
+            "lora_caption",
+        ),
     )
     parser.add_argument(
         "--lora",
@@ -116,8 +124,9 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("first", "last"),
         default=None,
     )
-    parser.add_argument("--general-threshold", type=_probability)
-    parser.add_argument("--character-threshold", type=_probability)
+    parser.add_argument("--general-threshold", "--threshold-general", type=_probability)
+    parser.add_argument("--character-threshold", "--threshold-character", type=_probability)
+    parser.add_argument("--rating-threshold", "--threshold-rating", type=_probability)
     parser.add_argument("--max-tags", type=_positive_integer)
     parser.add_argument("--exclude-tag", action="append")
     parser.add_argument("--remove-tag", action="append")
@@ -179,17 +188,30 @@ def build_parser() -> argparse.ArgumentParser:
         help="显式确认修改已有 Caption 的危险策略",
     )
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--tagger-backend", choices=tuple(BACKENDS), help="本地模型后端（默认 wd_2026_canary）")
+    parser.add_argument("--top-k", type=_positive_integer, help="过滤后标签上限，与 --max-tags 取较小值")
     return parser
 
 
 def _settings_from_args(base: AppSettings, args: argparse.Namespace) -> AppSettings:
     overrides: dict[str, object] = {}
+    if args.tagger_backend is None and base.backend == "wd_2026_canary" and args.model_dir is not None and (args.model_dir / "model.onnx").is_file():
+        # Existing explicit local ONNX commands retain WD v3 semantics.
+        logging.getLogger(__name__).warning("旧 --model-dir ONNX 命令使用 wd_v3；新模型请显式指定 --tagger-backend。")
+        base = replace(base, backend="wd_v3")
+
+    if args.tagger_backend is not None:
+        base = base.select_backend(args.tagger_backend)
+    if args.model_dir is not None:
+        overrides["model_dir"] = str(args.model_dir)
     for field_name in (
+        "top_k",
         "profile",
         "trigger_word",
         "trigger_word_position",
         "general_threshold",
         "character_threshold",
+        "rating_threshold",
         "max_tags",
         "include_character_tags",
         "include_rating",
@@ -356,7 +378,7 @@ def run(
         raise ModelLoadError("实际批处理需要 --model-dir 或有效的保存模型目录。")
     device = Device(args.device or job.settings.device)
     try:
-        info = service_owner.load_model(model_dir, device)
+        info = service_owner.load_model(model_dir, device, backend=job.settings.backend)
         print(
             f"模型已加载：{info.files.directory.name}；"
             f"Provider={info.active_provider}；输入={info.input_size}"

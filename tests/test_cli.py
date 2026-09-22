@@ -17,7 +17,13 @@ from app.inference.wd14_engine import (
     ModelInfo,
     TagPrediction,
 )
-from app.main import main
+from app.main import build_parser, main
+
+
+@pytest.fixture(autouse=True)
+def isolated_cli_user_settings(monkeypatch, tmp_path):
+    # CLI defaults must not depend on the developer's saved GUI profile.
+    monkeypatch.setattr("app.config.settings.USER_SETTINGS_PATH", tmp_path / "user-settings.json")
 
 
 class SuccessfulEngine:
@@ -70,6 +76,38 @@ class FailingEngine:
 
     def release(self) -> None:
         pass
+
+
+def test_cli_parser_accepts_krea2_profile() -> None:
+    args = build_parser().parse_args(
+        ["image.png", "--model-dir", "models", "--profile", "krea2"]
+    )
+
+    assert args.profile == "krea2"
+
+
+def test_cli_can_select_cyberillustrious_and_its_negative_mode(
+    capsys: object,
+    tmp_path: Path,
+) -> None:
+    exit_code = main(
+        [
+            str(tmp_path / "image.png"),
+            "--model-dir",
+            str(tmp_path / "model"),
+            "--profile",
+            "cyberillustrious_semireal",
+            "--negative-mode",
+            "basic",
+        ],
+        engine_factory=SuccessfulEngine,  # type: ignore[arg-type]
+    )
+
+    captured = capsys.readouterr()  # type: ignore[attr-defined]
+    assert exit_code == 0
+    assert "Positive:\n1girl, alice, semi-realistic" in captured.out
+    assert "natural skin texture" in captured.out
+    assert "Negative:\nworst quality, low quality, blurry" in captured.out
 
 
 def test_cli_outputs_separate_categories_and_provider(
