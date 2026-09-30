@@ -8,6 +8,8 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
+    QCheckBox,
     QPlainTextEdit,
     QPushButton,
     QVBoxLayout,
@@ -19,6 +21,8 @@ class PromptPanel(QWidget):
     prompt_edited = Signal(str, str)
     regenerate_requested = Signal(str)
     copy_requested = Signal(str)
+    injection_requested = Signal(str, bool)
+    undo_injection_requested = Signal()
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -67,12 +71,38 @@ class PromptPanel(QWidget):
 
         layout = QVBoxLayout(group)
         layout.addWidget(editor)
+        if kind == "positive":
+            self.injection_edit = QLineEdit()
+            self.injection_edit.setObjectName("positiveInjectionEdit")
+            self.injection_edit.setPlaceholderText("输入任意标签，逗号分隔（无需模型支持）")
+            self.inject_button = QPushButton("注入正向")
+            self.inject_button.setObjectName("injectPositiveButton")
+            self.inject_button.setToolTip("加入当前正向 Prompt；不重新运行模型")
+            self.clean_appearance = QCheckBox("清理已识别的发型 / 发色 / 面部特征")
+            self.clean_appearance.setChecked(True)
+            self.clean_appearance.setToolTip("停用模型识别的发型、发色、瞳色、眉毛、睫毛等外观标签；保留表情、视线、服装、背景和手动标签。")
+            self.undo_injection = QPushButton("撤销注入")
+            self.undo_injection.setEnabled(False)
+            self.undo_injection.clicked.connect(self.undo_injection_requested)
+            self.inject_button.clicked.connect(self._request_injection)
+            self.injection_edit.returnPressed.connect(self._request_injection)
+            row = QHBoxLayout()
+            row.addWidget(self.injection_edit, 1)
+            row.addWidget(self.inject_button)
+            layout.addLayout(row)
+            options = QHBoxLayout()
+            options.addWidget(self.clean_appearance, 1)
+            options.addWidget(self.undo_injection)
+            layout.addLayout(options)
         layout.addWidget(notice)
         layout.addLayout(actions)
         self._editors[kind] = editor
         self._counts[kind] = count
         self._notices[kind] = notice
         return group
+
+    def _request_injection(self) -> None:
+        self.injection_requested.emit(self.injection_edit.text(), self.clean_appearance.isChecked())
 
     def set_prompts(
         self,

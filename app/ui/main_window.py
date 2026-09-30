@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import fields, replace
 import logging
 from pathlib import Path
 from typing import Iterable
@@ -56,6 +56,7 @@ from app.inference.model_loader import TagCategory
 from app.inference.providers import Device
 from app.inference.wd14_engine import ModelInfo
 from app.prompts.models import PromptGroup
+from app.prompts.injection import inject_text, parse_injections, prepare_tags, token_key
 from app.services.clipboard_service import ClipboardService
 from app.services.tagging_service import (
     AnalysisResult,
@@ -142,6 +143,7 @@ class MainWindow(QMainWindow):
         self.theme_colors = ThemeColors.load(self.ui_settings)
         apply_theme(self.theme_colors)
         self._tags_updating = False
+        self._injection_undo = None
         self._quick_updating = False
         self._close_pending = False
         self._close_retry_scheduled = False
@@ -537,6 +539,8 @@ class MainWindow(QMainWindow):
         self.restore_tags_button.clicked.connect(self._restore_raw_tags)
 
         self.prompt_panel.prompt_edited.connect(self._on_prompt_edited)
+        self.prompt_panel.injection_requested.connect(self._inject_positive_tags)
+        self.prompt_panel.undo_injection_requested.connect(self._undo_positive_injection)
         self.prompt_panel.regenerate_requested.connect(
             self._regenerate_prompt
         )
@@ -1020,6 +1024,60 @@ class MainWindow(QMainWindow):
         ]
         self.tag_model.remove_source_rows(source_rows)
 
+    @Slot(str, bool)
+    def _inject_positive_tags(self, text: str, clean_appearance: bool) -> None:
+        item = self.project.get(self.project.current_id)
+        if item is None or item.prompt_result is None or self.controller.is_busy:
+            return
+        try:
+            names = parse_injections(text)
+            if not names:
+                self.statusBar().showMessage("请输入要注入的标签。", 3000)
+                return
+            tags, removed = prepare_tags(item.working_tags, names, clean_appearance=clean_appearance)
+            # Build first so a validation failure leaves image state untouched.
+            prompts = self.service.rebuild_prompts(tags, self.settings)
+        except (ValueError, AnimeTaggerError) as exc:
+            QMessageBox.warning(self, "无法注入标签", str(exc))
+            return
+        before = replace(item, working_tags=list(item.working_tags))
+        recognized = {token_key(tag.output_name) for tag in before.prompt_result.positive_tags if tag.source.value == "model"}
+        item.positive_injections = tuple({token_key(name): name for name in (*item.positive_injections, *names)}.values())
+        item.apply_prompt_result(prompts, preserve_manual_prompts=True)
+        if before.positive_prompt_edited:
+            item.edit_prompt("positive", inject_text(before.final_positive_prompt, names, removed & recognized))
+        item.edit_prompt("negative", before.final_negative_prompt)
+        item.is_dirty = True
+        self._injection_undo = (item.id, before, item.edit_revision)
+        self._tags_updating = True
+        try:
+            self.tag_model.set_tags(item.working_tags)
+        finally:
+            self._tags_updating = False
+        self._refresh_prompt_panel(item)
+        self._update_action_states()
+        self.prompt_panel.injection_edit.clear()
+        self.statusBar().showMessage(f"已注入 {len(names)} 个标签，从正向移除 {len(removed & recognized)} 个外观标签。", 6000)
+
+    @Slot()
+    def _undo_positive_injection(self) -> None:
+        item = self.project.get(self.project.current_id)
+        record = self._injection_undo
+        if item is None or record is None or self.controller.is_busy:
+            return
+        image_id, before, revision = record
+        if item.id != image_id or item.edit_revision != revision:
+            return
+        for field in fields(ImageItem):
+            setattr(item, field.name, getattr(before, field.name))
+        item.edit_revision = revision
+        item.working_tags = list(before.working_tags)
+        item.touch()
+        self._injection_undo = None
+        self._show_current(item)
+        self._update_action_states()
+        self.statusBar().showMessage("已恢复注入前的标签和提示词。", 4000)
+
     @Slot()
     def _restore_raw_tags(self) -> None:
         item = self.project.get(self.project.current_id)
@@ -1096,6 +1154,7 @@ class MainWindow(QMainWindow):
                 else 0
             ),
         )
+        self._update_action_states()
 
     @Slot(str)
     def _copy_prompt(self, kind: str) -> None:
@@ -1403,6 +1462,12 @@ class MainWindow(QMainWindow):
         self.delete_tag_button.setEnabled(current is not None and not busy)
         self.tag_table.setEnabled(not busy)
         self.prompt_panel.setEnabled(not busy)
+        self.prompt_panel.inject_button.setEnabled(not busy and current is not None and current.prompt_result is not None)
+        record = self._injection_undo
+        self.prompt_panel.undo_injection.setEnabled(
+            not busy and current is not None and record is not None
+            and current.id == record[0] and current.edit_revision == record[2]
+        )
         self.profile_combo.setEnabled(not busy)
         self.general_spin.setEnabled(not busy)
         self.character_spin.setEnabled(not busy)

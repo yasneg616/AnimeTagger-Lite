@@ -54,6 +54,91 @@ def test_gui_starts_without_model_and_shows_missing_files(window) -> None:
     assert not window.start_action.isEnabled()
 
 
+def test_injection_updates_prompt_preserves_raw_and_undo(window, tmp_path):
+    path = make_image(tmp_path / "inject.png")
+    window.add_paths([path])
+    item = complete_item(window, path)
+    raw = item.raw_tags
+    original = item.final_positive_prompt
+    window.prompt_panel.injection_edit.setText("new_character_(game)")
+    window.prompt_panel.inject_button.click()
+    assert "new_character_(game)" in item.final_positive_prompt
+    assert "long_hair" not in item.final_positive_prompt
+    assert item.raw_tags == raw
+    assert any(tag.name == "long_hair" and not tag.enabled for tag in item.working_tags)
+    assert window.prompt_panel.undo_injection.isEnabled()
+    window.prompt_panel.undo_injection.click()
+    assert item.final_positive_prompt == original
+    assert item.positive_injections == ()
+    assert all(tag.enabled for tag in item.working_tags)
+
+
+def test_injection_preserves_manual_text_and_negative_and_survives_regeneration(window, tmp_path, monkeypatch):
+    window.add_paths([make_image(tmp_path / "manual.png")])
+    item = complete_item(window, tmp_path / "manual.png")
+    window.prompt_panel._editors["positive"].setPlainText("1girl, (long_hair:1.2), custom_lighting")
+    window.prompt_panel._editors["negative"].setPlainText("custom_negative")
+    window._inject_positive_tags("unknown_character", True)
+    assert item.final_positive_prompt == "1girl, custom_lighting, unknown_character"
+    assert item.final_negative_prompt == "custom_negative"
+    window.general_spin.setValue(.5)
+    window.general_spin.editingFinished.emit()
+    assert not window.prompt_panel.undo_injection.isEnabled()
+    monkeypatch.setattr(QMessageBox, "question", lambda *args: QMessageBox.StandardButton.Yes)
+    window._regenerate_prompt("positive")
+    assert "unknown_character" in item.final_positive_prompt
+    assert "long_hair" not in item.final_positive_prompt
+    assert item.final_negative_prompt == "custom_negative"
+
+
+def test_injection_can_keep_appearance_and_does_not_leak_between_images(window, tmp_path):
+    path = make_image(tmp_path / "first.png")
+    window.add_paths([path])
+    first = complete_item(window, path)
+    window._inject_positive_tags("new_tag", False)
+    assert "long_hair" in first.final_positive_prompt
+    second_path = make_image(tmp_path / "second.png")
+    window.add_paths([second_path])
+    window.image_list.select_image_id(window.project.items[-1].id)
+    second = complete_item(window, second_path)
+    assert "new_tag" not in second.final_positive_prompt
+    assert not window.prompt_panel.undo_injection.isEnabled()
+
+
+def test_injection_empty_input_is_noop_and_manual_color_is_preserved(window, tmp_path, monkeypatch):
+    path = make_image(tmp_path / "input.png")
+    window.add_paths([path])
+    item = complete_item(window, path)
+    fixed_time = item.updated_at
+    monkeypatch.setattr("app.state.image_item._now", lambda: fixed_time)
+    original = item.final_positive_prompt
+    window._inject_positive_tags(" , ， ", True)
+    assert item.final_positive_prompt == original
+    assert all(tag.enabled for tag in item.working_tags)
+    window.prompt_panel._editors["positive"].setPlainText("long_hair, orange_eyes, handmade_style")
+    window._inject_positive_tags("new_character", True)
+    assert item.final_positive_prompt == "orange_eyes, handmade_style, new_character"
+    window.prompt_panel._editors["positive"].setPlainText("more_manual_changes")
+    assert not window.prompt_panel.undo_injection.isEnabled()
+    window._undo_positive_injection()
+    assert item.final_positive_prompt == "more_manual_changes"
+
+
+def test_injection_export_includes_final_prompt_and_preserves_raw(window, tmp_path):
+    import json
+    path = make_image(tmp_path / "export.png")
+    window.add_paths([path])
+    item = complete_item(window, path)
+    window._inject_positive_tags("unknown_character", True)
+    output = tmp_path / "injected.json"
+    assert window.export_current_to(output, ExportFormat.JSON)
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert "unknown_character" in payload["final_positive_prompt"]
+    assert "long_hair" not in payload["final_positive_prompt"]
+    assert any(tag["name"] == "long_hair" for tag in payload["raw_tags"])
+    assert any(tag["name"] == "unknown_character" for tag in payload["positive_tags"])
+
+
 def test_about_dialog_uses_shared_version(
     window,
     monkeypatch: pytest.MonkeyPatch,

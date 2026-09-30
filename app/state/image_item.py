@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from app.inference.wd14_engine import InferenceResult
 from app.prompts.models import PromptBuildResult, TagResult
+from app.prompts.injection import overlay_injections
 
 
 def _now() -> datetime:
@@ -44,6 +45,8 @@ class ImageItem:
     positive_prompt_edited: bool = False
     negative_prompt_edited: bool = False
     prompt_stale: bool = False
+    positive_injections: tuple[str, ...] = ()
+    edit_revision: int = 0
     is_dirty: bool = False
     created_at: datetime = field(default_factory=_now)
     updated_at: datetime = field(default_factory=_now)
@@ -61,6 +64,7 @@ class ImageItem:
         return self.positive_prompt_edited or self.negative_prompt_edited
 
     def touch(self) -> None:
+        self.edit_revision += 1
         self.updated_at = _now()
 
     def set_status(
@@ -82,6 +86,7 @@ class ImageItem:
         """Replace the working copy after an explicit re-analysis."""
 
         self.inference_result = inference
+        self.positive_injections = ()
         self.raw_tags = tuple(raw_tags)
         self.working_tags = list(prompts.raw_tags)
         self.prompt_result = prompts
@@ -111,6 +116,7 @@ class ImageItem:
         *,
         preserve_manual_prompts: bool = True,
     ) -> None:
+        prompts = overlay_injections(prompts, self.positive_injections)
         old_generated_positive = self.generated_positive_prompt
         old_generated_negative = self.generated_negative_prompt
         self.prompt_result = prompts
@@ -161,6 +167,7 @@ class ImageItem:
         self.touch()
 
     def restore_working_tags(self) -> None:
+        self.positive_injections = ()
         self.working_tags = list(self.raw_tags)
         self.is_dirty = self.prompt_was_edited
         self.touch()

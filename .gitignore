@@ -38,3 +38,4 @@ release/_pyinstaller/
 # Multi-backend portable rebuild outputs.
 /release/backend-update/
 /release/modern-ui/
+/release/prompt-injection/
