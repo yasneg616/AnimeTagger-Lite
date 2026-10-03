@@ -32,6 +32,7 @@ from app.prompts.random_prompt import (
     RandomPromptResult,
 )
 from app.runtime_paths import APPLICATION_ROOT
+from app.ui.tag_visual_widgets import TagListView, TagVisualProvider
 
 # (bucket, default count) — UI label comes from BUCKET_LABELS.
 _BUCKET_DEFAULTS: tuple[tuple[RandomBucket, int], ...] = (
@@ -56,6 +57,7 @@ class RandomPromptPanel(QWidget):
         *,
         model_root: Path | None = None,
         generator: RandomPromptGenerator | None = None,
+        visual_provider: TagVisualProvider | None = None,
     ) -> None:
         super().__init__(parent)
         self._settings = settings
@@ -63,6 +65,7 @@ class RandomPromptPanel(QWidget):
         self._model_root = Path(model_root or APPLICATION_ROOT)
         self._generator = generator or RandomPromptGenerator(self._model_root)
         self._last_result: RandomPromptResult | None = None
+        self.visual_provider = visual_provider if visual_provider is not None else TagVisualProvider(self)
         self._bucket_spins: dict[RandomBucket, QSpinBox] = {}
         self._build_ui()
         self._sync_backend_default(settings.backend)
@@ -144,10 +147,7 @@ class RandomPromptPanel(QWidget):
         self.prompt_edit.setPlaceholderText("点击「随机生成 Prompt」后在此预览")
         self.prompt_edit.setMinimumHeight(100)
 
-        self.tag_list = QPlainTextEdit()
-        self.tag_list.setObjectName("randomTagList")
-        self.tag_list.setPlaceholderText("本次抽中的标签及类别")
-        self.tag_list.setReadOnly(True)
+        self.tag_list = TagListView(self.visual_provider)
         self.tag_list.setMinimumHeight(100)
 
         layout = QVBoxLayout(self)
@@ -221,11 +221,7 @@ class RandomPromptPanel(QWidget):
 
         self._last_result = result
         self.prompt_edit.setPlainText(result.prompt)
-        lines = [
-            f"[{tag.category.value}] {tag.output_name}"
-            for tag in result.tags
-        ]
-        self.tag_list.setPlainText("\n".join(lines) if lines else "（未抽到标签）")
+        self.tag_list.set_tags(result.tags)
         pools = result.pools
         buckets = result.buckets
         pool_bits = " · ".join(

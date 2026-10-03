@@ -1,0 +1,1043 @@
+{
+  "schema_version": 1,
+  "source_files": [
+    {
+      "path": "models/pixai-tagger-v0.9/selected_tags.csv",
+      "sha256": "76b5dd39354a7a4d9baefb94d63b44a09a4934ee15303b7eb86c38f2128eb68a"
+    },
+    {
+      "path": "models/wd-eva02-tagger-2026-canary/selected_tags.csv",
+      "sha256": "3f78c28ee0d50779edb320733f76aeaf4184694cbd09c631deef6889865f9178"
+    },
+    {
+      "path": "models/wd-vit-tagger-v3/selected_tags.csv",
+      "sha256": "298633d94d0031d2081c0893f29c82eab7f0df00b08483ba8f29d1e979441217"
+    }
+  ],
+  "preset_files": [
+    {
+      "path": "resources/prompt_profiles.json",
+      "sha256": "49be05aafa90bd910186c7fcde6530c6d412356ac359592b65a62b3d7a615593"
+    },
+    {
+      "path": "resources/negative_presets.json",
+      "sha256": "99ce1b8cf8646b03aca7200b28285ff7474d5069905fc0dcd584ad9983da0a33"
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "resources/tag_visuals/terms.tsv",
+      "sha256": "7fc705aa058dc42da3c24aca3f75fc2cbf6e064c5b9e54b2d7a409827a10176b"
+    },
+    {
+      "path": "resources/tag_visuals/long_tail.tsv",
+      "sha256": "86ae50ab0453b46e7c2c627071c71595c14a49665cd1c11978d1c21df9eec74c"
+    },
+    {
+      "path": "resources/tag_visuals/refinements.json",
+      "sha256": "d3f916e816e66db0f4244ac10bfbd708bb0e23df066f1708b408ef6c494bae2d"
+    }
+  ],
+  "terms": 1427,
+  "primitives": 278,
+  "model_general_tags": 12030,
+  "model_general_statuses": {
+    "pending": 8675,
+    "direct": 1165,
+    "schematic": 121,
+    "category_only": 76,
+    "composed": 1993
+  },
+  "all_statuses": {
+    "excluded_character": 5013,
+    "category_only": 690,
+    "pending": 8679,
+    "direct": 1200,
+    "schematic": 148,
+    "composed": 1993
+  },
+  "non_character_statuses": {
+    "category_only": 690,
+    "pending": 8679,
+    "direct": 1200,
+    "schematic": 148,
+    "composed": 1993
+  },
+  "top_1000": {
+    "semantic": 951,
+    "total": 1000,
+    "percent": 95.1,
+    "gaps": [
+      {
+        "name": "cleavage",
+        "category": "general",
+        "count": 1302518,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cleavage",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "胸前衣物间露出的沟线",
+        "explanation_zh": "图标仅作胸前部位定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "nipples",
+        "category": "general",
+        "count": 1036012,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:nipples",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "乳头",
+        "explanation_zh": "图标仅作胸部区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "penis",
+        "category": "general",
+        "count": 524570,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:penis",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "男性生殖器",
+        "explanation_zh": "图标仅作身体区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "pussy",
+        "category": "general",
+        "count": 465172,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:pussy",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "女性外生殖器",
+        "explanation_zh": "图标仅作身体区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "sex",
+        "category": "general",
+        "count": 341941,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:sex",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "性行为",
+        "explanation_zh": "仅显示关系类别图标，不绘制具体行为。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "cum",
+        "category": "general",
+        "count": 308357,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cum",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "精液",
+        "explanation_zh": "仅显示液体类别图标。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "drop"
+      },
+      {
+        "name": "vaginal",
+        "category": "general",
+        "count": 251010,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:vaginal",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "阴道性交",
+        "explanation_zh": "阴道性交。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "pokemon_(creature)",
+        "category": "general",
+        "count": 212898,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:pokemon (creature)",
+        "group": "object",
+        "status": "category_only",
+        "label_zh": "宝可梦生物",
+        "explanation_zh": "属于生物类名称，需要具体种类资料；不推断特定形象。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "cat"
+      },
+      {
+        "name": "covered_nipples",
+        "category": "general",
+        "count": 191205,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:covered nipples",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "乳头被遮住",
+        "explanation_zh": "乳头被遮住。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "pubic_hair",
+        "category": "general",
+        "count": 172976,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:pubic hair",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "阴部毛发",
+        "explanation_zh": "阴部毛发；在躯干下方的对应区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "https://safebooru.donmai.us/wiki_pages/pubic_hair",
+        "visual_method": "body"
+      },
+      {
+        "name": "anus",
+        "category": "general",
+        "count": 151309,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:anus",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "肛门",
+        "explanation_zh": "图标仅作身体区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "sideboob",
+        "category": "general",
+        "count": 146809,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:sideboob",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "从侧面露出的胸部",
+        "explanation_zh": "从侧面露出的胸部。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "pussy_juice",
+        "category": "general",
+        "count": 140318,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:pussy juice",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "女性分泌液",
+        "explanation_zh": "女性分泌液。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "drop"
+      },
+      {
+        "name": "erection",
+        "category": "general",
+        "count": 132357,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:erection",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "勃起状态",
+        "explanation_zh": "图标仅作身体区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "cum_in_pussy",
+        "category": "general",
+        "count": 128658,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cum in pussy",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "阴道内的精液",
+        "explanation_zh": "仅显示身体区域类别图标。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "testicles",
+        "category": "general",
+        "count": 123159,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:testicles",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "睾丸",
+        "explanation_zh": "图标仅作身体区域定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "underboob",
+        "category": "general",
+        "count": 120030,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:underboob",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "胸部下缘露出",
+        "explanation_zh": "胸部下缘露出。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "groping",
+        "category": "general",
+        "count": 119959,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:groping",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "触摸私密部位",
+        "explanation_zh": "触摸私密部位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "people"
+      },
+      {
+        "name": "cameltoe",
+        "category": "general",
+        "count": 118418,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cameltoe",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "衣物显出裆部轮廓",
+        "explanation_zh": "贴身衣物在裆部显出轮廓；图中圈出衣物表面的对应位置。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "https://safebooru.donmai.us/wiki_pages/cameltoe",
+        "visual_method": "body"
+      },
+      {
+        "name": "female_pubic_hair",
+        "category": "general",
+        "count": 117592,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:female pubic hair",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "女性阴部毛发",
+        "explanation_zh": "女性阴部毛发；下方局部定位，并用女性符号区分。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "https://safebooru.donmai.us/wiki_pages/female_pubic_hair",
+        "visual_method": "body"
+      },
+      {
+        "name": "cum_on_body",
+        "category": "general",
+        "count": 116184,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cum on body",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "身体上的精液",
+        "explanation_zh": "身体上的精液。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "ass_visible_through_thighs",
+        "category": "general",
+        "count": 110486,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:ass visible through thighs",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "从大腿间可见臀部",
+        "explanation_zh": "从大腿之间可以看到臀部。下方圈选位置用于定位，具体姿势以文字含义为准。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "https://safebooru.donmai.us/wiki_pages/ass_visible_through_thighs",
+        "visual_method": "body"
+      },
+      {
+        "name": "oral",
+        "category": "general",
+        "count": 105187,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:oral",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "口部性行为",
+        "explanation_zh": "口部性行为。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "military",
+        "category": "general",
+        "count": 104385,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:military",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "军事题材",
+        "explanation_zh": "军事题材。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "armor"
+      },
+      {
+        "name": "sex_from_behind",
+        "category": "general",
+        "count": 86581,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:sex from behind",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "从后方的性行为",
+        "explanation_zh": "从后方的性行为。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "grabbing_another's_breast",
+        "category": "general",
+        "count": 86127,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:grabbing another's breast",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "抓握另一个人的胸部",
+        "explanation_zh": "抓握另一个人的胸部。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "people"
+      },
+      {
+        "name": "bara",
+        "category": "general",
+        "count": 86109,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:bara",
+        "group": "object",
+        "status": "category_only",
+        "label_zh": "壮硕男性题材",
+        "explanation_zh": "图标仅表示人物体型类别。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "fellatio",
+        "category": "general",
+        "count": 85688,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:fellatio",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "口交",
+        "explanation_zh": "口交。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "girl_on_top",
+        "category": "general",
+        "count": 81281,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:girl on top",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "女性处在上方",
+        "explanation_zh": "女性处在上方。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "people"
+      },
+      {
+        "name": "bdsm",
+        "category": "general",
+        "count": 81041,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:bdsm",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "束缚等亲密情境",
+        "explanation_zh": "束缚等亲密情境。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "rope"
+      },
+      {
+        "name": "breasts_out",
+        "category": "general",
+        "count": 80328,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:breasts out",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "胸部露出衣物",
+        "explanation_zh": "胸部露出衣物。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "logo",
+        "category": "general",
+        "count": 78356,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3",
+          "negative_presets.json",
+          "negative_presets.json"
+        ],
+        "key": "general:logo",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "标志图案",
+        "explanation_zh": "图标仅表示标志类别，不推断具体商标。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "badge"
+      },
+      {
+        "name": "alternate_breast_size_(larger)",
+        "category": "general",
+        "count": 76740,
+        "sources": [
+          "wd-eva02-tagger-2026-canary"
+        ],
+        "key": "general:alternate breast size (larger)",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "相对通常设定更大的胸部",
+        "explanation_zh": "需要与角色通常设定比较；图标仅作部位定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "pantyshot",
+        "category": "general",
+        "count": 75415,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:pantyshot",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "从视角中可见内裤",
+        "explanation_zh": "从视角中可见内裤。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "panties"
+      },
+      {
+        "name": "group_sex",
+        "category": "general",
+        "count": 73331,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:group sex",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "多人性行为",
+        "explanation_zh": "多人性行为。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "people"
+      },
+      {
+        "name": "trap",
+        "category": "general",
+        "count": 71686,
+        "sources": [
+          "wd-eva02-tagger-2026-canary"
+        ],
+        "key": "general:trap",
+        "group": "object",
+        "status": "category_only",
+        "label_zh": "女性化外观的男性人物的旧称标签",
+        "explanation_zh": "含义依赖标签语境；图标仅表示人物类别。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "person"
+      },
+      {
+        "name": "areola_slip",
+        "category": "general",
+        "count": 69629,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:areola slip",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "乳晕从衣物边缘露出",
+        "explanation_zh": "乳晕从衣物边缘露出。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "sex_toy",
+        "category": "general",
+        "count": 67379,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:sex toy",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "成人用品",
+        "explanation_zh": "需要具体物品类型，图标仅表示类别。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "badge"
+      },
+      {
+        "name": "revealing_clothes",
+        "category": "general",
+        "count": 66606,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:revealing clothes",
+        "group": "clothing",
+        "status": "category_only",
+        "label_zh": "覆盖较少的衣物",
+        "explanation_zh": "图示仅表示服装类别；具体覆盖范围需结合画面。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "leotard"
+      },
+      {
+        "name": "anal",
+        "category": "general",
+        "count": 65392,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:anal",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "肛交",
+        "explanation_zh": "肛交。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "male_pubic_hair",
+        "category": "general",
+        "count": 63435,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:male pubic hair",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "男性阴部毛发",
+        "explanation_zh": "男性阴部毛发；下方局部定位，并用男性符号区分。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "https://safebooru.donmai.us/wiki_pages/male_pubic_hair",
+        "visual_method": "body"
+      },
+      {
+        "name": "breast_press",
+        "category": "general",
+        "count": 63065,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:breast press",
+        "group": "body",
+        "status": "category_only",
+        "label_zh": "胸部受到挤压",
+        "explanation_zh": "涉及胸部受压的状态；图标仅作部位定位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      },
+      {
+        "name": "ejaculation",
+        "category": "general",
+        "count": 62636,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:ejaculation",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "射精状态",
+        "explanation_zh": "射精状态。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "drop"
+      },
+      {
+        "name": "facial",
+        "category": "general",
+        "count": 56237,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:facial",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "射在面部的情境",
+        "explanation_zh": "该词在此词表的含义依赖成人标签语境；不按一般形容词翻译。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "face"
+      },
+      {
+        "name": "covering_privates",
+        "category": "general",
+        "count": 55274,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:covering privates",
+        "group": "pose",
+        "status": "category_only",
+        "label_zh": "遮挡私密部位",
+        "explanation_zh": "图示仅表示动作类别。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "pose"
+      },
+      {
+        "name": "science_fiction",
+        "category": "general",
+        "count": 54963,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:science fiction",
+        "group": "style",
+        "status": "category_only",
+        "label_zh": "科幻题材",
+        "explanation_zh": "图标仅表示科幻类别，不推断具体设定。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "robot"
+      },
+      {
+        "name": "cowgirl_position",
+        "category": "general",
+        "count": 52582,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cowgirl position",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "女性在上方的体位",
+        "explanation_zh": "女性在上方的体位。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "paizuri",
+        "category": "general",
+        "count": 52084,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:paizuri",
+        "group": "interaction",
+        "status": "category_only",
+        "label_zh": "乳交",
+        "explanation_zh": "乳交。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "couple"
+      },
+      {
+        "name": "cum_on_breasts",
+        "category": "general",
+        "count": 49082,
+        "sources": [
+          "pixai-tagger-v0.9",
+          "wd-eva02-tagger-2026-canary",
+          "wd-vit-tagger-v3"
+        ],
+        "key": "general:cum on breasts",
+        "group": "symbol",
+        "status": "category_only",
+        "label_zh": "胸部上的精液",
+        "explanation_zh": "胸部上的精液。",
+        "reason": "图示只作类别提示，具体含义采用文字说明。",
+        "reference": "project-curated definition",
+        "visual_method": "body"
+      }
+    ]
+  },
+  "by_group": {
+    "body": {
+      "direct": 72,
+      "pending": 372,
+      "category_only": 27,
+      "composed": 51,
+      "schematic": 7
+    },
+    "clothing": {
+      "pending": 1446,
+      "composed": 1403,
+      "direct": 374,
+      "schematic": 1,
+      "category_only": 1
+    },
+    "composition": {
+      "direct": 41,
+      "pending": 63,
+      "composed": 32,
+      "schematic": 3
+    },
+    "copyright": {
+      "category_only": 611
+    },
+    "eyes": {
+      "pending": 100,
+      "composed": 32,
+      "direct": 40,
+      "schematic": 1
+    },
+    "face": {
+      "schematic": 19,
+      "pending": 189,
+      "direct": 73
+    },
+    "hair": {
+      "direct": 89,
+      "pending": 164,
+      "schematic": 2,
+      "composed": 29
+    },
+    "interaction": {
+      "pending": 114,
+      "schematic": 11,
+      "category_only": 26,
+      "direct": 17,
+      "composed": 16
+    },
+    "lighting": {
+      "direct": 13,
+      "pending": 29
+    },
+    "object": {
+      "schematic": 55,
+      "pending": 628,
+      "direct": 217,
+      "composed": 201,
+      "category_only": 7
+    },
+    "other": {
+      "excluded_character": 5013,
+      "pending": 4970
+    },
+    "pose": {
+      "pending": 237,
+      "direct": 109,
+      "composed": 182,
+      "category_only": 1
+    },
+    "rating": {
+      "schematic": 4
+    },
+    "scene": {
+      "pending": 147,
+      "composed": 47,
+      "direct": 78
+    },
+    "style": {
+      "schematic": 10,
+      "direct": 21,
+      "pending": 19,
+      "category_only": 3
+    },
+    "symbol": {
+      "direct": 56,
+      "pending": 201,
+      "schematic": 35,
+      "category_only": 14
+    }
+  }
+}

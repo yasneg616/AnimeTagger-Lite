@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 from typing import Iterable
 
-from PySide6.QtCore import QByteArray, QSettings, QSignalBlocker, QTimer, Qt, Slot
+from PySide6.QtCore import QByteArray, QSettings, QSignalBlocker, QSize, QTimer, Qt, Slot
 from PySide6.QtGui import QAction, QCloseEvent, QImage
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -74,6 +74,7 @@ from app.ui.prompt_panel import PromptPanel
 from app.ui.settings_dialog import SettingsDialog
 from app.ui.tag_filter_proxy import TagFilterProxyModel
 from app.ui.tag_table_model import TagColumn, TagTableModel
+from app.ui.tag_visual_widgets import TagVisualDelegate, TagVisualProvider
 from app.ui.workers.inference_worker import InferenceController, QueueEntry
 from app.ui.workers.thumbnail_worker import ImageDecodeCoordinator
 from app.runtime_paths import (
@@ -142,6 +143,8 @@ class MainWindow(QMainWindow):
             self.ui_settings = QSettings()
         self.theme_colors = ThemeColors.load(self.ui_settings)
         apply_theme(self.theme_colors)
+        self.tag_visual_provider = TagVisualProvider(self, surface=self.theme_colors.surface,
+            enabled=self.ui_settings.value("tag_visuals/enabled", True, type=bool))
         self._tags_updating = False
         self._injection_undo = None
         self._quick_updating = False
@@ -204,6 +207,7 @@ class MainWindow(QMainWindow):
         if dialog.exec() == PaletteDialog.DialogCode.Accepted:
             self.theme_colors = dialog.colors
             self.theme_colors.save(self.ui_settings)
+        self.tag_visual_provider.set_surface(self.theme_colors.surface)
 
     @staticmethod
     def _action_button(action, *, primary=False):
@@ -292,7 +296,7 @@ class MainWindow(QMainWindow):
         self.preview = ImagePreviewWidget()
 
         self.model_status = ModelStatusWidget()
-        self.tag_model = TagTableModel()
+        self.tag_model = TagTableModel(visual_provider=self.tag_visual_provider)
         self.tag_proxy = TagFilterProxyModel(self)
         self.tag_proxy.setSourceModel(self.tag_model)
         self.tag_proxy.set_minimum_confidence(
@@ -335,6 +339,9 @@ class MainWindow(QMainWindow):
         self.tag_table.setAlternatingRowColors(True)
         self.tag_table.setWordWrap(False)
         self.tag_table.setShowGrid(False)
+        self.tag_table.setIconSize(QSize(24, 24))
+        self.tag_visual_delegate = TagVisualDelegate(self.tag_table, self.tag_visual_provider)
+        self.tag_table.setItemDelegateForColumn(TagColumn.TAG, self.tag_visual_delegate)
         self.tag_table.verticalHeader().hide()
         self.tag_table.verticalHeader().setDefaultSectionSize(34)
         self.tag_table.horizontalHeader().setSectionResizeMode(TagColumn.TAG, QHeaderView.ResizeMode.Stretch)
@@ -369,6 +376,11 @@ class MainWindow(QMainWindow):
         filter_layout.setContentsMargins(0, 0, 0, 0)
         filter_layout.addWidget(self.group_filter)
         filter_layout.addWidget(self.show_low_check)
+        self.tag_visuals_check = QCheckBox("图示辅助")
+        self.tag_visuals_check.setObjectName("tagVisualsCheck")
+        self.tag_visuals_check.setChecked(self.tag_visual_provider.enabled)
+        self.tag_visuals_check.setToolTip("标签旁显示图示；悬停查看放大示意和中文释义。也应用于随机 Prompt 标签。")
+        filter_layout.addWidget(self.tag_visuals_check)
         detail_check = QCheckBox("详细列")
         detail_check.toggled.connect(lambda checked: [self.tag_table.setColumnHidden(c, not checked) for c in (TagColumn.GROUP, TagColumn.SOURCE)])
         filter_layout.addWidget(detail_check)
@@ -421,7 +433,7 @@ class MainWindow(QMainWindow):
             self.settings,
             self,
         )
-        self.random_prompt_panel = RandomPromptPanel(self.settings, self)
+        self.random_prompt_panel = RandomPromptPanel(self.settings, self, visual_provider=self.tag_visual_provider)
         self.pages = QTabWidget()
         self.pages.setObjectName("mainPages")
         self.pages.addTab(self.main_splitter, "单图")
@@ -533,6 +545,7 @@ class MainWindow(QMainWindow):
             )
         )
         self.show_low_check.toggled.connect(self._set_show_low_confidence)
+        self.tag_visuals_check.toggled.connect(self._set_tag_visuals_enabled)
         self.tag_model.tags_changed.connect(self._on_tags_changed)
         self.add_tag_button.clicked.connect(self._add_manual_tag)
         self.delete_tag_button.clicked.connect(self._delete_selected_tags)
@@ -1499,6 +1512,11 @@ class MainWindow(QMainWindow):
             self.pages.setCurrentIndex(int(page_index))
         except (TypeError, ValueError):
             self.pages.setCurrentIndex(0)
+
+    def _set_tag_visuals_enabled(self, enabled: bool) -> None:
+        self.tag_visual_provider.set_enabled(enabled)
+        self.ui_settings.setValue("tag_visuals/enabled", enabled)
+        self.ui_settings.sync()
 
     def _save_ui_state(self) -> None:
         self.ui_settings.setValue("main/layout_version", "2")

@@ -17,6 +17,13 @@ logs/
 
 # Model weights are user-supplied and must never be committed.
 *.onnx
+*.onnx.data
+*.onnx_data
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.msgpack
 models/*
 !models/wd-vit-tagger-v3/
 models/wd-vit-tagger-v3/*
@@ -25,12 +32,25 @@ models/wd-vit-tagger-v3/*
 # User-provided real validation images are local-only acceptance inputs.
 validation-images/
 
-# Formal release reports are tracked, but generated binaries and extracted
-# portable trees are distributed separately and exceed normal Git limits.
-release/portable/
-release/*.zip
-release/_build/
-release/_pyinstaller/
+# Generated binaries and extracted portable trees are distributed separately
+# and exceed normal Git limits. Public archive manifests are allowed below.
+/release/**/portable/
+/release/**/*.zip
+/release/**/_build/
+/release/**/_pyinstaller/
+
+# Keep version indexes and audited manifests in Git. Programs and runtimes
+# are archived as model-free assets in this repository's GitHub Releases.
+/release/*
+!/release/README.md
+!/release/versions.json
+!/release/manifests/
+/release/manifests/*
+!/release/manifests/*.json
+
+# Application state and real-image acceptance artifacts stay on this machine.
+/data/
+/validation/
 
 # Ephemeral GitHub authentication probes must never be committed.
 .gh-auth-probe.txt
@@ -39,3 +59,18 @@ release/_pyinstaller/
 /release/backend-update/
 /release/modern-ui/
 /release/prompt-injection/
+/release/tag-visuals/
+/validation/tag-visuals/draft*/
+/validation/tag-visuals/**/*.png
+/validation/tag-visuals/**/*.ini
+/validation/tag-visuals/**/*.log
+/validation/tag-visuals/catalog-build.txt
+/validation/tag-visuals/portable-build.log
+/validation/tag-visuals/portable-backends.json
+/validation/tag-visuals/外部 工作目录/
+
+# Private icon-review feedback, server state, and browser acceptance captures.
+/data/tag-visual-review/
+/validation/tag-visual-review/**/*.png
+/validation/tag-visual-review/**/*.jpg
+/validation/tag-visual-review/browser-state/

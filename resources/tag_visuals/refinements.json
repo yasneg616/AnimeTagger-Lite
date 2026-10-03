@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "revision": "r1",
+  "description": "Original vector refinements, scoped by category and canonical tag name. Review feedback remains in the private local store.",
+  "entries": {
+    "general:anger vein": {
+      "explanation_zh": "漫画中表示生气的青筋符号，使用四组向内弯曲的线条。"
+    },
+    "general:ass visible through thighs": {
+      "explanation_zh": "从大腿之间可以看到臀部。下方圈选位置用于定位，具体姿势以文字含义为准。"
+    },
+    "general:black sandals": {
+      "explanation_zh": "黑色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:black slippers": {
+      "explanation_zh": "黑色拖鞋；露趾、单片鞋面与开放的后跟。"
+    },
+    "general:black tail": {
+      "explanation_zh": "黑色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:blue sandals": {
+      "explanation_zh": "蓝色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:blue tail": {
+      "explanation_zh": "蓝色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:brown sandals": {
+      "explanation_zh": "棕色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:cameltoe": {
+      "explanation_zh": "贴身衣物在裆部显出轮廓；图中圈出衣物表面的对应位置。"
+    },
+    "general:cat tail": {
+      "explanation_zh": "猫尾；细长的尾巴，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:cheongsam": {
+      "explanation_zh": "旗袍：立领、斜襟盘扣、贴合腰身与侧开衩。"
+    },
+    "general:cherry blossoms": {
+      "explanation_zh": "樱花：五片花瓣，每片花瓣末端有浅缺口。"
+    },
+    "general:china dress": {
+      "explanation_zh": "旗袍：立领、斜襟盘扣、贴合腰身与侧开衩。"
+    },
+    "general:clenched hands": {
+      "explanation_zh": "双手握拳；两只手的手指都收拢到掌心。"
+    },
+    "general:condom": {
+      "explanation_zh": "安全套；展示独立包装、管状薄膜、顶端储精囊和卷边。",
+      "status": "direct"
+    },
+    "general:crescent": {
+      "explanation_zh": "新月形状；以独立的月牙轮廓表示。"
+    },
+    "general:crescent moon": {
+      "explanation_zh": "月牙；独立的月面轮廓，没有身体连接点。"
+    },
+    "general:cross": {
+      "explanation_zh": "十字形符号：竖直与水平的两条笔画交叉。"
+    },
+    "general:demon tail": {
+      "explanation_zh": "恶魔尾；细尾与箭头状尾尖，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:dog tail": {
+      "explanation_zh": "犬尾巴；卷起的犬尾，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:dragon tail": {
+      "explanation_zh": "龙的尾巴；粗尾与尖刺，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:fake tail": {
+      "explanation_zh": "装饰用假尾巴；腰带连接的装饰尾巴，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:female pubic hair": {
+      "explanation_zh": "女性阴部毛发；下方局部定位，并用女性符号区分。"
+    },
+    "general:floral background": {
+      "explanation_zh": "花卉图案背景；花朵由圆润花瓣与花心组成。"
+    },
+    "general:floral print bikini": {
+      "explanation_zh": "带花卉印花的比基尼；衣物表面的纹样是花朵。"
+    },
+    "general:fox tail": {
+      "explanation_zh": "狐狸尾；蓬松尾毛与浅色尾尖，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:gold sandals": {
+      "explanation_zh": "金色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:gradient tail": {
+      "explanation_zh": "渐变色尾巴；仅尾巴上的渐变颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:grey sandals": {
+      "explanation_zh": "灰色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:grey tail": {
+      "explanation_zh": "灰色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:hair ornament": {
+      "explanation_zh": "发饰；示意花形饰品佩戴在头发的侧面。"
+    },
+    "general:horse": {
+      "explanation_zh": "马；侧面展示马头、长口鼻、鬃毛、四条腿与尾巴。"
+    },
+    "general:horse tail": {
+      "explanation_zh": "马尾巴；下垂的长尾毛，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:index finger raised": {
+      "explanation_zh": "举起食指；食指单独伸直，其余手指收拢。"
+    },
+    "general:lace": {
+      "explanation_zh": "蕾丝；以网眼、花形镂空与波浪边缘表示织物纹理。"
+    },
+    "general:legs up": {
+      "explanation_zh": "抬起双腿；人物躺着，两条腿向空中抬起。"
+    },
+    "general:licking": {
+      "explanation_zh": "舔舐；舌头伸出并接触物品，示意对象为棒棒糖。"
+    },
+    "general:long tail": {
+      "explanation_zh": "长款尾巴；明显长于身体的尾巴，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:looking at another": {
+      "explanation_zh": "看向另一个人；视线箭头从一人的眼睛指向另一人。"
+    },
+    "general:male pubic hair": {
+      "explanation_zh": "男性阴部毛发；下方局部定位，并用男性符号区分。"
+    },
+    "general:multicolored tail": {
+      "explanation_zh": "多色尾巴；仅尾巴上的多种颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:multiple tails": {
+      "explanation_zh": "多条尾巴；同一连接位置长出多条尾巴，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:newsboy cap": {
+      "explanation_zh": "报童帽；圆鼓的分片帽冠、底部帽带与短帽檐。"
+    },
+    "general:night": {
+      "explanation_zh": "夜晚；深色天空、月亮、星光与建筑剪影。"
+    },
+    "general:ninja": {
+      "explanation_zh": "忍者装束示意：包住头部的深色头巾、露出眼睛的面罩和背负的刀。"
+    },
+    "general:nurse": {
+      "explanation_zh": "护士装束示意：护士帽、白色制服、衣领和医疗标志。"
+    },
+    "general:nurse cap": {
+      "explanation_zh": "护士帽；折叠的白色帽体与医疗十字形标志。"
+    },
+    "general:orange tail": {
+      "explanation_zh": "橙色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:pink sandals": {
+      "explanation_zh": "粉色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:pink slippers": {
+      "explanation_zh": "粉色拖鞋；露趾、单片鞋面与开放的后跟。"
+    },
+    "general:pink tail": {
+      "explanation_zh": "粉色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:pubic hair": {
+      "explanation_zh": "阴部毛发；在躯干下方的对应区域定位。"
+    },
+    "general:purple sandals": {
+      "explanation_zh": "紫色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:purple tail": {
+      "explanation_zh": "紫色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:rabbit tail": {
+      "explanation_zh": "兔尾；圆团状的短尾，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:red moon": {
+      "explanation_zh": "红色月亮；红色圆形月面与环形月坑。"
+    },
+    "general:red sandals": {
+      "explanation_zh": "红色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:red slippers": {
+      "explanation_zh": "红色拖鞋；露趾、单片鞋面与开放的后跟。"
+    },
+    "general:red tail": {
+      "explanation_zh": "红色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:riding": {
+      "explanation_zh": "骑乘；人物跨坐在马背的鞍座上，腿沿马侧下垂，并握住缰绳。"
+    },
+    "general:salute": {
+      "explanation_zh": "敬礼；一只手抬到额侧，另一只手臂自然放下。"
+    },
+    "general:short tail": {
+      "explanation_zh": "短款尾巴；明显短于身体的尾巴，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:side slit": {
+      "explanation_zh": "侧开衩；衣摆的一侧分开，露出腿部，箭头指向开衩位置。"
+    },
+    "general:slippers": {
+      "explanation_zh": "拖鞋；露趾、单片鞋面与开放的后跟。"
+    },
+    "general:striped tail": {
+      "explanation_zh": "条纹尾巴；仅尾巴上的条纹，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:sweat": {
+      "explanation_zh": "汗水；水滴位于额头与脸侧，不使用特定情绪表情。"
+    },
+    "general:tail": {
+      "explanation_zh": "尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:tentacles": {
+      "explanation_zh": "触手；弯曲的长条肢体，内侧可见一列吸盘。"
+    },
+    "general:two-tone tail": {
+      "explanation_zh": "双色尾巴；仅尾巴上的两种颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:unworn sandals": {
+      "explanation_zh": "未穿戴的凉鞋；露趾、脚背鞋带与后跟固定带。图中只展示未穿戴的鞋子。"
+    },
+    "general:unworn slippers": {
+      "explanation_zh": "未穿戴的拖鞋；露趾、单片鞋面与开放的后跟。图中只展示未穿戴的鞋子。"
+    },
+    "general:white sandals": {
+      "explanation_zh": "白色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:white slippers": {
+      "explanation_zh": "白色拖鞋；露趾、单片鞋面与开放的后跟。"
+    },
+    "general:white tail": {
+      "explanation_zh": "白色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:wolf tail": {
+      "explanation_zh": "狼尾；蓬松尾毛，灰色身体用于说明尾巴的连接位置。"
+    },
+    "general:yellow sandals": {
+      "explanation_zh": "黄色凉鞋；露趾、脚背鞋带与后跟固定带。"
+    },
+    "general:yellow tail": {
+      "explanation_zh": "黄色尾巴；尾巴的颜色，灰色身体用于说明尾巴的连接位置。"
+    }
+  }
+}

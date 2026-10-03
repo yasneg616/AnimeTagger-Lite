@@ -1,7 +1,7 @@
 # AnimeTagger Lite
 
 AnimeTagger Lite 是面向 Windows 的轻量、本地、离线动漫图片标签识别和提示词
-整理工具。当前版本 **1.2.1**：三栏现代界面、五种预设主题和自定义调色盘，
+整理工具。当前版本 **1.3.0**：标签图示与中文释义、三栏现代界面、五种预设主题和自定义调色盘，
 支持 Canary 2026、PixAI v0.9、WD v3，以及批处理、随机 Prompt 和多个提示词 Profile。
 
 顶部“调色盘”支持强调色、背景色、面板色实时预览；保存后持久化，取消恢复原色。
@@ -10,7 +10,33 @@ AnimeTagger Lite 是面向 Windows 的轻量、本地、离线动漫图片标签
 构建方式和三后端说明见 [packaging/README.md](packaging/README.md) 与
 [docs/tagger-backends.md](docs/tagger-backends.md)。下方阶段记录为早期版本历史。
 
-当前仍没有网络 API、遥测、自动模型下载、自动更新或 Windows 安装程序。
+2026-10-04 正式便携包：[1.3.0 CUDA 无模型存档](https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.3.0)，
+包含程序、三个后端的运行库和配套词表、审阅后重制的 77 项图示，以及无需另装 Python 的本机图示审阅网站。
+本仓库的存档包不含模型权重，请先按随包 `MODEL-SETUP.txt` 补齐模型或选择已有模型目录。
+解压后双击 `AnimeTaggerLite.exe`；审阅图示用 `打开图示审阅网站.cmd`。
+个人配置、图片、勾选和私人备注留在本地，不随存档分发。
+全部版本、源码状态、下载和校验方法见 [版本存档](release/README.md) 与 [版本索引](release/versions.json)。
+
+程序离线运行，没有云端 API、遥测、自动模型下载、自动更新或 Windows 安装程序。
+
+## 标签图示与中文释义
+
+需要逐项审阅图示时，双击项目根目录的 `打开图示审阅网站.cmd`。本机网站展示全部已有图示，
+勾选「需要重做」会立即保存到本地后台。操作与反馈读取说明见 [本机图示审阅网站](docs/tag-visual-review.md)。
+
+单图标签表和随机 Prompt 的标签列表现在显示 24×24 彩色简笔图；悬停查看
+160×160 示意图、简体中文释义和原有英文标签。角色名称保留文字。
+“筛选与显示 → 图示辅助”默认开启，关闭后两处列表一起恢复文字显示，重启后记住选择。
+单图搜索支持已有中文释义。图示、释义和开关只影响显示，推理、英文编辑、Prompt、复制及导出内容保持原样。
+
+当前已为三个模型的全部 **12,030** 个一般标签登记处理结果，其中 **3,279** 个有具体图示、
+组合图示或辅助示意，76 个仅有类别提示，8,675 个待补。按三个 CSV 的最大 `count`
+排序，前 1,000 个标签有 **951 个（95.1%）** 提供含义图示。类别提示不计入此覆盖率。
+作品名称采用作品类别提示；未核对的长尾标签保留英文并在悬停中说明待补原因。
+
+使用和维护说明见 [docs/tag-visuals.md](docs/tag-visuals.md)，逐项清单见
+[resources/tag_visuals/coverage.tsv](resources/tag_visuals/coverage.tsv)，分类统计及高频缺口见
+[resources/tag_visuals/coverage.json](resources/tag_visuals/coverage.json)。所有数据随程序分发，运行时无需联网。
 
 ## 手动注入正向标签
 
@@ -74,7 +100,7 @@ AnimeTagger Lite 是面向 Windows 的轻量、本地、离线动漫图片标签
 - 当前图片可复制或导出正向 TXT、正负 TXT、JSON。
 - JSON schema 2 区分模型 `raw_tags` 与用户 `working_tags`，并同时保留生成
   文本、最终文本和编辑标志。
-- JSON 保存业务设置；`QSettings` 只保存窗口、分割条和表格列宽。
+- JSON 保存业务设置；`QSettings` 保存窗口、分割条、表格列宽、调色盘和图示开关。
 - GUI 日志写入滚动文件 `logs/animetagger-lite.log`，不记录完整提示词。
 
 ### 阶段 4：文件夹批处理与 LoRA 工作流

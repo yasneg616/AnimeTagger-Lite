@@ -71,7 +71,8 @@ QComboBox QAbstractItemView, QMenu {{ background: {surface}; color: {text}; sele
 QMenu::item {{ padding: 7px 18px; }}
 QMenu::item:selected {{ background: {accent}; color: {on_accent}; }}
 QPlainTextEdit {{ background: {bg}; color: {ink(bg)}; border: 1px solid {border}; border-radius: 6px; padding: 8px; selection-background-color: {accent}; selection-color: {on_accent}; font-family: Consolas, 'Microsoft YaHei UI'; }}
-QTableView, QListWidget {{ background: {surface}; alternate-background-color: {hover}; border: none; outline: none; selection-background-color: {accent}; selection-color: {on_accent}; }}
+QTableView, QListWidget, QListView#randomTagList {{ background: {surface}; alternate-background-color: {hover}; border: none; outline: none; selection-background-color: {accent}; selection-color: {on_accent}; }}
+QListView#randomTagList::item {{ padding: 4px 8px; }}
 QListWidget::item {{ padding: 6px; border: 1px solid transparent; border-radius: 7px; }}
 QListWidget::item:selected {{ background: {hover}; color: {text}; border: 1px solid {accent}; }}
 QListWidget::item:hover {{ background: {hover}; }}

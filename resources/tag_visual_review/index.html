@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="本机标签图示审阅：勾选需要重做的图示，选择自动保存在本机。">
+  <title>Tag 图示审阅台</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">T</span><h1>图示审阅台</h1><span class="private">仅本机</span></div>
+    <div class="save-area"><span id="save-status" role="status">正在连接本机后台…</span><button id="export" class="quiet" disabled>导出重做清单</button></div>
+  </header>
+  <main>
+    <section class="intro" aria-label="审阅说明">
+      <div><p class="eyebrow">TAG ILLUSTRATIONS</p><h2>哪些图示需要重新画？</h2><p>勾选「需要重做」，选择会立即保存。点击图示可放大、补充原因。</p></div>
+      <div class="counts"><div><strong id="total-count">—</strong><span>可审阅图示</span></div><div class="rework-count"><strong id="selected-count">—</strong><span>已标记重做</span></div></div>
+    </section>
+    <section class="toolbar" aria-label="查找和筛选图示">
+      <div class="search-wrap"><label for="search">查找标签</label><input id="search" type="search" placeholder="英文标签或中文，例如 ponytail / 马尾" autocomplete="off"></div>
+      <div class="filter"><label for="group">图示类别</label><select id="group"><option value="">全部类别</option></select></div>
+      <div class="filter"><label for="status">图示方式</label><select id="status"><option value="">全部方式</option></select></div>
+      <div class="filter"><label for="category">标签类型</label><select id="category"><option value="">全部标签</option></select></div>
+      <div class="filter"><label for="sort">排序</label><select id="sort"><option value="frequency">高频优先</option><option value="name">英文名称</option><option value="group">图示类别</option></select></div>
+      <div class="switches"><label class="toggle"><input id="only-selected" type="checkbox">只看已勾选</label><label class="toggle"><input id="dark-preview" type="checkbox">深色预览</label></div>
+    </section>
+    <div class="gallery-heading"><p id="result-info" aria-live="polite">正在载入图示…</p><div class="page-controls"><button id="previous-top" class="quiet" disabled>上一页</button><span id="page-info-top">—</span><button id="next-top" class="quiet" disabled>下一页</button></div></div>
+    <div id="error" class="error-panel" role="alert" hidden><span id="error-message"></span><button id="retry" class="quiet">重新载入</button></div>
+    <section id="gallery" class="gallery" aria-label="标签图示列表" aria-busy="true"></section>
+    <div id="empty" class="empty" hidden><h3>没有符合条件的图示</h3><p>可以换一个关键词，或调整筛选条件。</p><button id="reset" class="quiet">清除筛选</button></div>
+    <footer class="gallery-footer"><p>类别图示只表达所属类别，可按你的判断勾选重做。角色名称和尚未绘制的标签不在此列表中。</p><div class="page-controls"><button id="previous" class="quiet" disabled>上一页</button><span id="page-info">—</span><button id="next" class="quiet" disabled>下一页</button></div></footer>
+    <p class="privacy-note">图示与勾选仅保存在这台电脑，无需上传，也不读取你的图片或 Prompt。</p>
+  </main>
+  <dialog id="detail" aria-labelledby="detail-name">
+    <div class="detail-head"><span id="detail-badge" class="badge"></span><button id="close-detail" class="quiet" aria-label="关闭放大图">关闭</button></div>
+    <div id="detail-preview" class="detail-preview"><img id="detail-image" width="320" height="320" alt=""></div>
+    <h2 id="detail-name"></h2><p id="detail-label" class="detail-label"></p><p id="detail-explanation"></p><p id="detail-reason" class="detail-reason" hidden></p>
+    <label class="review-check detail-check"><input id="detail-check" type="checkbox"><span>需要重做</span></label>
+    <label for="detail-note" class="note-label">原因（可选）</label><textarea id="detail-note" rows="3" maxlength="2000" placeholder="例如：图示像辫子，但这个标签表示双马尾"></textarea>
+    <div class="detail-actions"><span id="note-status" role="status"></span><button id="save-note" disabled>保存原因</button></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

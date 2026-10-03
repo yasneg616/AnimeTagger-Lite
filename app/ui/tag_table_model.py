@@ -10,6 +10,7 @@ from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Signal
 
 from app.inference.model_loader import TagCategory
 from app.prompts.models import PromptGroup, TagResult, TagSource
+from app.ui.tag_visual_widgets import TagVisualProvider, VISUAL_ROLE
 
 
 class TagColumn(IntEnum):
@@ -27,6 +28,7 @@ class TagRole(IntEnum):
     GROUP = int(Qt.ItemDataRole.UserRole) + 3
     CONFIDENCE = int(Qt.ItemDataRole.UserRole) + 4
     SOURCE = int(Qt.ItemDataRole.UserRole) + 5
+    VISUAL = VISUAL_ROLE
 
 
 HEADERS = ("启用", "标签", "类别", "提示词分组", "置信度", "来源")
@@ -57,9 +59,22 @@ class TagTableModel(QAbstractTableModel):
         self,
         tags: tuple[TagResult, ...] | list[TagResult] = (),
         parent: object | None = None,
+        *,
+        visual_provider: TagVisualProvider | None = None,
     ) -> None:
         super().__init__(parent)
         self._tags = list(tags)
+        self.visual_provider = visual_provider if visual_provider is not None else TagVisualProvider(self)
+        self.visual_provider.changed.connect(self._refresh_visuals)
+
+    def _refresh_visuals(self) -> None:
+        if self._tags:
+            self.dataChanged.emit(self.index(0, TagColumn.TAG), self.index(len(self._tags)-1, TagColumn.TAG),
+                                  [int(Qt.ItemDataRole.DecorationRole), int(TagRole.VISUAL)])
+
+    def visual_at(self, row: int):
+        tag = self.tag_at(row)
+        return self.visual_provider.visual_for(tag.output_name, tag.category) if tag is not None else None
 
     @property
     def tags(self) -> tuple[TagResult, ...]:
@@ -99,6 +114,11 @@ class TagTableModel(QAbstractTableModel):
             return None
         tag = self._tags[index.row()]
         column = TagColumn(index.column())
+
+        if role == Qt.ItemDataRole.DecorationRole and column is TagColumn.TAG:
+            return self.visual_provider.icon_for(tag.output_name, tag.category)
+        if role == TagRole.VISUAL and column is TagColumn.TAG:
+            return self.visual_at(index.row())
 
         if role == Qt.ItemDataRole.CheckStateRole and column is TagColumn.ENABLED:
             return (

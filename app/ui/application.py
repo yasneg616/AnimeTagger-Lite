@@ -42,6 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="启动窗口后自动关闭，用于无模型 GUI 启动检查",
     )
+    parser.add_argument("--visual-smoke", type=Path, help=argparse.SUPPRESS)
     return parser
 
 
@@ -103,6 +104,12 @@ def create_application(argv: Sequence[str] | None = None) -> QApplication:
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     app = create_application(argv)
+    if args.visual_smoke is not None:
+        # Explicit diagnostic mode uses its own settings and writes evidence
+        # beside the requested screenshots; it never loads an inference model.
+        from app.ui.tag_visual_smoke import run_visual_smoke
+
+        return run_visual_smoke(app, args.visual_smoke)
     try:
         log_path = configure_gui_logging()
     except AnimeTaggerError as exc:

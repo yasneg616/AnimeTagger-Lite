@@ -15,6 +15,8 @@ from scripts import build_portable
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+# Version literals have three components; an IPv4 address has four.
+VERSION_LITERAL = re.compile(r"(?<![\d.])\b\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?\b(?!\.\d)")
 
 
 def test_pyproject_uses_app_version_as_the_single_package_source() -> None:
@@ -33,9 +35,17 @@ def test_python_sources_do_not_duplicate_release_version_literals() -> None:
         for path in (PROJECT_ROOT / root_name).rglob("*.py"):
             if path == PROJECT_ROOT / "app" / "__init__.py":
                 continue
-            if re.search(r"\b\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?\b", path.read_text(encoding="utf-8")):
+            if VERSION_LITERAL.search(path.read_text(encoding="utf-8")):
                 matches.append(str(path.relative_to(PROJECT_ROOT)))
     assert matches == []
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("http://127.0.0.1:8766", False), ("http://192.168.1.10", False),
+    ("version = '1.3.0'", True), ("version = '1.3.0-beta.1'", True),
+])
+def test_version_scan_distinguishes_ipv4_addresses(text: str, expected: bool) -> None:
+    assert bool(VERSION_LITERAL.search(text)) is expected
 
 
 @pytest.mark.parametrize(
@@ -184,6 +194,8 @@ def _minimal_cpu_portable(root: Path) -> None:
         "THIRD_PARTY_NOTICES.txt",
         "LICENSE",
         "portable.flag",
+        "打开图示审阅网站.cmd",
+        "scripts/start_tag_visual_review.ps1",
     ):
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -237,6 +249,16 @@ def test_release_audit_rejects_absolute_development_paths(tmp_path: Path) -> Non
     _minimal_cpu_portable(root)
     (root / "README.txt").write_text("source D:/tagger/app", encoding="utf-8")
     with pytest.raises(RuntimeError, match="path markers"):
+        build_portable.audit_distribution(root, "cpu")
+
+
+def test_release_audit_rejects_private_review_feedback(tmp_path: Path) -> None:
+    root = tmp_path / "portable"
+    _minimal_cpu_portable(root)
+    private = root / "data" / "tag-visual-review" / "reviews.sqlite3"
+    private.parent.mkdir(parents=True)
+    private.write_bytes(b"private review fixture")
+    with pytest.raises(RuntimeError, match="data directories are not empty"):
         build_portable.audit_distribution(root, "cpu")
 
 

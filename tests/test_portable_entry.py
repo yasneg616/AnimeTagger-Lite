@@ -41,3 +41,12 @@ def test_portable_entry_defaults_to_gui(monkeypatch) -> None:
 
     assert portable_entry.main(["--smoke-test"]) == 23
     assert calls == [["--smoke-test"]]
+
+
+def test_portable_entry_dispatches_private_review_without_gui(monkeypatch) -> None:
+    calls: list[list[str]] = []
+    monkeypatch.setattr(sys, "executable", r"D:\portable\AnimeTaggerLite.exe")
+    monkeypatch.setitem(sys.modules, "app.tag_visual_review",
+                        _entry_module("app.tag_visual_review", 19, calls))
+    assert portable_entry.main(["--review-icons", "--port", "8766"]) == 19
+    assert calls == [["--port", "8766"]]

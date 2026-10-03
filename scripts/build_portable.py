@@ -599,6 +599,10 @@ def stage_distribution(
                     shutil.rmtree(tests_dir, ignore_errors=True)
 
     _copy_tree_contents(PROJECT_ROOT / "resources", destination / "resources")
+    shutil.copy2(PROJECT_ROOT / "打开图示审阅网站.cmd", destination / "打开图示审阅网站.cmd")
+    (destination / "scripts").mkdir(parents=True, exist_ok=True)
+    shutil.copy2(PROJECT_ROOT / "scripts" / "start_tag_visual_review.ps1",
+                 destination / "scripts" / "start_tag_visual_review.ps1")
     model_destination = destination / "models" / "wd-vit-tagger-v3"
     model_destination.mkdir(parents=True)
     shutil.copy2(
@@ -685,6 +689,8 @@ def audit_distribution(root: Path, variant: str, *, model_hashes: dict[str, str]
         "LICENSE",
         "LICENSES",
         "portable.flag",
+        "打开图示审阅网站.cmd",
+        "scripts/start_tag_visual_review.ps1",
         "data/config",
         "data/logs",
         "data/batch-jobs",

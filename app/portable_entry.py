@@ -19,6 +19,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         return cli_main(arguments)
 
+    if arguments and arguments[0] == "--review-icons":
+        from app.tag_visual_review import main as review_main
+
+        return review_main(arguments[1:])
+
     from app.ui.application import main as gui_main
 
     return gui_main(arguments)

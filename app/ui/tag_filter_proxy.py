@@ -102,7 +102,9 @@ class TagFilterProxyModel(QSortFilterProxyModel):
             )
             source = str(model.data(source_index, TagRole.SOURCE) or "")
         if self._search and self._search not in tag.casefold():
-            return False
+            visual = model.visual_at(source_row) if isinstance(model, TagTableModel) else None
+            if visual is None or self._search not in visual.search_text:
+                return False
         if self._category and category != self._category:
             return False
         if self._group and group != self._group:
