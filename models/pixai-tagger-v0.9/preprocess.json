@@ -1,0 +1,30 @@
+{
+    "stages": [
+        {
+            "antialias": null,
+            "interpolation": "bilinear",
+            "max_size": null,
+            "size": [
+                448,
+                448
+            ],
+            "type": "resize"
+        },
+        {
+            "type": "to_tensor"
+        },
+        {
+            "mean": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "std": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "type": "normalize"
+        }
+    ]
+}

@@ -1,0 +1,910 @@
+group	name	zh	shape	features	status	explanation
+hair	hair	头发	hair			
+hair	long_hair	长发	hair			长度从肩部延伸至腰部的头发。
+hair	short_hair	短发	hair			长度不到肩部的头发。
+hair	medium_hair	中长发	hair			长度在肩部附近的头发。
+hair	very_long_hair	超长发	hair	long		长度超过腰部的头发。
+hair	absurdly_long_hair	极长头发	hair	long		长度超过脚部的头发。
+hair	very_short_hair	极短发	hair	short		长度不到下颌的头发。
+hair	bald	光头	hair			
+hair	balding	头发稀疏	hair			
+hair	twintails	双马尾	hair			左右两束马尾；与编成辫子的双辫子不同。
+hair	ponytail	马尾	hair			束成一条马尾的头发。
+hair	side_ponytail	侧马尾	hair			扎在头部一侧的马尾。
+hair	high_ponytail	高马尾	hair			扎在头部较高位置的马尾。
+hair	low_ponytail	低马尾	hair			扎在后颈附近的马尾。
+hair	short_ponytail	短马尾	hair	short		
+hair	low_twintails	低双马尾	hair			左右两束位置较低的马尾。
+hair	short_twintails	短双马尾	hair	short		
+hair	braid	辫子	hair			交错编织的发束；不等同于未编织的马尾。
+hair	single_braid	单辫子	hair			
+hair	twin_braids	双辫子	hair			左右两条编织的辫子。
+hair	side_braid	侧辫子	hair			
+hair	front_braid	前侧辫子	hair			
+hair	braided_ponytail	编辫马尾	hair			
+hair	hair_bun	发髻	hair			盘起形成团状的发束。
+hair	single_hair_bun	单发髻	hair			
+hair	double_bun	双发髻	hair			头部两侧各有一个发髻。
+hair	hair_rings	环状发髻	hair			束成环状的头发。
+hair	ahoge	呆毛	hair			头顶突出的一小束头发。
+hair	antenna_hair	天线状呆毛	hair			头顶像天线一样分开的发束。
+hair	heart_ahoge	心形呆毛	hair			
+hair	sidelocks	鬓角长发束	hair			脸部两侧垂下的发束。
+hair	bob_cut	波波头	hair			下颌附近齐整的短发。
+hair	hime_cut	姬发式	hair			齐刘海与脸侧整齐截断的发束，后侧可保留长发。
+hair	pixie_cut	精灵短发	hair			
+hair	bowl_cut	锅盖头	hair			
+hair	buzz_cut	寸头	hair			
+hair	undercut	侧面剃短发型	hair			
+hair	blunt_bangs	齐刘海	hair			刘海末端近似水平。
+hair	parted_bangs	分开的刘海	hair			
+hair	double-parted_bangs	双分刘海	hair			刘海分成多股，露出额头的不同区域。
+hair	swept_bangs	斜扫刘海	hair			刘海朝一侧梳理。
+hair	crossed_bangs	交叉刘海	hair			额前发束交错。
+hair	bangs	刘海	hair			
+hair	bangs_pinned_back	向后固定的刘海	hair			
+hair	hair_between_eyes	双眼之间的发束	hair			发束垂在双眼中间；眼睛仍可露出。
+hair	hair_over_one_eye	遮住一只眼睛的头发	hair			头发遮挡一只眼睛；不表示闭眼。
+hair	hair_over_eyes	遮住双眼的头发	hair			头发覆盖双眼位置；不表示闭眼。
+hair	one_eye_covered	一只眼睛被遮挡	hair			眼睛因头发等物体被遮挡；与眨眼不同。
+hair	hair_intakes	额侧进气口状发束	hair			额头两侧隆起、呈入口形状的发束。
+hair	wavy_hair	波浪发	hair			
+hair	curly_hair	卷发	hair			
+hair	straight_hair	直发	hair			
+hair	messy_hair	凌乱头发	hair			
+hair	spiked_hair	尖刺发型	hair			
+hair	fluffy_hair	蓬松头发	hair			
+hair	drill_hair	钻头卷发	hair			螺旋状卷发。
+hair	twin_drills	双钻头卷发	hair			左右各一束螺旋状卷发。
+hair	flipped_hair	外翘头发	hair			发梢向外翘起。
+hair	floating_hair	飘起的头发	hair			
+hair	hair_flaps	侧面翘起的发束	hair			
+hair	hair_over_shoulder	搭在肩上的头发	hair			
+hair	short_hair_with_long_locks	短发配长鬓角	hair			整体较短，脸侧保留较长发束。
+hair	low-tied_long_hair	低位束起的长发	hair			
+hair	two_side_up	两侧扎起、其余披散	hair			头部两侧各扎一束，剩余头发披散；不等同于全束双马尾。
+hair	one_side_up	单侧扎起、其余披散	hair			
+hair	half_updo	半扎发	hair			只将上半部分头发扎起。
+hair	multicolored_hair	多色头发	hair	multicolored		三种或更多颜色；与双色头发区分。
+hair	two-tone_hair	双色头发	hair	two-tone		
+hair	streaked_hair	挑染头发	hair	two-tone		不同颜色呈条束分布。
+hair	gradient_hair	渐变头发	hair	gradient		颜色沿头发连续渐变。
+hair	colored_inner_hair	内层染色头发	hair	two-tone		内层头发与外层颜色不同。
+hair	alternate_hairstyle	不同于通常设定的发型	hair	two-tone	schematic	需要与角色通常发型比较；示意图仅表达发型发生变化。
+hair	official_alternate_hairstyle	官方的其他发型	hair	two-tone	schematic	官方设计中与通常造型不同的发型。
+eyes	eyes	眼睛	eyes			
+eyes	pupils	瞳孔	eyes			
+eyes	sclera	眼白	eyes			
+eyes	closed_eyes	闭着双眼	eyes			两只眼睛都闭合；与被头发遮挡不同。
+eyes	one_eye_closed	闭着一只眼睛	eyes			一只眼睛闭合，另一只睁开。
+eyes	half-closed_eyes	半睁眼	eyes			
+eyes	heterochromia	异色双瞳	eyes	two-tone		两只眼睛颜色不同。
+eyes	multicolored_eyes	多色眼睛	eyes	multicolored		每只眼睛内有多种颜色；与左右眼颜色不同的异色双瞳区分。
+eyes	two-tone_eyes	双色眼睛	eyes	two-tone		
+eyes	bright_pupils	明亮瞳孔	eyes			
+eyes	white_pupils	白色瞳孔	eyes			
+eyes	no_pupils	没有瞳孔	eyes			
+eyes	slit_pupils	狭缝瞳孔	eyes			细长、类似猫眼的瞳孔。
+eyes	heart-shaped_pupils	心形瞳孔	eyes			
+eyes	star-shaped_pupils	星形瞳孔	eyes			
+eyes	symbol-shaped_pupils	符号形瞳孔	eyes			
+eyes	ringed_eyes	环状眼睛	eyes			
+eyes	glowing_eyes	发光眼睛	eyes			
+eyes	colored_sclera	有颜色的眼白	eyes	two-tone		眼白呈白色以外的颜色。
+eyes	colored_eyelashes	有颜色的睫毛	eyes			
+eyes	eyelashes	睫毛	eyes			
+eyes	long_eyelashes	长睫毛	eyes			
+eyes	tsurime	上挑眼	eyes			外眼角朝上，常呈较锐利的眼形。
+eyes	tareme	下垂眼	eyes			外眼角朝下，常呈较柔和的眼形。
+eyes	eyes_visible_through_hair	透过头发可见眼睛	eyes		schematic	绘画中透过遮挡的头发仍能看到眼睛；半透明覆盖示意。
+eyes	third_eye	第三只眼睛	eyes			
+face	smile	微笑	face			
+face	light_smile	浅笑	face			
+face	grin	露齿笑	face			
+face	happy	开心	face			
+face	frown	皱眉不悦	face			
+face	angry	生气	face			
+face	embarrassed	不好意思	face			
+face	surprised	惊讶	face			
+face	expressionless	无表情	face			
+face	blush	脸红	face			
+face	light_blush	轻微脸红	face			
+face	blush_stickers	贴纸状腮红	face			
+face	nose_blush	鼻部泛红	face			
+face	crying	哭泣	face			
+face	tears	眼泪	face			
+face	tearing_up	眼中泛泪	face			
+face	crying_with_eyes_open	睁眼哭泣	face			
+face	sleeping	睡着	face			
+face	open_mouth	张嘴	face			
+face	closed_mouth	闭嘴	face			
+face	parted_lips	微张双唇	face			
+face	wavy_mouth	波浪形嘴	face			
+face	lips	嘴唇	face			
+face	tongue	舌头	face			
+face	tongue_out	吐舌头	face			
+face	teeth	牙齿	face			
+face	upper_teeth_only	仅露上排牙齿	face			
+face	clenched_teeth	咬紧牙齿	face			
+face	fang	单颗尖牙	face			
+face	fangs	尖牙	face			
+face	sharp_teeth	尖锐牙齿	face			
+face	skin_fang	肤色尖牙画法	face		schematic	嘴角以肤色形状表现尖牙，是绘画表现方式。
+face	sweat	汗水	face			
+face	sweatdrop	汗滴	face			
+face	flying_sweatdrops	飞散汗滴	face			
+face	looking_at_viewer	看向观看者	face			人物视线朝向画面外的观看者。
+face	looking_at_another	看向另一个人	face			
+face	looking_to_the_side	看向侧面	face			
+face	looking_back	回头看	face			
+face	looking_up	向上看	face			
+face	looking_down	向下看	face			
+face	looking_away	视线移开	face			
+face	looking_ahead	向前看	face			
+face	facing_viewer	面朝观看者	face			
+face	thick_eyebrows	粗眉毛	face			
+face	v-shaped_eyebrows	倒八字眉	face			
+face	furrowed_brow	紧皱眉头	face			
+face	makeup	妆容	face			
+face	lipstick	口红	face			
+face	eyeshadow	眼影	face			
+face	freckles	雀斑	face			
+face	mole	痣	face			
+face	mole_under_eye	眼下痣	face			
+face	mole_under_mouth	嘴下痣	face			
+face	facial_mark	面部标记	face			
+face	scar_on_face	面部疤痕	face			
+face	facial_hair	面部毛发	face			
+face	beard	胡须	face			
+face	mustache	上唇胡须	face			
+face	:d	张嘴笑的表情	face		schematic	标签表示类似 :D 的笑脸表情。
+face	;d	眨眼笑的表情	face		schematic	标签表示类似 ;D 的眨眼笑脸。
+face	:o	惊讶张嘴的表情	face		schematic	
+face	:3	猫嘴形表情	face		schematic	
+face	:p	吐舌表情	face		schematic	
+face	:<	不开心的表情	face		schematic	
+face	^_^	闭眼微笑表情	face		schematic	
+face	>_<	紧闭眼睛表情	face		schematic	
+face	@_@	晕眩表情	face		schematic	
+body	breasts	胸部	body			部位定位示意，不表示裸露状态。
+body	large_breasts	较大胸部	body			
+body	medium_breasts	中等胸部	body			
+body	small_breasts	较小胸部	body			
+body	huge_breasts	很大胸部	body			
+body	flat_chest	平坦胸部	body			
+body	breasts_apart	胸部间隔较宽	body			
+body	breast_press	胸部受到挤压	body		category_only	涉及胸部受压的状态；图标仅作部位定位。
+body	alternate_breast_size_(larger)	相对通常设定更大的胸部	body		category_only	需要与角色通常设定比较；图标仅作部位定位。
+body	cleavage	胸前衣物间露出的沟线	body		category_only	图标仅作胸前部位定位。
+body	sideboob	从侧面露出的胸部	body		category_only	
+body	underboob	胸部下缘露出	body		category_only	
+body	nipples	乳头	body		category_only	图标仅作胸部区域定位。
+body	covered_nipples	乳头被遮住	body		category_only	
+body	areola_slip	乳晕从衣物边缘露出	body		category_only	
+body	breasts_out	胸部露出衣物	body		category_only	
+body	penis	男性生殖器	body		category_only	图标仅作身体区域定位。
+body	pussy	女性外生殖器	body		category_only	图标仅作身体区域定位。
+body	anus	肛门	body		category_only	图标仅作身体区域定位。
+body	testicles	睾丸	body		category_only	图标仅作身体区域定位。
+body	erection	勃起状态	body		category_only	图标仅作身体区域定位。
+body	ass	臀部	body			
+body	ass_visible_through_thighs	从大腿间可见臀部	body		category_only	
+body	navel	肚脐	body			
+body	covered_navel	肚脐被遮住	body			
+body	collarbone	锁骨	body			
+body	stomach	腹部	body			
+body	midriff	腰腹部	body			
+body	abs	腹肌	body			
+body	pectorals	胸肌	body			
+body	large_pectorals	较大胸肌	body			
+body	thighs	大腿	body			
+body	thick_thighs	较粗大腿	body			
+body	thigh_gap	大腿间隙	body			
+body	legs	腿部	body			
+body	bare_legs	露出的腿部	body			
+body	bare_arms	露出的手臂	body			
+body	bare_shoulders	露出的肩部	body			
+body	feet	脚部	body			
+body	toes	脚趾	body			
+body	soles	脚底	foot			
+body	barefoot	赤脚	foot			
+body	groin	腹股沟区域	body			
+body	back	背部	body			
+body	forehead	额头	body			
+body	armpits	腋下	body			
+body	wide_hips	较宽髋部	body			
+body	curvy	曲线明显的体型	body			
+body	muscular	肌肉明显	body			
+body	muscular_male	肌肉明显的男性	body			
+body	toned	紧实体型	body			
+body	dark_skin	深色皮肤	body			
+body	dark-skinned_female	深色皮肤的女性	body			
+body	dark-skinned_male	深色皮肤的男性	body			
+body	pale_skin	浅淡肤色	body			
+body	white_skin	白色皮肤	body			
+body	colored_skin	特殊颜色皮肤	body			
+body	tan	晒黑的皮肤	body			
+body	shiny_skin	有光泽的皮肤	body	shiny		
+body	tattoo	纹身	body			
+body	arm_tattoo	手臂纹身	body			
+body	leg_tattoo	腿部纹身	body			
+body	scar	疤痕	body			
+body	veins	明显血管	body			
+body	skindentation	皮肤受压留下凹痕	body			
+body	pubic_hair	阴部毛发	body		category_only	部位定位示意。
+body	female_pubic_hair	女性阴部毛发	body		category_only	
+body	male_pubic_hair	男性阴部毛发	body		category_only	
+body	mole_on_breast	胸部的痣	body			
+body	cameltoe	衣物显出裆部轮廓	body		category_only	
+clothing	shirt	衬衫	shirt			
+clothing	t-shirt	T恤	tshirt			
+clothing	blouse	女式上衣	shirt			
+clothing	dress_shirt	正式衬衫	shirt			
+clothing	collared_shirt	有领衬衫	shirt	collared		
+clothing	sleeveless_shirt	无袖衬衫	sleeveless			
+clothing	tank_top	背心式上衣	sleeveless			
+clothing	crop_top	短款露腰上衣	tshirt	cropped		
+clothing	sweater	毛衣	shirt	knit		
+clothing	cardigan	开衫	coat	knit,open		
+clothing	sweater_vest	毛衣背心	sleeveless	knit		
+clothing	vest	马甲	vest			无袖、通常穿在上衣外的服装。
+clothing	hoodie	连帽卫衣	hoodie			
+clothing	jacket	夹克	coat	short		
+clothing	blazer	西装外套	coat	short		
+clothing	coat	大衣	coat			
+clothing	labcoat	实验室白大褂	coat			
+clothing	track_jacket	运动夹克	coat	striped,short		
+clothing	hooded_jacket	连帽夹克	hoodie			
+clothing	cropped_jacket	截短夹克	coat	cropped		
+clothing	dress	连衣裙	dress			
+clothing	short_dress	短连衣裙	dress	short		
+clothing	sleeveless_dress	无袖连衣裙	dress	sleeveless		
+clothing	strapless_dress	无肩带连衣裙	dress	strapless		
+clothing	frilled_dress	褶边连衣裙	dress	frilled		
+clothing	china_dress	旗袍	dress	side-slit		
+clothing	cheongsam	旗袍	dress	side-slit		
+clothing	skirt	裙子	skirt			
+clothing	pleated_skirt	百褶裙	skirt	pleated		
+clothing	miniskirt	迷你裙	skirt	short		
+clothing	long_skirt	长裙	skirt	long		
+clothing	pencil_skirt	窄身直筒裙	skirt	pencil		
+clothing	high-waist_skirt	高腰裙	skirt	high-waist		
+clothing	frilled_skirt	褶边裙	skirt	frilled		
+clothing	skirt_set	配套裙装	skirt			
+clothing	pants	长裤	pants			
+clothing	shorts	短裤	shorts			
+clothing	short_shorts	超短裤	shorts	short		
+clothing	bike_shorts	骑行短裤	shorts	tight		
+clothing	jeans	牛仔裤	pants	denim		
+clothing	cargo_pants	工装裤	pants	pockets		
+clothing	swimsuit	泳衣	leotard			
+clothing	one-piece_swimsuit	连体泳衣	leotard			
+clothing	school_swimsuit	学校款泳衣	leotard			
+clothing	bikini	比基尼	bikini			
+clothing	micro_bikini	迷你比基尼	bikini	short		
+clothing	string_bikini	细带比基尼	bikini	string		
+clothing	frilled_bikini	褶边比基尼	bikini	frilled		
+clothing	side-tie_bikini_bottom	侧系带泳裤	panties	side-tie		
+clothing	underwear	内衣	bra			
+clothing	underwear_only	仅穿内衣	bikini			
+clothing	lingerie	贴身内衣	bra	lace		
+clothing	bra	胸罩	bra			
+clothing	panties	内裤	panties			
+clothing	thong	丁字内裤	panties	thong		
+clothing	bow_panties	带蝴蝶结的内裤	panties	bow		
+clothing	leotard	体操服式连体衣	leotard			
+clothing	strapless_leotard	无肩带连体衣	leotard	strapless		
+clothing	highleg_leotard	高开口连体衣	leotard	highleg		
+clothing	bodysuit	包覆身体的连体衣	bodysuit			
+clothing	camisole	吊带上衣	sleeveless			
+clothing	corset	束身胸衣	sleeveless	corset		
+clothing	robe	长袍	coat	long		
+clothing	kimono	和服	kimono			
+clothing	yukata	浴衣	kimono			
+clothing	hakama	袴	pants	wide		
+clothing	japanese_clothes	日式服装	kimono			
+clothing	chinese_clothes	中式服装	dress	side-slit		
+clothing	school_uniform	校服	shirt	sailor		
+clothing	serafuku	水手服	shirt	sailor		
+clothing	uniform	制服	shirt	buttons		
+clothing	military_uniform	军服	coat	buttons		
+clothing	winter_uniform	冬季制服	coat			
+clothing	suit	西装	coat			
+clothing	formal_clothes	正式服装	coat			
+clothing	formal	正式装束	coat			
+clothing	casual	休闲装束	tshirt			
+clothing	maid	女仆装	apron	frilled		
+clothing	maid_apron	女仆围裙	apron	frilled		
+clothing	apron	围裙	apron			
+clothing	waist_apron	腰围裙	apron	cropped		
+clothing	cape	披风	cape			
+clothing	capelet	短披肩	cape	short		
+clothing	cloak	斗篷	cape	hooded		
+clothing	armor	盔甲	armor			
+clothing	shoulder_armor	肩甲	armor	shoulder		
+clothing	pauldrons	肩部护甲	armor	shoulder		
+clothing	long_sleeves	长袖	sleeves			
+clothing	sleeves	袖子	sleeves			
+clothing	glove	手套	gloves			
+clothing	short_sleeves	短袖	sleeves	short		
+clothing	sleeveless	无袖	sleeveless			
+clothing	detached_sleeves	分离袖套	sleeves	detached		袖子不与上衣主体连接。
+clothing	wide_sleeves	宽袖	sleeves	wide		
+clothing	puffy_sleeves	蓬松袖子	sleeves	puffy		
+clothing	puffy_short_sleeves	短泡泡袖	sleeves	puffy,short		
+clothing	puffy_long_sleeves	长泡泡袖	sleeves	puffy,long		
+clothing	juliet_sleeves	上蓬下窄的袖子	sleeves	puffy		上臂较蓬松，前臂贴合。
+clothing	frilled_sleeves	褶边袖子	sleeves	frilled		
+clothing	sleeves_past_wrists	袖子盖过手腕	sleeves	long		
+clothing	sleeves_past_fingers	袖子盖过手指	sleeves	long		
+clothing	sleeves_rolled_up	卷起袖子	sleeves	rolled		
+clothing	gloves	手套	gloves			
+clothing	elbow_gloves	肘部长度手套	gloves	long		
+clothing	fingerless_gloves	露指手套	gloves	fingerless		
+clothing	gauntlets	护手	gloves	armor		
+clothing	bridal_gauntlets	婚礼袖套	gloves	lace		
+clothing	socks	袜子	socks			
+clothing	kneehighs	及膝袜	socks	long		
+clothing	thighhighs	过膝长袜	socks	long		
+clothing	stockings	长筒丝袜	socks	long		
+clothing	pantyhose	连裤袜	pantyhose			
+clothing	fishnets	网格袜	pantyhose	fishnet		
+clothing	striped_thighhighs	条纹过膝袜	socks	striped,long		
+clothing	single_thighhigh	单侧过膝袜	socks	single,long		
+clothing	asymmetrical_legwear	左右不对称的腿部衣物	pantyhose	two-tone		
+clothing	shoes	鞋子	shoes			
+clothing	footwear	鞋履	shoes			
+clothing	boots	靴子	boots			
+clothing	thigh_boots	及大腿长靴	boots	long		
+clothing	knee_boots	及膝靴	boots	long		
+clothing	high_heel_boots	高跟靴	boots	heels		
+clothing	high_heels	高跟鞋	heels			
+clothing	sandals	凉鞋	sandals			
+clothing	sneakers	运动鞋	shoes			
+clothing	loafers	乐福鞋	shoes			
+clothing	mary_janes	搭扣玛丽珍鞋	shoes	strap		
+clothing	hat	帽子	hat			
+clothing	headwear	头部穿戴物	hat			
+clothing	beret	贝雷帽	beret			
+clothing	baseball_cap	棒球帽	cap			
+clothing	peaked_cap	有帽檐的制服帽	cap			
+clothing	witch_hat	尖顶魔女帽	witch_hat			
+clothing	mob_cap	软边包发帽	beret	frilled		
+clothing	maid_headdress	女仆头饰	headband	frilled		
+clothing	helmet	头盔	helmet			
+clothing	headgear	头部装备	helmet			
+clothing	hood	兜帽	hood			
+clothing	hood_up	戴起兜帽	hood			
+clothing	hood_down	放下兜帽	hood	short		
+clothing	veil	面纱	headband	transparent		
+clothing	necktie	领带	tie			
+clothing	bowtie	领结	bow			
+clothing	bow	蝴蝶结	bow			服饰语境中的蝴蝶结；武器弓为 bow_(weapon)。
+clothing	ribbon	丝带蝴蝶结	ribbon			
+clothing	hair_ribbon	发带蝴蝶结	ribbon			
+clothing	hair_bow	头发蝴蝶结	bow			
+clothing	hat_bow	帽子上的蝴蝶结	bow			
+clothing	hat_ribbon	帽子上的丝带	ribbon			
+clothing	neck_ribbon	颈部丝带	ribbon			
+clothing	collar	衣领	collar			
+clothing	sailor_collar	水手领	collar	sailor		
+clothing	detached_collar	独立衣领	collar			
+clothing	high_collar	高领	collar	long		
+clothing	turtleneck	高领款式	collar	long		
+clothing	turtleneck_sweater	高领毛衣	shirt	high-collar,knit		
+clothing	wing_collar	翼状领口	collar			
+clothing	frilled_shirt_collar	褶边衬衫领	collar	frilled		
+clothing	neckerchief	领巾	scarf	short		
+clothing	ascot	宽领巾	scarf	short		
+clothing	scarf	围巾	scarf			
+clothing	belt	腰带	belt			
+clothing	belt_buckle	腰带扣	belt			
+clothing	buckle	搭扣	belt			
+clothing	obi	和服腰带	belt	wide		
+clothing	sash	腰间饰带	belt	wide		
+clothing	thigh_strap	大腿绑带	belt			
+clothing	garter_straps	吊袜带	belt			
+clothing	suspenders	吊裤带	belt	long		
+clothing	choker	颈圈	choker			
+clothing	necklace	项链	necklace			
+clothing	earrings	耳环	earring			
+clothing	single_earring	单侧耳环	earring	single		
+clothing	ring	戒指	ring			
+clothing	bracelet	手镯	bracelet			
+clothing	wristband	腕带	bracelet			
+clothing	wrist_cuffs	手腕饰圈	bracelet			
+clothing	armband	臂章	bracelet			
+clothing	armlet	臂环	bracelet			
+clothing	jewelry	珠宝饰品	gem			
+clothing	beads	珠串	necklace			
+clothing	brooch	胸针	gem			
+clothing	piercing	穿孔饰品	earring			
+clothing	ear_piercing	耳部穿孔饰品	earring			
+clothing	glasses	眼镜	glasses			
+clothing	round_eyewear	圆框眼镜	glasses			
+clothing	black-framed_eyewear	黑框眼镜	glasses			
+clothing	semi-rimless_eyewear	半框眼镜	glasses			
+clothing	sunglasses	太阳镜	glasses	dark-lenses		
+clothing	goggles	护目镜	goggles			
+clothing	eyepatch	眼罩	eyepatch			
+clothing	eyewear_on_head	眼镜放在头顶	glasses	up		
+clothing	mask	口罩或面罩	mask			
+clothing	hairband	发箍	headband			
+clothing	headband	头带	headband			
+clothing	hairclip	发夹	hairclip			
+clothing	hair_ornament	发饰	hairclip			
+clothing	x_hair_ornament	X形发饰	hairclip	cross		
+clothing	star_hair_ornament	星形发饰	star			
+clothing	hair_flower	头发上的花	flower			
+clothing	scrunchie	布发圈	bracelet	frilled		
+clothing	hair_scrunchie	布发圈	bracelet	frilled		
+clothing	hair_tubes	管状发饰	hairclip			
+clothing	hair_bobbles	球状发饰	bracelet			
+clothing	tassel	流苏	ribbon			
+clothing	crown	王冠	crown			
+clothing	tiara	小冠饰	crown	short		
+clothing	buttons	纽扣	badge	buttons		
+clothing	zipper	拉链	shirt	zipper		
+clothing	pocket	口袋	shirt	pockets		
+clothing	frills	褶边	shirt	frilled		
+clothing	fur_trim	毛绒饰边	coat	fur-trim		
+clothing	lace_trim	蕾丝饰边	shirt	lace		
+clothing	ribbon_trim	丝带饰边	shirt	ribbon-trim		
+clothing	gold_trim	金色饰边	coat	gold-trim		
+clothing	denim	牛仔布	pants	denim		
+clothing	plaid	格纹	shirt	plaid		
+clothing	plaid_clothes	格纹衣物	shirt	plaid		
+clothing	striped_clothes	条纹衣物	shirt	striped		
+clothing	vertical-striped_clothes	竖条纹衣物	shirt	vertical-striped		
+clothing	polka_dot	圆点纹	shirt	polka-dot		
+clothing	floral_print	花卉图案	shirt	floral		
+clothing	animal_print	动物纹样	shirt	animal-print		
+clothing	open_clothes	敞开的衣服	shirt	open		
+clothing	wet_clothes	湿衣服	shirt	wet		
+clothing	torn_clothes	破损衣服	shirt	torn		
+clothing	see-through_clothes	透视材质衣服	shirt	transparent		
+clothing	see-through	可透视的材质	shirt	transparent		
+clothing	off_shoulder	露肩款式	shirt	off-shoulder		
+clothing	strapless	无肩带款式	leotard	strapless		
+clothing	halterneck	绕颈款式	leotard	halterneck		
+clothing	highleg	高开口款式	leotard	highleg		
+clothing	cleavage_cutout	胸前镂空	shirt	cutout		
+clothing	clothing_cutout	衣物镂空	shirt	cutout		
+clothing	side_slit	侧开衩	 dress	side-slit		
+clothing	clothes_lift	提起衣物	shirt	lifted		
+clothing	shirt_lift	提起上衣	shirt	lifted		
+clothing	skirt_lift	提起裙子	skirt	lifted		
+clothing	lifting_own_clothes	提起自己的衣物	shirt	lifted		
+clothing	lifted_by_self	自行提起衣物	shirt	lifted		
+clothing	clothes_pull	拉扯衣物	shirt	pulled		
+clothing	panty_pull	拉扯内裤	panties	pulled		
+clothing	clothing_aside	将衣物拨到一边	shirt	aside		
+clothing	undressing	脱衣动作	shirt	pulled		
+clothing	shirt_tucked_in	上衣下摆塞进裤裙	shirt	tucked		
+clothing	strap_slip	肩带滑落	leotard	slip		
+clothing	front-tie_top	前系带上衣	tshirt	bow		
+clothing	skin_tight	贴身衣物	bodysuit	tight		
+clothing	revealing_clothes	覆盖较少的衣物	leotard		category_only	图示仅表示服装类别；具体覆盖范围需结合画面。
+clothing	zettai_ryouiki	裙摆与过膝袜间的露肤区	socks	gap		
+clothing	pelvic_curtain	腰前垂布	apron	cropped		
+clothing	towel	毛巾	scarf			
+clothing	pom_pom_(clothes)	衣物上的绒球	badge			
+pose	standing	站立	pose			
+pose	sitting	坐着	pose			
+pose	kneeling	跪姿	pose			
+pose	on_one_knee	单膝跪地	pose			
+pose	squatting	蹲下	pose			
+pose	lying	躺着	pose			
+pose	on_back	仰躺	pose			
+pose	on_side	侧躺	pose			
+pose	on_stomach	俯卧	pose			
+pose	reclining	斜靠着	pose			
+pose	walking	行走	pose			
+pose	running	跑步	pose			
+pose	jumping	跳跃	pose			
+pose	floating	悬浮	pose			
+pose	flying	飞行	pose			
+pose	all_fours	四肢着地	pose			
+pose	crawling	爬行	pose			
+pose	standing_on_one_leg	单脚站立	pose			
+pose	wariza	W形跪坐	pose			两膝朝前、小腿分向身体两侧的坐姿。
+pose	seiza	正坐	pose			跪坐在脚跟上的姿势。
+pose	crossed_legs	交叉双腿	pose			
+pose	crossed_arms	交叉双臂	pose			
+pose	arms_up	双臂抬起	pose			双臂向上；与水平伸出双臂不同。
+pose	arm_up	单臂抬起	pose			
+pose	hands_up	双手举起	pose			
+pose	hand_up	单手举起	pose			
+pose	outstretched_arms	向外伸出双臂	pose			双臂向外伸展；不等同于向上抬起。
+pose	outstretched_arm	向外伸出单臂	pose			
+pose	spread_arms	展开双臂	pose			
+pose	arms_behind_back	双臂放在背后	pose			
+pose	arm_behind_back	单臂放在背后	pose			
+pose	arms_behind_head	双臂放在头后	pose			
+pose	arm_behind_head	单臂放在头后	pose			
+pose	arm_at_side	单臂垂在身侧	pose			
+pose	arms_at_sides	双臂垂在身侧	pose			
+pose	leg_up	抬起一条腿	pose			
+pose	legs_up	抬起双腿	pose			
+pose	knees_up	膝盖抬起	pose			
+pose	knee_up	单膝抬起	pose			
+pose	legs_apart	双腿分开	pose			
+pose	spread_legs	双腿展开	pose			
+pose	legs_together	双腿并拢	pose			
+pose	leaning_forward	身体前倾	pose			
+pose	leaning_back	身体后倾	pose			
+pose	bent_over	弯腰	pose			
+pose	arched_back	背部拱起	pose			
+pose	head_tilt	歪头	pose			
+pose	head_back	头向后仰	pose			
+pose	arm_support	手臂支撑身体	pose			
+pose	hand_on_own_hip	手放在自己的髋部	pose			
+pose	hand_on_own_chest	手放在自己的胸前	pose			
+pose	hand_on_own_face	手放在自己的脸上	pose			
+pose	hand_in_pocket	手插在口袋里	pose			
+pose	finger_to_mouth	手指靠近嘴部	pose			
+pose	pointing	指向	pose			
+pose	grabbing	抓握	pose			
+pose	carrying	携带或抱持	pose			
+pose	holding	持握物品	pose			
+pose	holding_weapon	持握武器	weapon			
+pose	holding_sword	持剑	sword			
+pose	holding_gun	持枪	gun			
+pose	holding_phone	拿着手机	phone			
+pose	holding_food	拿着食物	fruit			
+pose	holding_book	拿着书	book			
+pose	holding_cup	拿着杯子	cup			
+pose	mouth_hold	用嘴衔住	pose			
+pose	eating	吃东西	face			
+pose	licking	舔舐	face			
+pose	clenched_hand	握拳	hand			
+pose	clenched_hands	双手握拳	hand			
+pose	own_hands_together	自己的双手合在一起	hand			
+pose	index_finger_raised	举起食指	hand			
+pose	v	V字手势	hand			
+pose	bound	被束缚	pose			
+pose	restrained	受到限制	pose			
+pose	trembling	颤抖	pose			
+pose	covering_privates	遮挡私密部位	pose		category_only	图示仅表示动作类别。
+pose	straddling	跨坐	pose			
+interaction	holding_hands	牵手	people			
+interaction	hug	拥抱	people	close		
+interaction	kiss	接吻	couple	close		
+interaction	eye_contact	视线接触	people	gaze		
+interaction	interlocked_fingers	交扣手指	hand			
+interaction	hand_on_another's_head	手放在另一个人的头上	people	head-touch		
+interaction	couple	一对人物	couple			
+interaction	siblings	兄弟姐妹	people	family		
+interaction	sisters	姐妹	people	family		
+interaction	hetero	异性间的亲密关系	couple	male-female	schematic	以人物性别符号和关系示意表达。
+interaction	yuri	女性间的亲密关系	couple	female-female	schematic	
+interaction	yaoi	男性间的亲密关系	couple	male-male	schematic	
+interaction	sex	性行为	couple		category_only	仅显示关系类别图标，不绘制具体行为。
+interaction	vaginal	阴道性交	couple		category_only	
+interaction	anal	肛交	couple		category_only	
+interaction	oral	口部性行为	couple		category_only	
+interaction	fellatio	口交	couple		category_only	
+interaction	paizuri	乳交	couple		category_only	
+interaction	sex_from_behind	从后方的性行为	couple		category_only	
+interaction	cowgirl_position	女性在上方的体位	couple		category_only	
+interaction	girl_on_top	女性处在上方	people		category_only	
+interaction	group_sex	多人性行为	people		category_only	
+interaction	groping	触摸私密部位	people		category_only	
+interaction	grabbing_another's_breast	抓握另一个人的胸部	people		category_only	
+interaction	bdsm	束缚等亲密情境	rope		category_only	
+interaction	bondage	身体束缚	rope			
+object	animal	动物	animals		schematic	狗、鸟与猫的组合用于示意动物这一概念。
+object	cat	猫	cat			
+object	dog	狗	dog			
+object	rabbit	兔子	rabbit			
+object	horse	马	horse			
+object	fox	狐狸	fox			
+object	bird	鸟	bird			
+object	butterfly	蝴蝶	butterfly			
+object	bug	昆虫	bug			
+object	fish	鱼	fish			
+object	robot	机器人	robot			
+object	mecha	机械机体	robot	armor		
+object	animal_ears	兽耳	ears			
+object	cat_ears	猫耳	ears			
+object	dog_ears	狗耳	ears	floppy		
+object	fox_ears	狐狸耳	ears	fox		
+object	wolf_ears	狼耳	ears			
+object	horse_ears	马耳	ears	long		
+object	rabbit_ears	兔耳	rabbit_ears			
+object	fake_animal_ears	装饰用假兽耳	ears	fake		
+object	animal_ear_fluff	兽耳内绒毛	ears	fur-trim		
+object	pointy_ears	尖耳	ears			
+object	extra_ears	额外的耳朵	ears	extra		
+object	tail	尾巴	tail			
+object	cat_tail	猫尾	tail	cat		
+object	fox_tail	狐狸尾	tail	fox		
+object	wolf_tail	狼尾	tail	fox		
+object	horse_tail	马尾巴	tail	hair		
+object	rabbit_tail	兔尾	badge	fluffy		
+object	demon_tail	恶魔尾	tail	spade		
+object	fake_tail	装饰用假尾巴	tail	fake		
+object	multiple_tails	多条尾巴	tail	multiple		
+object	wings	翅膀	wings			
+object	feathered_wings	羽翼	wings			
+object	angel_wings	天使羽翼	wings			
+object	demon_wings	恶魔翅膀	bat_wings			
+object	bat_wings	蝙蝠翅膀	bat_wings			
+object	head_wings	头部翅膀	wings	short		
+object	horns	角	horns			
+object	demon_horns	恶魔角	horns			
+object	dragon_horns	龙角	horns	extra		
+object	claws	爪子	hand	claws		
+object	tentacles	触手	rope	multiple		
+object	halo	光环	halo			
+object	flower	花	flower			
+object	rose	玫瑰	flower	rose		
+object	cherry_blossoms	樱花	flower			
+object	petals	花瓣	flower	petals		
+object	leaf	叶片	leaf			
+object	tree	树	tree			
+object	grass	草	plant	grass		
+object	plant	植物	plant			
+object	fruit	水果	fruit			
+object	food	食物	plate	food		
+object	cake	蛋糕	cake			
+object	candy	糖果	candy			
+object	book	书	book			
+object	phone	手机	phone			
+object	cellphone	手机	phone			
+object	smartphone	智能手机	phone			
+object	bag	包	bag			
+object	backpack	背包	backpack			
+object	headphones	耳机	headphones			
+object	umbrella	雨伞	umbrella			
+object	cup	杯子	cup			
+object	drinking_glass	饮水玻璃杯	cup	transparent		
+object	bottle	瓶子	bottle			
+object	plate	盘子	plate			
+object	gem	宝石	gem			
+object	bell	铃铛	bell			
+object	jingle_bell	小铃铛	bell			
+object	neck_bell	颈部铃铛	bell			
+object	chain	链条	chain			
+object	rope	绳子	rope			
+object	feathers	羽毛	feather			
+object	weapon	武器	weapons		schematic	剑与枪的组合用于示意武器这一概念，不指定具体类型。
+object	sword	剑	sword			
+object	katana	日本刀	sword	curved		
+object	knife	刀	knife			
+object	gun	枪	gun			
+object	handgun	手枪	gun			
+object	rifle	步枪	rifle			
+object	staff	法杖	staff			
+object	polearm	长柄武器	spear			
+object	instrument	乐器	instrument		schematic	弦乐器与键盘乐器的组合示意。
+object	microphone	麦克风	microphone			
+object	ball	球	ball			
+object	box	盒子	box			
+object	gift	礼物	gift			
+object	pillow	枕头	pillow			
+object	stuffed_toy	毛绒玩具	rabbit	toy		
+object	stuffed_animal	动物毛绒玩具	rabbit	toy		
+object	doll	人偶	person	toy		
+object	hand_fan	手持折扇	leaf	fan		
+object	motor_vehicle	机动车	motor_vehicle		schematic	车辆与发动机构件的组合，用于表达由动力驱动的车辆。
+object	car	汽车	car			
+object	nail_polish	指甲油	nails			
+object	fingernails	手指甲	nails			
+object	long_fingernails	长指甲	nails	long		
+object	toenails	脚趾甲	foot	nails		
+object	nails	指甲	nails			
+object	furry	兽人	cat	person	schematic	具有人形特征的动物角色；不是普通动物。
+object	furry_female	女性兽人	cat	person	schematic	
+object	furry_male	男性兽人	cat	person	schematic	
+object	cat_girl	猫耳女性	person	cat-ears	schematic	
+object	fox_girl	狐耳女性	person	fox-ears	schematic	
+object	horse_girl	马耳女性	person	horse-ears	schematic	
+object	wolf_girl	狼耳女性	person	wolf-ears	schematic	
+object	rabbit_girl	兔耳女性	person	rabbit-ears	schematic	
+object	demon_girl	恶魔特征女性	person	horns	schematic	
+object	dragon_girl	龙特征女性	person	horns	schematic	
+object	monster_girl	非人特征女性	person	horns	schematic	
+object	elf	精灵	person	pointy-ears	schematic	
+object	magical_girl	魔法少女题材	person	magic	schematic	
+object	playboy_bunny	兔女郎装束	leotard	rabbit-ears		
+object	kemonomimi_mode	增加兽耳等特征的造型	person	cat-ears	schematic	
+object	pokemon_(creature)	宝可梦生物	cat		category_only	属于生物类名称，需要具体种类资料；不推断特定形象。
+object	solo	单独一人	person		schematic	画面只有一位人物。
+object	no_humans	没有人类人物	person	excluded	schematic	
+object	male_focus	以男性人物为主体	person	focus	schematic	
+object	solo_focus	聚焦单个人物	person	focus	schematic	
+object	child	儿童人物	person	child	schematic	以身高对照示意年龄类别，不判断具体年龄。
+object	loli	幼小女性角色类型	person	child	schematic	人物类型标签；图示仅表达身形与年龄类别，不与其他标签合成。
+object	aged_down	年龄设定变小	person	child	schematic	与通常设定相比年龄降低；需要上下文。
+object	androgynous	中性外貌	person	gender	schematic	外貌性别特征不明显。
+object	genderswap	性别设定变化	people	gender	schematic	与通常设定相比改变性别，需要上下文。
+object	crossdressing	穿着通常归于另一性别的服装	shirt	gender	schematic	
+object	otoko_no_ko	女性化外观的男性人物	person	gender	schematic	
+object	trap	女性化外观的男性人物的旧称标签	person	gender	category_only	含义依赖标签语境；图标仅表示人物类别。
+object	bara	壮硕男性题材	body		category_only	图标仅表示人物体型类别。
+scene	simple_background	简单背景	background			
+scene	background	背景	background			
+scene	transparent_background	透明背景	background	transparent		
+scene	gradient_background	渐变背景	background	two-tone		
+scene	two-tone_background	双色背景	background	two-tone		
+scene	indoors	室内	indoors			
+scene	outdoors	室外	outdoors			
+scene	scenery	风景	outdoors			
+scene	nature	自然景色	outdoors			
+scene	forest	森林	tree	multiple		
+scene	sky	天空	cloud			
+scene	blue_sky	蓝天	cloud			
+scene	cloud	云	cloud			
+scene	cloudy_sky	多云天空	cloud	multiple		
+scene	night_sky	夜空	moon	stars		
+scene	starry_sky	星空	moon	stars		
+scene	star_(sky)	天空中的星星	star			
+scene	day	白天	sun			
+scene	night	夜晚	moon			
+scene	moon	月亮	moon			
+scene	full_moon	满月	sun	moon		
+scene	crescent	新月形状	moon			
+scene	rain	下雨	rain			
+scene	snow	雪	snow			
+scene	wind	风	wind			
+scene	water	水	water			
+scene	ocean	海洋	water			
+scene	beach	海滩	beach			
+scene	fire	火焰	fire			
+scene	smoke	烟雾	cloud			
+scene	steam	蒸汽	cloud			
+scene	building	建筑	building			
+scene	window	窗户	window			
+scene	curtains	窗帘	window	curtains		
+scene	chair	椅子	chair			
+scene	bed	床	bed			
+scene	on_bed	在床上	bed	person		
+scene	bed_sheet	床单	bed			
+scene	table	桌子	table			
+scene	desk	书桌	table	book		
+scene	couch	沙发	couch			
+scene	wading	涉水	water	person		
+composition	full_body	全身画面	frame			画面包含人物从头到脚。
+composition	upper_body	上半身画面	upper_body			
+composition	cowboy_shot	大腿附近以上的景别	upper_body	cowboy		画面下边缘通常在人物大腿中段附近。
+composition	portrait	肖像	portrait			
+composition	close-up	特写	closeup			
+composition	from_above	从上方观察	angle_above			镜头位置高于主体。
+composition	from_below	从下方观察	angle_below			镜头位置低于主体。
+composition	from_side	从侧面观察	angle_side			
+composition	from_behind	从背后观察	angle_side	behind		
+composition	profile	侧面轮廓	portrait	side		
+composition	straight-on	正面视角	portrait			
+composition	pov	第一人称视角	angle_side	pov	schematic	画面模拟参与者视角。
+composition	dutch_angle	倾斜镜头	frame	tilt		画面地平线或主体方向呈倾斜。
+composition	foreshortening	透视缩短	frame	perspective		向镜头方向延伸的物体在投影中显得较短。
+composition	depth_of_field	景深效果	frame	blur		主体与前后景的清晰程度不同。
+composition	blurry_background	模糊背景	blurry			
+composition	feet_out_of_frame	脚部在画面之外	upper_body	crop		
+composition	cropped_legs	腿部被画面裁切	upper_body	crop		
+composition	cropped_torso	躯干被画面裁切	upper_body	crop		
+composition	multiple_views	多个视角	comic			同一画面展示主体的不同视角。
+composition	comic	漫画分格	comic			
+composition	4koma	四格漫画	comic	panels-4		
+composition	border	画面边框	frame	border		
+composition	outside_border	主体越出边框	frame	outside		
+composition	outline	轮廓线	portrait	outline		
+composition	letterboxed	上下黑边画面	frame	letterbox		
+composition	cover	封面构图	book			
+composition	cover_page	封面页	book			
+composition	tachi-e	人物立绘	frame			主要用于展示人物完整造型的插画。
+lighting	sunlight	阳光	light			
+lighting	lighting	光照	light			
+lighting	backlighting	背光	backlight			光源位于主体背后。
+lighting	rim_light	轮廓光	backlight	rim		主体边缘出现亮光。
+lighting	shadow	阴影	portrait	shadow		
+lighting	shaded_face	面部处于阴影	portrait	shadow		
+lighting	glowing	发光	sparkle			
+lighting	light_particles	发光粒子	sparkle	multiple		
+lighting	reflection	反射	frame	mirror		
+style	monochrome	单色画面	palette	monochrome		画面主要使用一种色调，不一定是灰度。
+style	greyscale	灰度画面	palette	greyscale		仅使用黑白与灰度。
+style	sketch	草图	pen	sketch		
+style	traditional_media	传统媒介	pen			使用纸、画笔等实体媒介制作。
+style	anime_coloring	动漫式上色	palette			
+style	chibi	Q版比例	person	chibi		
+style	chibi_only	仅包含Q版人物	person	chibi		
+style	spot_color	局部着色	palette	spot-color		以单色画面配局部彩色区域。
+style	blurry	模糊	blurry			
+style	motion_lines	动作线	wind			用线条表示移动。
+style	sparkle	闪光符号	sparkle			
+style	notice_lines	提示注意的放射线	sparkle			
+style	spikes	尖刺	star			
+style	science_fiction	科幻题材	robot		category_only	图标仅表示科幻类别，不推断具体设定。
+style	parody	模仿作品或风格	comic	compare	schematic	需要与被模仿对象比较。
+style	meme	网络梗	comic	text	schematic	含义取决于具体梗与上下文。
+style	crossover	不同作品交叉	comic	compare	schematic	组合来自不同作品的元素。
+style	dual_persona	同一人物的不同形象	people	compare	schematic	同一角色在画面中呈现多个版本。
+symbol	heart	心形符号	heart			
+symbol	star_(symbol)	星形符号	star			
+symbol	cross	十字形符号	badge	cross		
+symbol	musical_note	音符	music			
+symbol	speech_bubble	对白气泡	speech			
+symbol	thought_bubble	思想气泡	speech	thought		
+symbol	spoken_heart	气泡中的心形	speech	heart		
+symbol	spoken_ellipsis	气泡中的省略号	speech	ellipsis		
+symbol	english_text	英文文字	text			
+symbol	text	文字	text			
+symbol	clothes_writing	衣物上的文字	shirt	text		
+symbol	artist_name	画师名称文字	signature			
+symbol	signature	签名	signature			
+symbol	watermark	水印	text	watermark		
+symbol	logo	标志图案	badge		category_only	图标仅表示标志类别，不推断具体商标。
+symbol	copyright_name	作品名称文字	text			标签描述画面中的名称文字，不是该作品本身。
+symbol	character_name	角色名称文字	text			标签描述画面中的角色名称文字，不制作角色图像。
+symbol	copyright_notice	版权声明文字	text	copyright		
+symbol	web_address	网址文字	text	url		
+symbol	twitter_username	社交平台用户名文字	text	at		
+symbol	patreon_username	赞助平台用户名文字	text	at		
+symbol	dated	画面有日期	text	date		
+symbol	censored	内容被遮挡	censor			
+symbol	bar_censor	遮挡条	censor			
+symbol	mosaic_censoring	马赛克遮挡	mosaic			
+symbol	convenient_censoring	利用物体遮挡内容	censor			
+symbol	uncensored	没有遮挡	portrait			
+symbol	?	问号	text	question		
+symbol	!	感叹号	text	exclamation		
+symbol	...	省略号	text	ellipsis		
+symbol	^^^	尖锯齿嘴形	face		schematic	属于符号化的嘴部画法。
+symbol	anger_vein	漫画怒气符号	badge	cross		
+symbol	blood	血液	drop	red		
+symbol	wet	湿润状态	drop	wet		
+face	dot_nose	点状鼻子画法	face			鼻子用一个小点表现。
+body	between_breasts	胸部之间的位置	body	between		以中线和相邻部位定位示意。
+symbol	blood_on_face	面部沾血	face	blood		
+symbol	saliva	唾液	drop			
+symbol	drooling	流口水	face	drop		
+symbol	breath	呼气	cloud			
+symbol	cum	精液	drop		category_only	仅显示液体类别图标。
+symbol	cum_in_pussy	阴道内的精液	body		category_only	仅显示身体区域类别图标。
+symbol	cum_on_body	身体上的精液	body		category_only	
+symbol	cum_on_breasts	胸部上的精液	body		category_only	
+symbol	pussy_juice	女性分泌液	drop		category_only	
+symbol	ejaculation	射精状态	drop		category_only	
+symbol	facial	射在面部的情境	face		category_only	该词在此词表的含义依赖成人标签语境；不按一般形容词翻译。
+symbol	sex_toy	成人用品	badge		category_only	需要具体物品类型，图标仅表示类别。
+symbol	pantyshot	从视角中可见内裤	panties		category_only	
+symbol	nude	没有穿衣	person	clothes-removed	schematic	以衣物移除符号表示，不绘制人体细节。
+symbol	completely_nude	全身未穿衣	person	clothes-removed	schematic	
+symbol	topless	上半身未穿衣	shirt	excluded	schematic	
+symbol	topless_female	女性上半身未穿衣	shirt	excluded	schematic	
+symbol	topless_male	男性上半身未穿衣	shirt	excluded	schematic	
+symbol	bottomless	下半身未穿衣	pants	excluded	schematic	
+symbol	no_shoes	没有穿鞋	shoes	excluded	schematic	
+symbol	no_bra	没有胸罩	bra	excluded	schematic	
+symbol	no_panties	没有内裤	panties	excluded	schematic	
+symbol	no_pants	没有裤子	pants	excluded	schematic	
+symbol	clothed_female_nude_male	女性穿衣、男性未穿衣	people	clothes-removed	schematic	以人物与衣物符号表达，不绘制人体细节。
+symbol	alternate_costume	不同于通常设定的服装	shirt	compare	schematic	需要与人物通常服装对照。
+symbol	official_alternate_costume	官方设计的其他服装	shirt	compare	schematic	
+symbol	adapted_costume	改编设计的服装	shirt	compare	schematic	
+symbol	cosplay	角色扮装	shirt	compare	schematic	装扮成其他角色，需要上下文。
+symbol	virtual_youtuber	虚拟主播	virtual_streamer		schematic	屏幕中的虚拟形象与视频符号组合，不指定具体主播身份。
+symbol	military	军事题材	armor		category_only	
+symbol	faceless	不呈现面部	portrait	excluded	schematic	
+symbol	happy_birthday	生日祝贺主题	cake			
+symbol	christmas	圣诞主题	tree	gift		
+symbol	bandages	绷带	belt	bandage		
+symbol	bandaid	创可贴	belt	bandage		
+symbol	sheath	刀剑鞘	sword	sheath		
+symbol	o-ring	O形圆环	bracelet			
+symbol	masterpiece	高完成度质量提示词	badge	quality	schematic	提示词中的主观质量描述，不代表模型验证的质量。
+symbol	best_quality	最佳质量提示词	badge	quality	schematic	
+symbol	high_quality	高质量提示词	badge	quality	schematic	
+symbol	amazing_quality	优秀质量提示词	badge	quality	schematic	
+symbol	low_quality	低质量提示词	badge	low-quality	schematic	
+symbol	worst_quality	最差质量提示词	badge	low-quality	schematic	
+symbol	highres	高分辨率	frame	resolution	schematic	
+symbol	absurdres	极高分辨率	frame	resolution	schematic	
+symbol	lowres	低分辨率	frame	low-resolution	schematic	
+symbol	jpeg_artifacts	JPEG压缩失真	mosaic			
+rating	general	一般内容评级	rating	general	schematic	模型的内容评级名称；与标签类别 General 不同。
+rating	sensitive	敏感内容评级	rating	sensitive	schematic	
+rating	questionable	可能涉及成人内容的评级	rating	questionable	schematic	
+rating	explicit	明确成人内容的评级	rating	explicit	schematic	

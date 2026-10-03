@@ -1,0 +1,8 @@
+# Optional NVIDIA CUDA runtime. Do not install alongside onnxruntime.
+# Official ONNX Runtime extras install CUDA/cuDNN DLLs inside this environment;
+# they do not install a system-wide CUDA Toolkit or modify the NVIDIA driver.
+numpy>=1.24,<3
+Pillow>=10,<13
+pillow-heif>=0.16,<2
+PySide6>=6.7,<7
+onnxruntime-gpu[cuda,cudnn]>=1.21,<2

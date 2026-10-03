@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "tags": [
+    "black_hair", "white_hair", "blue_hair", "long_hair", "short_hair", "twintails",
+    "ponytail", "braid", "twin_braids", "blunt_bangs", "hair_between_eyes", "hair_over_one_eye",
+    "blue_eyes", "green_eyes", "closed_eyes", "one_eye_closed", "heterochromia", "heart-shaped_pupils",
+    "smile", "angry", "crying", "blush", "looking_up", "looking_down",
+    "standing", "sitting", "kneeling", "arms_up", "outstretched_arms", "hand_on_own_hip",
+    "white_shirt", "black_shirt", "white_dress", "sleeveless_shirt", "long_sleeves", "short_sleeves",
+    "striped_shirt", "gloves", "pleated_skirt", "boots",
+    "cat", "flower", "book", "from_above", "full_body", "indoors", "outdoors", "backlighting"
+  ]
+}

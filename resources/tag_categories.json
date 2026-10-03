@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "group_order": [
+    "quality",
+    "count",
+    "subject",
+    "character",
+    "hair",
+    "eyes_face",
+    "body",
+    "clothing",
+    "accessories",
+    "pose_action",
+    "expression",
+    "composition",
+    "background",
+    "lighting",
+    "style",
+    "other"
+  ],
+  "groups": {
+    "quality": {
+      "exact": [
+        "masterpiece",
+        "best quality",
+        "amazing quality",
+        "high quality",
+        "absurdres",
+        "highres"
+      ]
+    },
+    "count": {
+      "exact": [
+        "solo",
+        "1girl",
+        "1boy",
+        "2girls",
+        "2boys",
+        "multiple girls",
+        "multiple boys"
+      ]
+    },
+    "subject": {
+      "exact": [
+        "girl",
+        "boy",
+        "woman",
+        "man",
+        "animal",
+        "cat",
+        "dog"
+      ]
+    },
+    "character": {},
+    "hair": {
+      "exact": [
+        "blonde hair",
+        "black hair",
+        "brown hair",
+        "blue hair",
+        "pink hair",
+        "red hair",
+        "white hair",
+        "short hair",
+        "long hair",
+        "twintails",
+        "ponytail"
+      ],
+      "suffixes": [" hair"]
+    },
+    "eyes_face": {
+      "exact": [
+        "blue eyes",
+        "brown eyes",
+        "green eyes",
+        "red eyes",
+        "purple eyes",
+        "looking at viewer",
+        "freckles",
+        "makeup"
+      ],
+      "suffixes": [" eyes"]
+    },
+    "body": {
+      "exact": [
+        "large breasts",
+        "small breasts",
+        "slim",
+        "muscular",
+        "dark skin",
+        "pale skin",
+        "pointy ears"
+      ]
+    },
+    "clothing": {
+      "exact": [
+        "dress",
+        "shirt",
+        "skirt",
+        "school uniform",
+        "jacket",
+        "coat",
+        "swimsuit",
+        "armor"
+      ],
+      "suffixes": [" dress", " shirt", " skirt", " uniform"]
+    },
+    "accessories": {
+      "exact": [
+        "hat",
+        "glasses",
+        "earrings",
+        "necklace",
+        "hair ornament",
+        "ribbon",
+        "choker"
+      ]
+    },
+    "pose_action": {
+      "exact": [
+        "standing",
+        "sitting",
+        "lying",
+        "walking",
+        "running",
+        "jumping",
+        "holding",
+        "arms up"
+      ]
+    },
+    "expression": {
+      "exact": [
+        "smile",
+        "open mouth",
+        "closed mouth",
+        "blush",
+        "crying",
+        "angry",
+        "surprised"
+      ]
+    },
+    "composition": {
+      "exact": [
+        "portrait",
+        "upper body",
+        "full body",
+        "cowboy shot",
+        "close-up",
+        "from above",
+        "from below",
+        "depth of field"
+      ]
+    },
+    "background": {
+      "exact": [
+        "simple background",
+        "white background",
+        "outdoors",
+        "indoors",
+        "city",
+        "forest",
+        "sky",
+        "night"
+      ],
+      "suffixes": [" background"]
+    },
+    "lighting": {
+      "exact": [
+        "backlighting",
+        "rim light",
+        "sunlight",
+        "dramatic lighting",
+        "soft lighting"
+      ],
+      "suffixes": [" lighting"]
+    },
+    "style": {
+      "exact": [
+        "anime coloring",
+        "digital art",
+        "watercolor",
+        "sketch",
+        "lineart",
+        "monochrome"
+      ]
+    },
+    "other": {}
+  }
+}
