@@ -1199,5 +1199,11 @@
     "bytes": 1603334582,
     "sha256": "123e0171ab0ea8c7b5d6b30921ed9bd0d154077b3128bb77e99bf327ff3b2c70"
   },
-  "application_source_comparison": null
+  "application_source_comparison": null,
+  "recovered_source": {
+    "source_commit": "fdd30d76d20c119e3521f6e1a02681f3a836c628",
+    "source_tag": "v1.3.0-preview.20261003-source",
+    "application_modules_verified": 68,
+    "source_status": "reconstructed-app-bytecode-verified"
+  }
 }

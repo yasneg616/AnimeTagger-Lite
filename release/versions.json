@@ -110,8 +110,8 @@
       "version": "1.3.0",
       "tag": "v1.3.0-preview.20261003",
       "kind": "preview",
-      "source_commit": null,
-      "source_status": "portable-only",
+      "source_commit": "fdd30d76d20c119e3521f6e1a02681f3a836c628",
+      "source_status": "reconstructed-app-bytecode-verified",
       "model_weights_included": false,
       "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.3.0-preview.20261003",
       "assets": [
@@ -130,6 +130,11 @@
         "private_runtime_files_absent": true,
         "cli_version": "AnimeTagger Lite 1.3.0",
         "cli_exit_code": 0
+      },
+      "source_tag": "v1.3.0-preview.20261003-source",
+      "source_recovery": {
+        "application_modules_verified": 68,
+        "scope": "application source and original package resources; original development and build directories not reconstructed"
       }
     },
     {
