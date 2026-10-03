@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "repository": "yasneg616/AnimeTagger-Lite",
+  "archived_date": "2026-10-04",
+  "distribution": "source and manifests in Git; model-free programs in the same repository's Releases",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "tag": "v1.0.0",
+      "kind": "stable",
+      "source_commit": "a46d68a2fc2a573093ae52e983f63274d82b7cfb",
+      "source_status": "published-source",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.0.0",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.0.0-win64-cpu-portable.zip",
+          "bytes": 78922383,
+          "sha256": "efc21ba19da6205eeb2a166e89a1cc83ec9d742e53d9db37f962fff9296c2e7c",
+          "download_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/download/v1.0.0/AnimeTaggerLite-1.0.0-win64-cpu-portable.zip"
+        },
+        {
+          "name": "AnimeTaggerLite-1.0.0-win64-cuda-portable.zip",
+          "bytes": 1435178834,
+          "sha256": "83d5b6a56feab1d4dade2c74d7def3cabaf7df65b67f270a4ab66a5e5bd11ec8",
+          "download_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/download/v1.0.0/AnimeTaggerLite-1.0.0-win64-cuda-portable.zip"
+        }
+      ],
+      "existing_release_preserved": true
+    },
+    {
+      "version": "1.1.0",
+      "tag": "v1.1.0",
+      "kind": "stable",
+      "source_commit": null,
+      "source_status": "portable-only",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.1.0",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.1.0-win64-cuda-portable-no-models.zip",
+          "bytes": 1653054118,
+          "sha256": "90c8e529fd5004c7cc456e478596bb448e56a25f6929b03730ba9c12f8c72875"
+        }
+      ],
+      "manifest": "manifests/v1.1.0.json",
+      "validation": {
+        "tag": "v1.1.0",
+        "archive_sha256_matched": true,
+        "file_sha256_verified": 3353,
+        "model_weights_absent": true,
+        "private_runtime_files_absent": true,
+        "cli_version": "AnimeTagger Lite 1.1.0",
+        "cli_exit_code": 0
+      }
+    },
+    {
+      "version": "1.2.0",
+      "tag": "v1.2.0",
+      "kind": "stable",
+      "source_commit": "cad504bf9c09b4d568ab6fafa2f4a4e02c60b48d",
+      "source_status": "exact-app-snapshot",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.2.0",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.2.0-win64-cuda-portable-no-models.zip",
+          "bytes": 1602182917,
+          "sha256": "3b22672ac46b3f149964f91132e26994376e21f38c6a4b211ca6b038fffe7b44"
+        }
+      ],
+      "manifest": "manifests/v1.2.0.json",
+      "validation": {
+        "tag": "v1.2.0",
+        "archive_sha256_matched": true,
+        "file_sha256_verified": 223,
+        "model_weights_absent": true,
+        "private_runtime_files_absent": true,
+        "cli_version": "AnimeTagger Lite 1.2.0",
+        "cli_exit_code": 0
+      }
+    },
+    {
+      "version": "1.2.1",
+      "tag": "v1.2.1",
+      "kind": "stable",
+      "source_commit": "a62eb19d1ba47d86721da9ce7d89fb75db9bbc39",
+      "source_status": "exact-app-snapshot",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.2.1",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.2.1-win64-cuda-portable-no-models.zip",
+          "bytes": 1602194120,
+          "sha256": "8685269c5c9261d54a7e30ef19d3af5f143cd9ef2a9d3be6e7ccd32c7ad1b596"
+        }
+      ],
+      "manifest": "manifests/v1.2.1.json",
+      "validation": {
+        "tag": "v1.2.1",
+        "archive_sha256_matched": true,
+        "file_sha256_verified": 223,
+        "model_weights_absent": true,
+        "private_runtime_files_absent": true,
+        "cli_version": "AnimeTagger Lite 1.2.1",
+        "cli_exit_code": 0
+      }
+    },
+    {
+      "version": "1.3.0",
+      "tag": "v1.3.0-preview.20261003",
+      "kind": "preview",
+      "source_commit": null,
+      "source_status": "portable-only",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.3.0-preview.20261003",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.3.0-preview.20261003-win64-cuda-portable-no-models.zip",
+          "bytes": 1603334582,
+          "sha256": "123e0171ab0ea8c7b5d6b30921ed9bd0d154077b3128bb77e99bf327ff3b2c70"
+        }
+      ],
+      "manifest": "manifests/v1.3.0-preview.20261003.json",
+      "validation": {
+        "tag": "v1.3.0-preview.20261003",
+        "archive_sha256_matched": true,
+        "file_sha256_verified": 233,
+        "model_weights_absent": true,
+        "private_runtime_files_absent": true,
+        "cli_version": "AnimeTagger Lite 1.3.0",
+        "cli_exit_code": 0
+      }
+    },
+    {
+      "version": "1.3.0",
+      "tag": "v1.3.0",
+      "kind": "stable",
+      "source_commit": "97497e957bff4983ed54c5ecb40da784fa0c8fb1",
+      "source_status": "exact-app-snapshot",
+      "model_weights_included": false,
+      "release_url": "https://github.com/yasneg616/AnimeTagger-Lite/releases/tag/v1.3.0",
+      "assets": [
+        {
+          "name": "AnimeTaggerLite-1.3.0-win64-cuda-portable-no-models.zip",
+          "bytes": 1603386825,
+          "sha256": "d0be2534ef03c872c680f93fc080a44ab27bf0845b49013f6dca0971fc53a68b"
+        }
+      ],
+      "manifest": "manifests/v1.3.0.json",
+      "validation": {
+        "tag": "v1.3.0",
+        "archive_sha256_matched": true,
+        "file_sha256_verified": 240,
+        "model_weights_absent": true,
+        "private_runtime_files_absent": true,
+        "cli_version": "AnimeTagger Lite 1.3.0",
+        "cli_exit_code": 0
+      }
+    }
+  ]
+}

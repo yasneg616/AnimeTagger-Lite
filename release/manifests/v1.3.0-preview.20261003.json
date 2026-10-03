@@ -1,0 +1,1203 @@
+{
+  "schema": 1,
+  "application": "AnimeTagger Lite",
+  "version": "1.3.0",
+  "tag": "v1.3.0-preview.20261003",
+  "variant": "cuda",
+  "model_weights_included": false,
+  "source_commit": null,
+  "source_status": "portable-only",
+  "omitted_model_weights": [
+    {
+      "path": "models/pixai-tagger-v0.9/model.onnx",
+      "bytes": 1271365854
+    },
+    {
+      "path": "models/wd-eva02-tagger-2026-canary/model.safetensors",
+      "bytes": 1283805204
+    },
+    {
+      "path": "models/wd-vit-tagger-v3/model.onnx",
+      "bytes": 378536310
+    }
+  ],
+  "omitted_private_files": 0,
+  "omitted_cache_files": 0,
+  "supplemental_files_restored_from_git": 0,
+  "files": [
+    {
+      "path": "AnimeTaggerLite.exe",
+      "bytes": 1601546269,
+      "sha256": "7fa2d7031e1c9a0be634a4cda4f1e6bcc35e59959f786cd1e02e678312b72fbb"
+    },
+    {
+      "path": "BUILD-MANIFEST.json",
+      "bytes": 1583,
+      "sha256": "46712a2a6350a62a5ff1ec7c2f595264c41600fc8ce8a6c08cf500f696f40002",
+      "original_sha256": "72cb4898a095f20aad0f8abfcd8faf6c7de0f1c44e7e00946136e7aa1a9eeaa4"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1084,
+      "sha256": "b31f6d356d70aa96bf3f48efdee47bb6f7c59b53bfb140fecb0089e719141079"
+    },
+    {
+      "path": "LICENSES/CPython-3.11.9/LICENSE.txt",
+      "bytes": 36874,
+      "sha256": "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419"
+    },
+    {
+      "path": "LICENSES/MarkupSafe-3.0.3/LICENSE.txt",
+      "bytes": 1503,
+      "sha256": "4631ec0db5fd90a547e336817264c6798214338146f8ac94b4a57f96ee8c9ec4"
+    },
+    {
+      "path": "LICENSES/MarkupSafe-3.0.3/METADATA.txt",
+      "bytes": 91,
+      "sha256": "80e0336d6c5d56c973073613e622d157b4230db2d84d2104d49f967a39ec0bf0"
+    },
+    {
+      "path": "LICENSES/Pillow-12.3.0/LICENSE",
+      "bytes": 78016,
+      "sha256": "4f7866a74802c6326f81faff59a56546b6aec2b10b91973e0e9308de95e79857"
+    },
+    {
+      "path": "LICENSES/Pillow-12.3.0/METADATA.txt",
+      "bytes": 83,
+      "sha256": "e2bdbfb385bdaa2d83d26e6cec9f3776bce433bae16f13a7a593faa8b0d14a90"
+    },
+    {
+      "path": "LICENSES/PyInstaller-6.21.0/COPYING.txt",
+      "bytes": 32138,
+      "sha256": "dcf75fdb959db1e3b41c0f8505069d2ece781b5ec6b3d0a4d30975cfc6580245"
+    },
+    {
+      "path": "LICENSES/PyInstaller-6.21.0/METADATA.txt",
+      "bytes": 222,
+      "sha256": "4c12148b673078c8cba7b696cf98beaf35ed0254cec8242250a57eea9c4a2e01"
+    },
+    {
+      "path": "LICENSES/PySide6-6.11.1/LicenseRef-Qt-Commercial.txt",
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    {
+      "path": "LICENSES/PySide6-6.11.1/METADATA.txt",
+      "bytes": 122,
+      "sha256": "4c6548d1492f728721e11c9e60d81781115334723a56106eb992e9c652a80421"
+    },
+    {
+      "path": "LICENSES/PySide6-Essentials-6.11.1/LicenseRef-Qt-Commercial.txt",
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    {
+      "path": "LICENSES/PySide6-Essentials-6.11.1/METADATA.txt",
+      "bytes": 133,
+      "sha256": "3094ae4be8d76053f2b0a7a1ea3157a28fb9e1166d151b88da04027388269681"
+    },
+    {
+      "path": "LICENSES/PyYAML-6.0.3/LICENSE",
+      "bytes": 1101,
+      "sha256": "8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4"
+    },
+    {
+      "path": "LICENSES/PyYAML-6.0.3/METADATA.txt",
+      "bytes": 98,
+      "sha256": "f51cee85cb78b8a9e15eb60e2eae81c276041ce8506bde53c8054f8fef31f44e"
+    },
+    {
+      "path": "LICENSES/Qt-for-Python-6.11.1/APPLICABLE-LICENSE.txt",
+      "bytes": 339,
+      "sha256": "df46989b8b371e32d3a12d42294bf103b7783f35923b7f368c16679af0fe3a92"
+    },
+    {
+      "path": "LICENSES/Qt-for-Python-6.11.1/GPL-3.0.txt",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "LICENSES/Qt-for-Python-6.11.1/LGPL-3.0.txt",
+      "bytes": 7652,
+      "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+    },
+    {
+      "path": "LICENSES/README.txt",
+      "bytes": 712,
+      "sha256": "0869a72d0091bb96a1f8496bb00f69314d8227c0287c459fee3c9e43aba5451e"
+    },
+    {
+      "path": "LICENSES/anyio-4.15.1/LICENSE",
+      "bytes": 1081,
+      "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+    },
+    {
+      "path": "LICENSES/anyio-4.15.1/METADATA.txt",
+      "bytes": 78,
+      "sha256": "e1908bb4d89d0c58bb2c58cc128aab52b5198b53a127d22ffa01e455f1e7da24"
+    },
+    {
+      "path": "LICENSES/certifi-2026.7.22/LICENSE",
+      "bytes": 989,
+      "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+    },
+    {
+      "path": "LICENSES/certifi-2026.7.22/METADATA.txt",
+      "bytes": 129,
+      "sha256": "786237bfb1bacb906acc04e48632183102fb53bf212a8426a5a8f37588d2009e"
+    },
+    {
+      "path": "LICENSES/click-8.5.0/LICENSE.txt",
+      "bytes": 1475,
+      "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+    },
+    {
+      "path": "LICENSES/click-8.5.0/METADATA.txt",
+      "bytes": 86,
+      "sha256": "26ca07651295db652dfaf864a5630a175e0878ccd81845be336c6103d2cadab4"
+    },
+    {
+      "path": "LICENSES/filelock-3.32.3/LICENSE",
+      "bytes": 1088,
+      "sha256": "608c89d5060ae9921adccf3236695bc654a9946e12323ef6c021dfa04e294d48"
+    },
+    {
+      "path": "LICENSES/filelock-3.32.3/METADATA.txt",
+      "bytes": 81,
+      "sha256": "cc6f62d043a252066a11bacce120e7481f3f7dd8404816791916c216bfda2ab1"
+    },
+    {
+      "path": "LICENSES/fsspec-2026.7.0/LICENSE",
+      "bytes": 1513,
+      "sha256": "2dc35496ce53a7307915c008a844aad53e772b49b34cdd00445067691407ec94"
+    },
+    {
+      "path": "LICENSES/fsspec-2026.7.0/METADATA.txt",
+      "bytes": 90,
+      "sha256": "a7c9881d2be6e0ea46a0205af6cf25e154b17c983b1e23306a6157e008d620eb"
+    },
+    {
+      "path": "LICENSES/h11-0.16.0/LICENSE.txt",
+      "bytes": 1124,
+      "sha256": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361"
+    },
+    {
+      "path": "LICENSES/h11-0.16.0/METADATA.txt",
+      "bytes": 112,
+      "sha256": "a81d6a8406a1b0383302720df67ad418dda38b74ee4096ad7f0e9a34c980cbba"
+    },
+    {
+      "path": "LICENSES/httpcore-1.0.9/LICENSE.md",
+      "bytes": 1518,
+      "sha256": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5"
+    },
+    {
+      "path": "LICENSES/httpcore-1.0.9/METADATA.txt",
+      "bytes": 89,
+      "sha256": "6c2823c2e1ecc65d460eb0f0a60b7b9e9130671ab60649e99746d5b5a430c088"
+    },
+    {
+      "path": "LICENSES/httpx-0.28.1/LICENSE.md",
+      "bytes": 1508,
+      "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+    },
+    {
+      "path": "LICENSES/httpx-0.28.1/METADATA.txt",
+      "bytes": 87,
+      "sha256": "e79afa84ac58f169ef59a9cf7ab1477a94eb03cd23ff81a41bb7ec8acf68f18e"
+    },
+    {
+      "path": "LICENSES/huggingface-hub-1.31.0/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "LICENSES/huggingface-hub-1.31.0/METADATA.txt",
+      "bytes": 142,
+      "sha256": "e769aa178e9badd68272c1b561aa30b6826130942079cf7d7d3c2612a57a8835"
+    },
+    {
+      "path": "LICENSES/idna-3.19/LICENSE.md",
+      "bytes": 1541,
+      "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+    },
+    {
+      "path": "LICENSES/idna-3.19/METADATA.txt",
+      "bytes": 84,
+      "sha256": "31240d56f18e4725f29136b2bf411fce41d83e89fcfa0c8bc977cef342f56c14"
+    },
+    {
+      "path": "LICENSES/jinja2-3.1.6/LICENSE.txt",
+      "bytes": 1475,
+      "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+    },
+    {
+      "path": "LICENSES/jinja2-3.1.6/METADATA.txt",
+      "bytes": 75,
+      "sha256": "cfc76283f5012228037b1b36ba2c011fca9beae113fd8d9b69670a3ab9d576d2"
+    },
+    {
+      "path": "LICENSES/mpmath-1.3.0/LICENSE",
+      "bytes": 1537,
+      "sha256": "c26cae81da4508e5e249985777a33821f183223ebb74d7f8cfbf90fe7eef2fb7"
+    },
+    {
+      "path": "LICENSES/mpmath-1.3.0/METADATA.txt",
+      "bytes": 97,
+      "sha256": "4f0fa61675ebcc615448acabf9f10b92d552fcaf4263855b64dee20417a61c67"
+    },
+    {
+      "path": "LICENSES/networkx-3.6.1/LICENSE.txt",
+      "bytes": 1763,
+      "sha256": "3cf7c3a179d817b23b8b8568211769fefdf93797d207d984b8b2fa24d0220b33"
+    },
+    {
+      "path": "LICENSES/networkx-3.6.1/METADATA.txt",
+      "bytes": 89,
+      "sha256": "0bdae1a6ca7029d64c13bee869a6c1de3a778fee8f8bdfb464826094465c08c2"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/02-LICENSE.txt",
+      "bytes": 1039,
+      "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/07-LICENSE",
+      "bytes": 1573,
+      "sha256": "585483905b13d4b42f800c55ba99e89d6e2e33ccd5f503e201c07531d148ff41"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/08-LICENSE.md",
+      "bytes": 1523,
+      "sha256": "8db000e158c162e7249787852d8c69764706502ccee725c06641b31c1e95c8af"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/09-LICENSE.txt",
+      "bytes": 2314,
+      "sha256": "19060ef465e1797d682ee0fc3081bd25ab1395e995e43d25c9d13c95d9a3cd6b"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/10-LICENSE",
+      "bytes": 1616,
+      "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/11-LICENSE.md",
+      "bytes": 3582,
+      "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/12-LICENSE.md",
+      "bytes": 2805,
+      "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/13-LICENSE.md",
+      "bytes": 2986,
+      "sha256": "92c10699884321f1c2947fe2a70ab23b0fbf1507f756d89dd08f38c61fc3d4fa"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/14-LICENSE.md",
+      "bytes": 1176,
+      "sha256": "41190663b77bee5302386495a07b7eabfbfa571aa0ae2f11da6764162062fc4f"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/15-LICENSE.md",
+      "bytes": 1540,
+      "sha256": "322ac46d870c8aeead6c53adcccc839296fb3c8e456eae155081297daf7f8013"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/16-LICENSE.md",
+      "bytes": 1253,
+      "sha256": "28cad82ce1379dc529df30da78ec012d7d0d1d576b03ddcb93388aee53659f59"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/17-LICENSE.md",
+      "bytes": 340,
+      "sha256": "454ec7350e478e037061850b67395753b425b1cb0a34bbc26290b020bf89d763"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/18-LICENSE.txt",
+      "bytes": 1039,
+      "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/19-LICENSE",
+      "bytes": 1616,
+      "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/20-LICENSE.md",
+      "bytes": 3582,
+      "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/COPYING",
+      "bytes": 704,
+      "sha256": "aea41976c720f91bd19725c16916a1ace40eb1ea42620d340e587a5de4bbcea0"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/LICENSE",
+      "bytes": 21155,
+      "sha256": "d208152e2777ffd0126eacc1bd21c0320d69e4e6b622d21a2a12a47e8ef73763"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/LICENSE.md",
+      "bytes": 1542,
+      "sha256": "a732977853530066790c42817087f4829b518dd98d340c916acbfd227e39d3cb"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/LICENSE.txt",
+      "bytes": 45831,
+      "sha256": "a804dff0ead9fadc5293456410bcbfc32bf024be9c4513459663fb7b442d2341"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/METADATA.txt",
+      "bytes": 124,
+      "sha256": "c3e2351b52c12d499787e7cf2fc5b2100fde7f6134d94150ed2767ff16acb890"
+    },
+    {
+      "path": "LICENSES/numpy-2.4.6/dragon4_LICENSE.txt",
+      "bytes": 1441,
+      "sha256": "b0fd592d4ead563148e3977e7b589169d46a5ef2ff133c755a81af880a3fc919"
+    },
+    {
+      "path": "LICENSES/nvidia-cublas-13.7.0.27/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-cublas-13.7.0.27/METADATA.txt",
+      "bytes": 154,
+      "sha256": "db1b8d1beb052a256d96d8005c47dc95db98c83f4436f5b36e9aa2eeabef48ec"
+    },
+    {
+      "path": "LICENSES/nvidia-cuda-nvrtc-13.4.59/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-cuda-nvrtc-13.4.59/METADATA.txt",
+      "bytes": 156,
+      "sha256": "6a68ff41a2cd5ac9280667650c889b63e70860458434754439fbd71f0ca9ec16"
+    },
+    {
+      "path": "LICENSES/nvidia-cuda-runtime-13.4.49/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-cuda-runtime-13.4.49/METADATA.txt",
+      "bytes": 158,
+      "sha256": "3a68669d3ba010e0af624868d211a7656432eab927f932c217b163f7c0203b95"
+    },
+    {
+      "path": "LICENSES/nvidia-cudnn-cu13-9.26.0.51/License.txt",
+      "bytes": 18174,
+      "sha256": "49cf79bdb35734b52fe6203013b3bd759f81e998cd32aa2c65c51db9a88c61d2"
+    },
+    {
+      "path": "LICENSES/nvidia-cudnn-cu13-9.26.0.51/METADATA.txt",
+      "bytes": 158,
+      "sha256": "d50760875d563817d4b9f7af83eec57b95d88a703741bda25b83e2da4c523402"
+    },
+    {
+      "path": "LICENSES/nvidia-cufft-12.4.0.34/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-cufft-12.4.0.34/METADATA.txt",
+      "bytes": 153,
+      "sha256": "2855448d6ec82b57af896134fc6bc25f93e64d5cf042922696144a0018eee141"
+    },
+    {
+      "path": "LICENSES/nvidia-curand-10.4.4.49/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-curand-10.4.4.49/METADATA.txt",
+      "bytes": 154,
+      "sha256": "5eb03f3d8eb0c5d407231d9c7e56d499b891274b4f617db265469f9023450c38"
+    },
+    {
+      "path": "LICENSES/nvidia-nvjitlink-13.4.52/License.txt",
+      "bytes": 59262,
+      "sha256": "ad6f5853fba0ca0d159d0f58d49ae49830c2f8c93f7a92648b9ce90adb4c6ccd"
+    },
+    {
+      "path": "LICENSES/nvidia-nvjitlink-13.4.52/METADATA.txt",
+      "bytes": 155,
+      "sha256": "efeeb0276b51420222958770e21c5743a56275a8965a74f214cdff7f7f08b290"
+    },
+    {
+      "path": "LICENSES/onnxruntime-gpu-1.28.0/LICENSE",
+      "bytes": 1094,
+      "sha256": "c250d6278f0b47a6439fb7592b08b58a55eb9f535aa49a1db63211c3f982b674"
+    },
+    {
+      "path": "LICENSES/onnxruntime-gpu-1.28.0/METADATA.txt",
+      "bytes": 119,
+      "sha256": "2eca72d3646adcbb4755b85b12201b03e15edd1ed70f3ad2179458a37f30444b"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/LICENSE",
+      "bytes": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/LICENSE.APACHE",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/LICENSE.BSD",
+      "bytes": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/METADATA.txt",
+      "bytes": 103,
+      "sha256": "fa0f1c07cd8b7b276f13e53be39064e6b61d433f3950845e29a9c4158a6f5034"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/__init__.py",
+      "bytes": 7859,
+      "sha256": "590d12eee73ddbec53b4e9ee5bfc64d9cb3aacb4940e8ebcba260757ce56740b"
+    },
+    {
+      "path": "LICENSES/packaging-26.3/_spdx.py",
+      "bytes": 51122,
+      "sha256": "596ec35e2ca0ebcba9fd8343ff0a51625af548786257815f24b41f7e08613314"
+    },
+    {
+      "path": "LICENSES/pillow-heif-1.5.0/LICENSE.txt",
+      "bytes": 1546,
+      "sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d"
+    },
+    {
+      "path": "LICENSES/pillow-heif-1.5.0/LICENSES_bundled.txt",
+      "bytes": 1015,
+      "sha256": "200ce164421a7ec6f0742dcacf100551847ad7b16ac58e6f30dd0f36fd8fcf7e"
+    },
+    {
+      "path": "LICENSES/pillow-heif-1.5.0/METADATA.txt",
+      "bytes": 132,
+      "sha256": "45a31cfc27be207f3296a5ec1e2de10b8baef0dd46f2a37f4447fe1e0e92435f"
+    },
+    {
+      "path": "LICENSES/safetensors-0.8.0/LICENSE",
+      "bytes": 11558,
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "path": "LICENSES/safetensors-0.8.0/METADATA.txt",
+      "bytes": 80,
+      "sha256": "536f45f36c838855ff71c264f8f9f65e861dd2f3b3a3277d03135eb2ee746786"
+    },
+    {
+      "path": "LICENSES/shiboken6-6.11.1/LicenseRef-Qt-Commercial.txt",
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    {
+      "path": "LICENSES/shiboken6-6.11.1/METADATA.txt",
+      "bytes": 124,
+      "sha256": "f5b241687aafa1fc066837fecccf59159b56ea860fbf56b5112b220cd7cfe290"
+    },
+    {
+      "path": "LICENSES/sympy-1.14.0/AUTHORS",
+      "bytes": 55779,
+      "sha256": "82b1038521b0696c63c90b31ed4a0a2c9c4c16871c648b157b07ca44b6f18f8d"
+    },
+    {
+      "path": "LICENSES/sympy-1.14.0/LICENSE",
+      "bytes": 7885,
+      "sha256": "07a5e9819f727b4986ad2829c7a29a6320d42575f720eb24d71b7fef573a0286"
+    },
+    {
+      "path": "LICENSES/sympy-1.14.0/LICENSE.txt",
+      "bytes": 1075,
+      "sha256": "007bc30a58fa40a996e772047120de4eaf31f5110e4f9c3b5f93fcdfbe2eaca1"
+    },
+    {
+      "path": "LICENSES/sympy-1.14.0/METADATA.txt",
+      "bytes": 96,
+      "sha256": "a9c97ed9737a80783db1b3d75faac1974b47ffd4c6236523d3eedd44a3c56071"
+    },
+    {
+      "path": "LICENSES/timm-1.0.29/LICENSE",
+      "bytes": 11343,
+      "sha256": "71b111620fa32c17a80ccd6db2da759d31a591e497d8b5f382174f59d1b59d49"
+    },
+    {
+      "path": "LICENSES/timm-1.0.29/METADATA.txt",
+      "bytes": 84,
+      "sha256": "928e93f78c3509ea7be3bc21058ae834f9746e514036d7a991fae33023bde160"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/02-LICENSE",
+      "bytes": 1168,
+      "sha256": "68349589306bdfa3631ac7f84633956bf21b6a448ed5e43383ea75a8a5f54e4c"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/03-LICENSE",
+      "bytes": 1127,
+      "sha256": "9e7b48284b1aef91999d1967d093711bab8f3bbbaf31e0670ab7a3af077c0a2b"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/04-LICENSE",
+      "bytes": 1376,
+      "sha256": "a4dadeb3d59219de6cdf5cb6bf920760103eed9ae5af2e71b0e8462645397b66"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/06-LICENSE.txt",
+      "bytes": 12706,
+      "sha256": "c3b19baa37cf18bac07b65700824acadcfa617316f02af10d3852ed20f4f6ab8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/07-LICENSE.txt",
+      "bytes": 12706,
+      "sha256": "c3b19baa37cf18bac07b65700824acadcfa617316f02af10d3852ed20f4f6ab8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/08-LICENSE",
+      "bytes": 12671,
+      "sha256": "4baebe905073b57ce85f6a0aeb242cac589181f6574c0dc87993c25d9bcf4775"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/09-LICENSE",
+      "bytes": 1126,
+      "sha256": "fcf1a18be2e25ba82acf2c59821b030d8ee764e4e201db6ef3c51900d385515f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/10-LICENSE.txt",
+      "bytes": 1118,
+      "sha256": "e5fc8b0b0357a75d63649c8f2552576aaa6941c361a013710bb53afc64d3a8aa"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/11-LICENSE",
+      "bytes": 1591,
+      "sha256": "4805a18e3c617424da5b7f6d8b9fde3df2fb6a5e26a6b6663a6cdb66db664d8c"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/12-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/14-LICENSE",
+      "bytes": 1121,
+      "sha256": "844e3a38ca6f748e10eb63f07eb343ddca3b5a0a6bb40b0f621fcc54ea03deb3"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/15-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/16-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/17-LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/18-LICENSE",
+      "bytes": 1097,
+      "sha256": "bb546eae5924d8ee842e0e567e6d533c5824bdebccf605f99a5b3429034e6697"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/19-LICENSE",
+      "bytes": 1451,
+      "sha256": "8477bdd6a4d9f5178e5dfda1e32239c7b09c9d6da3804ae3e5c1a80210c0dd21"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/20-LICENSE",
+      "bytes": 1410,
+      "sha256": "8c29231fd0034d4b1caaae8c0a63bce71f95cd8c4b0494c8588930b75c3d2155"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/21-LICENSE.txt",
+      "bytes": 1169,
+      "sha256": "b6fe452605fe29245f0cbafa724b42df94a5e170bedb9d45bc9cfaa4883ad907"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/22-LICENSE.txt",
+      "bytes": 1895,
+      "sha256": "10e174914fb737aec2d32762bd2e45861acb5ebf1656bee6cf575a6019a08cf0"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/23-LICENSE.txt",
+      "bytes": 1574,
+      "sha256": "932c16f6c4f0187eda3af18df07300f8807eda85ca974bf46c5ed11fd91e5c2f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/24-LICENSE",
+      "bytes": 1565,
+      "sha256": "5d5d5b022ecf828c796a64ad7afcfd62971bf58a52b71668cd48137ca02824c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/25-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/26-LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/27-LICENSE",
+      "bytes": 1451,
+      "sha256": "8477bdd6a4d9f5178e5dfda1e32239c7b09c9d6da3804ae3e5c1a80210c0dd21"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/28-LICENSE",
+      "bytes": 1410,
+      "sha256": "8c29231fd0034d4b1caaae8c0a63bce71f95cd8c4b0494c8588930b75c3d2155"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/29-LICENSE.txt",
+      "bytes": 1888,
+      "sha256": "3288ff56f62ade1ef032bd860b6d92482f83f1d3073ad5125b87228b9c11e0a8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/30-LICENSE.txt",
+      "bytes": 1574,
+      "sha256": "6b9e8b964c2a90f7743107a23bccec9ebc6f5a47d4a8fa3d986aa6f51f86da68"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/31-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/32-LICENSE.txt",
+      "bytes": 1133,
+      "sha256": "e63d8a0f5ab5cc02d848c6ef51b7bea58644a07223aa0acdb905260a1031b2e6"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/33-LICENSE.rst",
+      "bytes": 155,
+      "sha256": "4f8f489489bc1ac9608b13243e6dbeb28070cefd6da94de0784cc919afbf10f6"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/34-LICENSE",
+      "bytes": 1587,
+      "sha256": "c364d38c8ee8070159ad68f56a8bab4917b8d020548da33a01e036505c8e4add"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/35-LICENSE",
+      "bytes": 1162,
+      "sha256": "9906940f61b1f0b533fa7d99baf55178b2808fbe113ea51dfbfad8572ccd5f2b"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/36-LICENSE",
+      "bytes": 1162,
+      "sha256": "9906940f61b1f0b533fa7d99baf55178b2808fbe113ea51dfbfad8572ccd5f2b"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/37-LICENSE",
+      "bytes": 1587,
+      "sha256": "c364d38c8ee8070159ad68f56a8bab4917b8d020548da33a01e036505c8e4add"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/38-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/39-LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/40-LICENSE.txt",
+      "bytes": 1888,
+      "sha256": "3288ff56f62ade1ef032bd860b6d92482f83f1d3073ad5125b87228b9c11e0a8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/41-LICENSE.txt",
+      "bytes": 1574,
+      "sha256": "6b9e8b964c2a90f7743107a23bccec9ebc6f5a47d4a8fa3d986aa6f51f86da68"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/42-LICENSE",
+      "bytes": 1587,
+      "sha256": "c364d38c8ee8070159ad68f56a8bab4917b8d020548da33a01e036505c8e4add"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/43-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/44-LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/45-LICENSE",
+      "bytes": 1121,
+      "sha256": "844e3a38ca6f748e10eb63f07eb343ddca3b5a0a6bb40b0f621fcc54ea03deb3"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/46-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/47-LICENSE",
+      "bytes": 11542,
+      "sha256": "35cf0c0dca02767d12b9a8c12ae1b6a1c08045f220df4a52b0e01563a568fe6b"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/48-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/49-LICENSE",
+      "bytes": 1114,
+      "sha256": "e53b24254a17f6acdaf967557c287dca7e920b22cc6290f6a84d57c34d942a6e"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/50-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/51-LICENSE",
+      "bytes": 1555,
+      "sha256": "6247f690b423835966eba51cad47b4c7d6a72ca226733dd1c473e4624fe6bb23"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/52-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/53-LICENSE",
+      "bytes": 1081,
+      "sha256": "e1b43a11adfb7a5bd52089243a273ab85f0a695d0437bb34a418969501392573"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/54-LICENSE",
+      "bytes": 11814,
+      "sha256": "b1dd911e534a75dd4dfd8dbc11a3193bd177c8390e7fcf462f98d2c8c235e112"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/55-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/56-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/57-LICENSE",
+      "bytes": 1642,
+      "sha256": "97729794764240cc12e0e22fe31b0cea824741c601bd09bd91b832e285e1f8c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/58-LICENSE",
+      "bytes": 1107,
+      "sha256": "f08a94bfb0bdc1d7f1cb59badaf0f8c551b10db871185622dbf1fd036affa9cb"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/59-LICENSE",
+      "bytes": 1458,
+      "sha256": "25b5db04aa6070c12ac518b91cbd0a59725c050ecb091456e6ebc3d3eeb369cf"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/60-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/61-LICENSE.txt",
+      "bytes": 17315,
+      "sha256": "eb3eab74fe9245818659556acf23e81b8c8a24915a4a244a23804f3fcdf1fd9c"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/62-LICENSE",
+      "bytes": 1096,
+      "sha256": "82ade5d7d9b029044b5fbbc326207fc47c2d44ee4dd71e8a559c36d728217de9"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/63-LICENSE",
+      "bytes": 1184,
+      "sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/64-LICENSE",
+      "bytes": 1563,
+      "sha256": "322bba2f33f594948052de342fd7d5bd26892e2a92ba75fbb5a433eff0b229c7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/65-LICENSE",
+      "bytes": 1754,
+      "sha256": "99ec4452f4047b6c53016a502bf94451eb317eff5aab5f63cebc16f94020d64f"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/66-LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/67-LICENSE.txt",
+      "bytes": 1888,
+      "sha256": "3288ff56f62ade1ef032bd860b6d92482f83f1d3073ad5125b87228b9c11e0a8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/68-LICENSE.txt",
+      "bytes": 1574,
+      "sha256": "6b9e8b964c2a90f7743107a23bccec9ebc6f5a47d4a8fa3d986aa6f51f86da68"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/69-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/70-LICENSE.txt",
+      "bytes": 1133,
+      "sha256": "e63d8a0f5ab5cc02d848c6ef51b7bea58644a07223aa0acdb905260a1031b2e6"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/71-LICENSE",
+      "bytes": 1587,
+      "sha256": "c364d38c8ee8070159ad68f56a8bab4917b8d020548da33a01e036505c8e4add"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/72-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/73-LICENSE",
+      "bytes": 1713,
+      "sha256": "5494773a5dcf654c0c3c844fbb11cfc4f898ea0ea44cf467f29e5c99097da6e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/74-LICENSE",
+      "bytes": 15275,
+      "sha256": "6bef87f6b4eda6c3cf0f42f780967e192df6412e4933f0ffb106638629aa3364"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/75-LICENSE",
+      "bytes": 1764,
+      "sha256": "f4df8b2457697851385d9ebb93267832c1dfa24e0e61881952f6b0c452663dc9"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/76-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/77-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/78-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/79-LICENSE",
+      "bytes": 11589,
+      "sha256": "e438ef741bf3660b5c54f4452d7c0b387c8557207cc3e9cda499e461a94df2b2"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/80-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/81-LICENSE",
+      "bytes": 1086,
+      "sha256": "2317ba964cb26897602b47271a156b2c9ee140d923fa25e8f2229f20d6f3a819"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/82-LICENSE",
+      "bytes": 1173,
+      "sha256": "6bc97741b2f00a1d0a2f8e9be4c8af7ff837f968fe8e494864caf57026cfdbcb"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/83-LICENSE",
+      "bytes": 1404,
+      "sha256": "2aae36e3c88f88b5e8afff5ca8d05480745ba7ad7e8d62867293c604efc0ce46"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/84-LICENSE",
+      "bytes": 1713,
+      "sha256": "5494773a5dcf654c0c3c844fbb11cfc4f898ea0ea44cf467f29e5c99097da6e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/85-LICENSE.rst",
+      "bytes": 1458,
+      "sha256": "b74018ea5fe273c10868dec1c5b832865fa4cf5bc44715a004d172e0a49a3f23"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/86-LICENSE.txt",
+      "bytes": 1361,
+      "sha256": "beb8e42e9d6b4284e03304d05a81a0755200a965fc8d0a5e0aea1e84cf805d6e"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/87-LICENSE.txt",
+      "bytes": 1565,
+      "sha256": "a51531fad20e44cae492c601bc0997d961c17a74f25f9473ff62eb70e108277d"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/88-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/89-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/90-LICENSE",
+      "bytes": 11589,
+      "sha256": "e438ef741bf3660b5c54f4452d7c0b387c8557207cc3e9cda499e461a94df2b2"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/91-LICENSE",
+      "bytes": 1503,
+      "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/92-LICENSE",
+      "bytes": 590,
+      "sha256": "abd3ed80490d1d168f12f6ced5a558398640e6d375382c7b85d290689a222822"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/93-LICENSE",
+      "bytes": 1098,
+      "sha256": "7aab26dd7e0e6661accc1fd9fc19410e01b466aa0ac36ea668b2013152a8ca23"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/94-LICENSE",
+      "bytes": 1705,
+      "sha256": "15619fd6ee80e905a159b8139f7791f5ae1dce142d5101d099404cc5cf1007ba"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/95-LICENSE.txt",
+      "bytes": 2812,
+      "sha256": "dcd8a8d43f2dc19ba6f879f3a7e96f59e66ecb195099f700dfdcfb50641c10c9"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/96-LICENSE",
+      "bytes": 200,
+      "sha256": "8ef81e4c883c5ccb2a08026cc74ba3193279dd5149b36839d976c0a896637d87"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/99-LICENSE",
+      "bytes": 11558,
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/LICENSE",
+      "bytes": 3548,
+      "sha256": "0fc92425d130d9c87a5eb7427082e3afdbff6ef169bc678e15abba4c2d37c934"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/LICENSE.APACHE",
+      "bytes": 10351,
+      "sha256": "eb3d7b5485466acbd81f2b496f595ab637d2792e268206b27d99e793bdb67549"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/LICENSE.BSD",
+      "bytes": 1367,
+      "sha256": "67daf15b478dbd91bcd83bff907efff68471d42d2138226b89f039d658d53435"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/LICENSE.rst",
+      "bytes": 340,
+      "sha256": "81c3c62d810d7277f0583179df2a28a997b013f389f97778e9e7480114e0ca06"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/LICENSE.txt",
+      "bytes": 12706,
+      "sha256": "c3b19baa37cf18bac07b65700824acadcfa617316f02af10d3852ed20f4f6ab8"
+    },
+    {
+      "path": "LICENSES/torch-2.14.0+cpu/METADATA.txt",
+      "bytes": 178,
+      "sha256": "60e8347d816555b509cfb5f099fcca5b32f3813670428955e0b28dee5c32dc26"
+    },
+    {
+      "path": "LICENSES/torchvision-0.29.0+cpu/LICENSE",
+      "bytes": 1546,
+      "sha256": "c06363f9d33627dc5173b13522444cc85fbb4739f63e16d4587d5c0a165b5b1e"
+    },
+    {
+      "path": "LICENSES/torchvision-0.29.0+cpu/METADATA.txt",
+      "bytes": 122,
+      "sha256": "24fc36c08c7bcbb25e75f8f42badffdf02253ebb2cf2c93fa486beffdaca3c49"
+    },
+    {
+      "path": "LICENSES/tqdm-4.70.1/LICENCE",
+      "bytes": 1985,
+      "sha256": "fcff87c3a47ce8028a8512aa182d4fcf0ad1c90544ee75cf9b343684cac194de"
+    },
+    {
+      "path": "LICENSES/tqdm-4.70.1/METADATA.txt",
+      "bytes": 89,
+      "sha256": "d7a5b9ae20dd1d26c5bf2d6c4e4ffca1d80698d423a636ab8c146a6523184416"
+    },
+    {
+      "path": "LICENSES/typing-extensions-4.16.0/LICENSE",
+      "bytes": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "LICENSES/typing-extensions-4.16.0/METADATA.txt",
+      "bytes": 94,
+      "sha256": "9e3bdba5a934fb886dc98cd19c15e801d84fa465000cec66412774aef1feec37"
+    },
+    {
+      "path": "QUICK_START.txt",
+      "bytes": 5411,
+      "sha256": "d12497a9727d24dc2b2e76570d42f38fb25e44b5d5dae0dc31728e8000849e3a",
+      "original_sha256": "12e1e74bde9a566c73a5db4b7e3b64e18bf87d7b5c703dc68bcf93cc2b6c73bc"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 3295,
+      "sha256": "8a6b1042882fc8ff2dcdc6dbbbc9981c8858c504b2245f497e190a1e32c35c31",
+      "original_sha256": "703e5730e4796f445bf2be7d94466e5d4a17d8e8a55d3253e81ec959d4411887"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 2033,
+      "sha256": "9f627fb2d1e333241fcdc119f10826d750f1e37a2952da2f8e06dae8fc9bc59a"
+    },
+    {
+      "path": "models/pixai-tagger-v0.9/preprocess.json",
+      "bytes": 557,
+      "sha256": "5f8303626704053724fa7ac19cd269f57f5f843b6cca314276c8c4d48d335975"
+    },
+    {
+      "path": "models/pixai-tagger-v0.9/selected_tags.csv",
+      "bytes": 596868,
+      "sha256": "76b5dd39354a7a4d9baefb94d63b44a09a4934ee15303b7eb86c38f2128eb68a"
+    },
+    {
+      "path": "models/wd-eva02-tagger-2026-canary/config.json",
+      "bytes": 635,
+      "sha256": "38366122ec9f9e8e604ad73d4a292edae32e2bf2471be7baa8266bd1e990dadd"
+    },
+    {
+      "path": "models/wd-eva02-tagger-2026-canary/selected_tags.csv",
+      "bytes": 467782,
+      "sha256": "3f78c28ee0d50779edb320733f76aeaf4184694cbd09c631deef6889865f9178"
+    },
+    {
+      "path": "models/wd-vit-tagger-v3/README.txt",
+      "bytes": 611,
+      "sha256": "69e28b13724d6313302ebfc17217c47c2cd76d4f9a514dc29b156052cacf713f"
+    },
+    {
+      "path": "models/wd-vit-tagger-v3/selected_tags.csv",
+      "bytes": 308468,
+      "sha256": "298633d94d0031d2081c0893f29c82eab7f0df00b08483ba8f29d1e979441217"
+    },
+    {
+      "path": "portable.flag",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "resources/default_settings.json",
+      "bytes": 1095,
+      "sha256": "75be28f7e7b21318c833826c73e09df982629de5ac31520ceda39fabe90726ce"
+    },
+    {
+      "path": "resources/negative_presets.json",
+      "bytes": 952,
+      "sha256": "99ce1b8cf8646b03aca7200b28285ff7474d5069905fc0dcd584ad9983da0a33"
+    },
+    {
+      "path": "resources/prompt_profiles.json",
+      "bytes": 1702,
+      "sha256": "49be05aafa90bd910186c7fcde6530c6d412356ac359592b65a62b3d7a615593"
+    },
+    {
+      "path": "resources/tag_categories.json",
+      "bytes": 3520,
+      "sha256": "e60054fe61d4f0eaa73046b4299098c8e0a88ca26fe8bcf5ea2f7555abc4e06e"
+    },
+    {
+      "path": "resources/tag_visuals/README.md",
+      "bytes": 2348,
+      "sha256": "1673389ebc9534945332ebe26061b08c88c93b951e9ee0c7e110e5ae12ad0070"
+    },
+    {
+      "path": "resources/tag_visuals/catalog.json",
+      "bytes": 5206856,
+      "sha256": "959d69470aae376b7f9528c756707ad9726f0d12debe1db94296263043228104"
+    },
+    {
+      "path": "resources/tag_visuals/coverage.json",
+      "bytes": 34030,
+      "sha256": "b481330146483b7578edeca55c71a1e439fb1a47d98958363a93b111ea9d0274"
+    },
+    {
+      "path": "resources/tag_visuals/coverage.tsv",
+      "bytes": 3778600,
+      "sha256": "c6c77cdd7c35d3c903da5bfc8c81e683edf4c7f581ff5a0b6787b966018884c1"
+    },
+    {
+      "path": "resources/tag_visuals/long_tail.tsv",
+      "bytes": 28093,
+      "sha256": "86ae50ab0453b46e7c2c627071c71595c14a49665cd1c11978d1c21df9eec74c"
+    },
+    {
+      "path": "resources/tag_visuals/primitives.json",
+      "bytes": 128251,
+      "sha256": "dc789fae27feac7db72605f3482e18734ec05ea743000dd63062a509036cb39f"
+    },
+    {
+      "path": "resources/tag_visuals/review_samples.json",
+      "bytes": 710,
+      "sha256": "58f21346b5d1ff275beff61cc5c183c7252397336df08482fa0bd1724c43584d"
+    },
+    {
+      "path": "resources/tag_visuals/rules.json",
+      "bytes": 504550,
+      "sha256": "b1ff16264046f075c73330d40f6a1e3702af7ddecb6396d9ab60c8075c5eed16"
+    },
+    {
+      "path": "resources/tag_visuals/samples.json",
+      "bytes": 743,
+      "sha256": "ac0c2370cb877334dfeadfafe68382154d8dca754ba17326511a15f6e3e6da57"
+    },
+    {
+      "path": "resources/tag_visuals/terms.tsv",
+      "bytes": 45113,
+      "sha256": "7fc705aa058dc42da3c24aca3f75fc2cbf6e064c5b9e54b2d7a409827a10176b"
+    },
+    {
+      "path": "MODEL-SETUP.txt",
+      "bytes": 809,
+      "sha256": "13559b040c75b86d72ad66c99fdacd5e9f8c8a04e57f6e1194575b87a97d36e9"
+    }
+  ],
+  "archive": {
+    "name": "AnimeTaggerLite-1.3.0-preview.20261003-win64-cuda-portable-no-models.zip",
+    "bytes": 1603334582,
+    "sha256": "123e0171ab0ea8c7b5d6b30921ed9bd0d154077b3128bb77e99bf327ff3b2c70"
+  },
+  "application_source_comparison": null
+}
