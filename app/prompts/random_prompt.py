@@ -8,7 +8,7 @@ import random
 from typing import Iterable, Sequence
 
 from app.errors import ConfigurationError
-from app.inference.backends import BACKENDS, load_backend_tags, resolve_backend_files
+from app.inference.backends import BACKENDS, load_backend_tags
 from app.inference.model_loader import TagCategory
 from app.prompts.filtering import is_censored_tag_name
 from app.prompts.models import TagResult, TagSource
@@ -94,13 +94,13 @@ def load_tag_libraries(
         candidate = root / directory
         if not candidate.exists() and root.name == "models":
             candidate = root / directory.name
-        files = resolve_backend_files(candidate, backend)
+        tags_path = candidate / "selected_tags.csv"
         try:
-            raw = Path(files.tags_path).read_text(encoding="utf-8-sig")
+            raw = tags_path.read_text(encoding="utf-8-sig")
         except OSError as exc:
-            raise ConfigurationError(f"无法读取标签库：{files.tags_path}") from exc
+            raise ConfigurationError(f"无法读取标签库：{tags_path}") from exc
         weights = _parse_count_column(raw)
-        for tag in load_backend_tags(files.tags_path, backend):
+        for tag in load_backend_tags(tags_path, backend):
             name = tag.name.strip()
             if not name:
                 continue

@@ -14,6 +14,7 @@ import platform
 import shutil
 import subprocess
 import sys
+import tempfile
 from typing import Iterable, Sequence
 import zipfile
 
@@ -339,7 +340,8 @@ def run_preflight(variant: str) -> dict[str, object]:
     )
     pytest_output = _run_preflight_command(
         "full pytest",
-        (sys.executable, "-m", "pytest", "-q"),
+        (sys.executable, '-m', 'pytest', '-q', '--basetemp',
+         tempfile.mkdtemp(prefix='pytest-portable-', dir=PROJECT_ROOT / 'validation')),
         environment=environment,
     )
     if " skipped" in pytest_output.casefold():
@@ -614,8 +616,13 @@ def stage_distribution(
     for backend, spec in BACKENDS.items():
         target = destination / spec.directory
         target.mkdir(parents=True, exist_ok=True)
+        # Both random modes need vocabularies, independently of inference
+        # weights. Ship and audit these small public CSVs in every portable.
+        source = PROJECT_ROOT / spec.directory
+        tags_source = source / "selected_tags.csv"
+        shutil.copy2(tags_source, target / "selected_tags.csv")
+        model_hashes[(target / "selected_tags.csv").relative_to(destination).as_posix()] = sha256_file(tags_source)
         if include_models:
-            source = PROJECT_ROOT / spec.directory
             files = resolve_backend_files(source, backend)
             names = [files.model_path.name, files.tags_path.name]
             if backend == DEFAULT_BACKEND:
@@ -665,6 +672,11 @@ def stage_distribution(
         "portable": True,
         "program_layout": "onedir" if (destination / "_internal").is_dir() else "onefile",
     }
+    semantic_coverage_path = destination / "resources/prompt_semantics/coverage.json"
+    if semantic_coverage_path.is_file():
+        manifest["semantic_coverage"] = json.loads(semantic_coverage_path.read_text(encoding="utf-8"))
+        manifest["semantic_acceptance_complete"] = manifest["semantic_coverage"]["minimum_met"]
+        manifest["semantic_catalog_sha256"] = sha256_file(destination / "resources/prompt_semantics/catalog.json")
     (destination / "BUILD-MANIFEST.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",

@@ -144,6 +144,15 @@ def test_random_generate_reproducible(model_root: Path) -> None:
     assert generator.generate(request).prompt == generator.generate(request).prompt
 
 
+@pytest.mark.parametrize("backend,directory", (
+    ("wd_v3", "wd-vit-tagger-v3"), ("wd_2026_canary", "wd-eva02-tagger-2026-canary"), ("pixai_v0_9", "pixai-tagger-v0.9"),
+))
+def test_random_libraries_require_only_the_public_csv(tmp_path, backend, directory):
+    _write_csv(tmp_path / "models" / directory / "selected_tags.csv", [("1", "blue_hair", "0", "20"), ("2", "alice", "4", "10")])
+    library = load_tag_libraries(tmp_path, (backend,))
+    assert {entry.name for entry in library} == {"blue_hair", "alice"}
+
+
 def test_random_generate_rejects_unknown_backend(model_root: Path) -> None:
     generator = RandomPromptGenerator(model_root)
     with pytest.raises(ConfigurationError):

@@ -1,0 +1,177 @@
+{
+  "applied_at": "20261011T124943Z",
+  "backup_root": "D:\\tagger\\_merge-backup-20261011T124943Z",
+  "applied": [
+    {
+      "path": "app/prompts/review_metadata.py",
+      "operation": "add",
+      "sha256": "99e9122b2eda6dcf9cd1cf063089dad3beafc1211d50deeb388a3ecb2528e270"
+    },
+    {
+      "path": "app/prompts/semantic_catalog.py",
+      "operation": "replace",
+      "sha256": "b38d736731eb9e7f695005bf4c5904f15aebeaaa5d8e6231a1b6082d4edee0d1"
+    },
+    {
+      "path": "app/prompts/semantic_prompt.py",
+      "operation": "replace",
+      "sha256": "3ea58ccf5cfa7183ae3092da55c519b794075bb39aba638b1cda38a00ea8b1b3"
+    },
+    {
+      "path": "app/prompts/semantic_rules.py",
+      "operation": "replace",
+      "sha256": "acd8447cca64966ffe7e5754c69337e1d3f6ce79813035ce13b4df23e8bf13c5"
+    },
+    {
+      "path": "app/prompts/semantic_scene.py",
+      "operation": "replace",
+      "sha256": "2ada683a911f336d6f422eef213bf98bf29f379ed8c763aef93791a0a3982652"
+    },
+    {
+      "path": "docs/semantic-prompts-isolated-20261011.md",
+      "operation": "add",
+      "sha256": "9be60cf2d5c4aa2b1c8ca7c5604149a8e75e7237f795a87c4270eda3609acf20"
+    },
+    {
+      "path": "resources/prompt_semantics/catalog.json",
+      "operation": "replace",
+      "sha256": "56999030cce745b39639bcc7a9fd5602ad6b445ab69a1d367cdbc0b91e7454e4"
+    },
+    {
+      "path": "resources/prompt_semantics/coverage.json",
+      "operation": "replace",
+      "sha256": "f0ad53a8079b5d71137a39ad60fb94e0c49a31d2e7a1bb8cfc15d18621e0d2de"
+    },
+    {
+      "path": "resources/prompt_semantics/coverage.tsv",
+      "operation": "replace",
+      "sha256": "4f18a0f386c9fa8daf7f0443c16cfdf35ce28d3d69541a4f5b68838729464e1c"
+    },
+    {
+      "path": "resources/prompt_semantics/review_annotations.json",
+      "operation": "add",
+      "sha256": "6218e69df454d4c08de2b7707632ff316cc3141d9b1dab7d8b0eeabdc9c8afd4"
+    },
+    {
+      "path": "scripts/build_prompt_semantics.py",
+      "operation": "replace",
+      "sha256": "9b1723677cd4804938786a9ab0dd4a5259eae79372906536f513df7cf103513e"
+    },
+    {
+      "path": "scripts/fetch_character_references.py",
+      "operation": "replace",
+      "sha256": "f140b4729367692d89bc98b18121e7ec402ae962f95bfeaad9f4394c130a62b5"
+    },
+    {
+      "path": "scripts/prompt_semantic_attributes.py",
+      "operation": "replace",
+      "sha256": "90dd75211dfe143e662a5a90701862b28c66b6d3608277de68838bb505dd9944"
+    },
+    {
+      "path": "scripts/prompt_semantic_characters.py",
+      "operation": "replace",
+      "sha256": "d60a9417c6e6e70c8e71e8b5168a509dc579cd86bf43d495f89938eb27ae92f5"
+    },
+    {
+      "path": "scripts/prompt_semantic_dependencies.py",
+      "operation": "replace",
+      "sha256": "bed64e8fb075ecca4e9d70f3d3910fc60079cf5672ed4718ff2bfa63de62207e"
+    },
+    {
+      "path": "scripts/prompt_semantic_families.py",
+      "operation": "replace",
+      "sha256": "17dd119f0bcd07f6d1f6db47d711f300f8e4c6cc766a57a669304c0036848056"
+    },
+    {
+      "path": "scripts/prompt_semantic_tail.py",
+      "operation": "add",
+      "sha256": "17c389864446edacd89ae0c1663d3d581c579462ae3d7831434f2642af9b777b"
+    },
+    {
+      "path": "scripts/review_prompt_metadata.py",
+      "operation": "add",
+      "sha256": "732f50cbe9fdf544b24846b0a0f727d53f157533d67ce5c34b28e466a4784f63"
+    },
+    {
+      "path": "tests/test_prompt_review_metadata.py",
+      "operation": "add",
+      "sha256": "9fba4700156998dd0c96ae6abf49a646124b03338aa3a90e70271ea6cea4a078"
+    },
+    {
+      "path": "tests/test_prompt_semantic_reference_selection.py",
+      "operation": "add",
+      "sha256": "4092dee5333a70688dcb6b060d7df2de8a61ca793f2a6136920d5f1b787cd9e3"
+    },
+    {
+      "path": "tests/test_prompt_semantic_tail.py",
+      "operation": "add",
+      "sha256": "d6517ca6e9bcea6b308063ac27e45a9dbfd2e77022690a2c162ba13bdb0da518"
+    }
+  ],
+  "backed_up": [
+    {
+      "path": "app/prompts/semantic_catalog.py",
+      "sha256": "0a5ee6a5468b0ea33c3d4f1b526d24aeda1e8162d6bf68edeef4a4371df30316"
+    },
+    {
+      "path": "app/prompts/semantic_prompt.py",
+      "sha256": "a8eebb2d8440d479380d2aa47383f255fe12d7ab69840905da3e2310099289dc"
+    },
+    {
+      "path": "app/prompts/semantic_rules.py",
+      "sha256": "918578432905aa8377d49a858626e6e31e97a05e8f78231385d88d38d7501fa6"
+    },
+    {
+      "path": "app/prompts/semantic_scene.py",
+      "sha256": "b546e011d053b9780fbdb93b056f6db0c25bd3b591a7927fb7e771a6b13f588b"
+    },
+    {
+      "path": "resources/prompt_semantics/catalog.json",
+      "sha256": "08a692f2e057ebeebf10fb6db3c6b2f7dc6a66eccac17f1267a6e0a10570c907"
+    },
+    {
+      "path": "resources/prompt_semantics/coverage.json",
+      "sha256": "f122099a31399e7b6fb43df4d355559bbcd71b6cccd03a2306e2425d6bf86574"
+    },
+    {
+      "path": "resources/prompt_semantics/coverage.tsv",
+      "sha256": "43a1823b6d78781d76cfa03877d03eaadf5733d3426adfeeba7d91069c537e68"
+    },
+    {
+      "path": "scripts/build_prompt_semantics.py",
+      "sha256": "6ae73aee79e5a7194dcb5be833d8e2d391fb55d0add35cab7237e2ecd469744f"
+    },
+    {
+      "path": "scripts/fetch_character_references.py",
+      "sha256": "e82fe0d2b620d3ed4a6f5c731a014a790e301b610e53334d9688d4efc4119697"
+    },
+    {
+      "path": "scripts/prompt_semantic_attributes.py",
+      "sha256": "e905dc52cab72c37025c4c0a0a06d3b416e92946c6c07a1a185144c18e93cf44"
+    },
+    {
+      "path": "scripts/prompt_semantic_characters.py",
+      "sha256": "da5126ba47d413755437ec1d45e49a713af429484962d1d251d32c6668f4d126"
+    },
+    {
+      "path": "scripts/prompt_semantic_dependencies.py",
+      "sha256": "821a6f1545a4bd53f8dca81447adcd4d2a076d33efb17465bad59e38e40730ed"
+    },
+    {
+      "path": "scripts/prompt_semantic_families.py",
+      "sha256": "5439d6637df598bccef0e489c3e57106cf86ce3568913d580794c539620dec8d"
+    }
+  ],
+  "added": [
+    "app/prompts/review_metadata.py",
+    "docs/semantic-prompts-isolated-20261011.md",
+    "resources/prompt_semantics/review_annotations.json",
+    "scripts/prompt_semantic_tail.py",
+    "scripts/review_prompt_metadata.py",
+    "tests/test_prompt_review_metadata.py",
+    "tests/test_prompt_semantic_reference_selection.py",
+    "tests/test_prompt_semantic_tail.py"
+  ],
+  "user_confirmed_stop": true,
+  "source_plan": "D:\\tagger\\isolated\\semantic-completion-20261011\\.isolation\\merge-plan.json"
+}

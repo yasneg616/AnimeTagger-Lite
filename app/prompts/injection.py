@@ -42,11 +42,11 @@ striped_hair patterned_hair starry_hair hair_between_breasts
 
 def token_key(text: str) -> str:
     """Match an entire label, including common (label:weight) syntax."""
-    text = text.strip().replace(r"\(", "(").replace(r"\)", ")")
+    text = text.strip()
     while len(text) > 1 and (text[0], text[-1]) in {("(", ")"), ("[", "]")}:
         text = text[1:-1].strip()
         text = re.sub(r":\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*$", "", text)
-    return canonical_tag_key(text)
+    return canonical_tag_key(re.sub(r'\\([()\[\]])', r'\1', text))
 
 
 def is_appearance_tag(text: str) -> bool:

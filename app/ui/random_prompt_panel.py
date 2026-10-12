@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
     QPlainTextEdit,
     QPushButton,
     QSpinBox,
+    QStackedWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -33,6 +34,7 @@ from app.prompts.random_prompt import (
 )
 from app.runtime_paths import APPLICATION_ROOT
 from app.ui.tag_visual_widgets import TagListView, TagVisualProvider
+from app.ui.semantic_prompt_panel import SemanticPromptPanel
 
 # (bucket, default count) — UI label comes from BUCKET_LABELS.
 _BUCKET_DEFAULTS: tuple[tuple[RandomBucket, int], ...] = (
@@ -58,6 +60,7 @@ class RandomPromptPanel(QWidget):
         model_root: Path | None = None,
         generator: RandomPromptGenerator | None = None,
         visual_provider: TagVisualProvider | None = None,
+        semantic_generator=None,
     ) -> None:
         super().__init__(parent)
         self._settings = settings
@@ -67,6 +70,8 @@ class RandomPromptPanel(QWidget):
         self._last_result: RandomPromptResult | None = None
         self.visual_provider = visual_provider if visual_provider is not None else TagVisualProvider(self)
         self._bucket_spins: dict[RandomBucket, QSpinBox] = {}
+        self._legacy_default = generator is not None
+        self._semantic_generator = semantic_generator
         self._build_ui()
         self._sync_backend_default(settings.backend)
 
@@ -147,10 +152,11 @@ class RandomPromptPanel(QWidget):
         self.prompt_edit.setPlaceholderText("点击「随机生成 Prompt」后在此预览")
         self.prompt_edit.setMinimumHeight(100)
 
-        self.tag_list = TagListView(self.visual_provider)
-        self.tag_list.setMinimumHeight(100)
+        self._legacy_tag_list = TagListView(self.visual_provider)
+        self._legacy_tag_list.setMinimumHeight(100)
 
-        layout = QVBoxLayout(self)
+        legacy_page = QWidget()
+        layout = QVBoxLayout(legacy_page)
         layout.setContentsMargins(12, 12, 12, 12)
         layout.addWidget(QLabel("随机 Prompt"))
         layout.addWidget(options)
@@ -159,7 +165,25 @@ class RandomPromptPanel(QWidget):
         layout.addWidget(QLabel("提示词预览"), 0, Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(self.prompt_edit, 1)
         layout.addWidget(QLabel("抽中标签"), 0, Qt.AlignmentFlag.AlignLeft)
-        layout.addWidget(self.tag_list, 1)
+        layout.addWidget(self._legacy_tag_list, 1)
+        self.mode_combo = QComboBox()
+        self.mode_combo.setObjectName("randomModeCombo")
+        self.mode_combo.addItem("语义生成", "semantic")
+        self.mode_combo.addItem("原分类抽词", "legacy")
+        self.semantic_panel = SemanticPromptPanel(self._settings, self._model_root, self.visual_provider, self, generator=self._semantic_generator)
+        self.mode_stack = QStackedWidget()
+        self.mode_stack.addWidget(self.semantic_panel)
+        self.mode_stack.addWidget(legacy_page)
+        self.mode_combo.currentIndexChanged.connect(self.mode_stack.setCurrentIndex)
+        self.mode_combo.setCurrentIndex(1 if self._legacy_default else 0)
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(12, 12, 12, 12)
+        outer.addWidget(self.mode_combo)
+        outer.addWidget(self.mode_stack, 1)
+
+    @property
+    def tag_list(self):
+        return self.semantic_panel.tag_list if hasattr(self, "mode_combo") and self.mode_combo.currentData() == "semantic" else self._legacy_tag_list
 
     def _sync_backend_default(self, backend: str) -> None:
         index = self.backend_combo.findData(backend)
@@ -168,6 +192,7 @@ class RandomPromptPanel(QWidget):
     def set_settings(self, settings: AppSettings) -> None:
         self._settings = settings
         self._sync_backend_default(settings.backend)
+        self.semantic_panel.set_settings(settings)
 
     def spin_for(self, bucket: RandomBucket) -> QSpinBox:
         return self._bucket_spins[bucket]
@@ -207,6 +232,9 @@ class RandomPromptPanel(QWidget):
         )
 
     def generate(self) -> None:
+        if self.mode_combo.currentData() == "semantic":
+            self.semantic_panel.generate()
+            return
         try:
             request = self._request()
             result = self._generator.generate(request)
@@ -240,6 +268,9 @@ class RandomPromptPanel(QWidget):
         self.status_label.setStyleSheet("color: #9da7b3;")
 
     def copy_prompt(self) -> None:
+        if self.mode_combo.currentData() == "semantic":
+            self.semantic_panel.copy_prompt()
+            return
         text = self.prompt_edit.toPlainText().strip()
         if not text:
             self.status_label.setText("尚无可复制的提示词。")

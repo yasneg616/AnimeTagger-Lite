@@ -43,6 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="启动窗口后自动关闭，用于无模型 GUI 启动检查",
     )
     parser.add_argument("--visual-smoke", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--semantic-smoke", type=Path, help=argparse.SUPPRESS)
     return parser
 
 
@@ -110,6 +111,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from app.ui.tag_visual_smoke import run_visual_smoke
 
         return run_visual_smoke(app, args.visual_smoke)
+    if args.semantic_smoke is not None:
+        from app.ui.semantic_prompt_smoke import run_semantic_smoke
+
+        return run_semantic_smoke(app, args.semantic_smoke)
     try:
         log_path = configure_gui_logging()
     except AnimeTaggerError as exc:

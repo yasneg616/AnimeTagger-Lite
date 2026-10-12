@@ -1,0 +1,310 @@
+# 交接：离线语义随机 Prompt 词库补全
+
+交接日期：2026-10-11（Asia/Shanghai）
+工作目录：D:\tagger
+文件编码：UTF-8
+
+本文件交给下一位 AI 继续工作。此次交接只创建文档，没有继续修改程序或扩充词库。
+请先核对当前工作区，再按下面的修改边界处理剩余词条。不要重做已经通过的实现，也不要把候选资料直接变成可用规则。
+
+## 1. 目标、用户要求和完成边界
+
+项目目标：随机功能先生成具有主体归属、动作依赖和环境关系的 ScenePlan，再从同一结构输出 Tags 或英文自然语言；运行时完全离线。保留原分类抽词模式及其数量、Top N、种子控件。
+
+用户最初要求：全量登记三套词表的 17,042 条有效条目，最低可用资料覆盖 11,362 条；支持 1–4 个主体、已有角色、多人互动、内容等级、三档自由度、属性锁定、加权和未知 tags 导入、两种输出、GUI 和便携版验收。
+
+最低覆盖已经达到，原来所说的“剩下 8,280 条”是相对最低门槛的缺口，并非全量缺口。现在仍有 5,641 条未完成，下一步是继续补全它们和人工审阅代表画面。
+
+用户要求英文和画面摘要不要反复强调角色为成人；此展示要求已实施。用户曾提出“获得出版许可即为成年人”，这一推论没有作为角色年龄资料写入程序。年龄、身份和内容约束仍按资料和结构判断。
+
+用户希望下一位 AI 补足“可能会遭到审查的部分”。目前缺口包含未建模、依赖不完整、身份证据不足、缺来源等多种原因，不能把全部缺口归因于审查。应逐项补证据和规则；允许纠正保守分类的误判，必须保留下文所列约束。
+
+## 2. 已核实的当前状态
+
+应用版本：AnimeTagger Lite 1.3.0。
+系统：Windows；Shell：PowerShell。
+解释器：D:\tagger\.venv311-cuda\Scripts\python.exe（Python 3.11）。
+Git 分支：main。
+HEAD：e043749d296e75ef7536591d1495ab7c3d8f3588。
+语义功能及补全工作尚未提交；不能把 HEAD 当作已包含本次功能的版本。
+
+词库 SHA-256（本次交接重新计算，与验收报告一致）：
+bd5a02d2db5cefaff822dff99852da12dcfd92211e359c6529acf8056c87a8ea
+
+覆盖：
+- 全量：17,042 条；可用 reviewed：11,401 条，66.90%。
+- 最低要求：11,362 条；高于门槛 39 条。
+- 一般词：8,608 / 12,029，71.56%。
+- 角色条目：2,793 / 5,013，55.72%。
+- 高频一般词前 1,000：942 条可用，94.20%。
+- 未完成：5,641 条，包括 candidate 5,428、lexical 147、missing 66。
+- 相对旧基线 3,082 条：新增可用 8,323，撤回不合格旧条目 4，净新增 8,319。
+- 有来源资料：16,964 条；“有来源”不等于“规则可用”。
+- 身份档案：2,752 份；角色条目数包含别名等，不等于身份档案数。
+- 明确成年证据档案 10 份；合并词库实际成人身份池 9 个，仍受词表和固定属性可表达性约束。
+- 普通身份池：WD v3 1,577、WD 2026 Canary 2,724、PixAI v0.9 2,084、合并 2,752。
+- 成人身份池：分别 6、9、7、合并 9。
+
+已完成的程序行为：
+- 默认一个原创主体、普通内容、自然自由度、标准密度；主题、场景、动作自动选取。
+- 条件加权采样、前向剪枝、有限回溯；一次请求共用 2,000 次候选扩展上限。
+- 固定请求、种子、词库和 CSV 版本可复现；低频词经平滑后仍有机会。
+- 同义规范化、具体词优先、主体范围内的互斥、道具与姿势依赖、方向性互动参与者。
+- 多主体不同发色合法；多色、叠穿等通过明确规则表达。
+- 角色稳定属性锁定；锁定主体保留其道具和相关互动；无解保留上一份结果。
+- Tags、英文、摘要共用 ScenePlan；切换格式不重新采样。
+- 导入保留原文、权重、重复项、未知词；属性归属和方向性角色未确定时需要分配。
+- 普通平铺 tags 无法完整表达归属和关系时显示提示。
+- 原抽词模式直接使用 CSV，不依赖推理模型加载；现有图示、中文释义和复制功能保留。
+- 内容等级不再强制所有主体脱衣。
+
+## 3. 哪些可以动
+
+以下工作属于已授权的继续补全范围。修改应有来源依据、明确规则和相应验证，不必为普通可逆修改重新询问用户。
+
+1) 词义与规则补全
+   可补齐含义、属性槽位、归属、同义、包含、互斥、动作前置条件、搭配偏好和受控英文表达。
+   可优先处理一般外观、服装、非性化身体特征、姿态、物品、环境和互动规则。
+   普通解剖或服装词不应仅凭字面联想一律归为受限内容；结合自身定义及实际暴露条件判断。
+
+2) 对保守分类逐项纠错
+   可检查 unresolved_or_restricted_definition 等原因中的误判，以正面定义、归属和完整依赖证明可用。
+   可以增加精确规则或缩小错误匹配范围；不能用一条全局放行规则消除整个待审状态。
+   成人内容词条可在确认成年的人形参与者、完整动作依赖和其他合法条件下整理成结构规则；不得用身份未知替代年龄证据。
+
+3) 角色资料
+   可补作品映射、角色自身的默认外观、稳定属性、版本差异及可靠年龄来源。
+   可扩充有证据的身份池；无法确认年龄的身份继续保持 unknown，不妨碍普通内容资料补全。
+   不同版本需要明确分离。自己的资料中提到其他角色，不代表其他角色的外观属于自己。
+
+4) 构建与采集
+   可修改 D:\tagger\scripts\prompt_semantic_*.py 和构建、采集、报告脚本，增加来源、修正规则及审阅流程。
+   采集仍是独立的构建步骤；公开 GET、限速、缓存、重试、断点续采和来源记录应保留。
+   reviewed 资源由构建脚本生成；不要直接手改 catalog.json 的状态、计数或证据字段以通过门槛。
+
+5) 运行时和界面
+   新规则确需额外槽位或条件时，可小范围修改语义引擎和界面，保持第 4 节的行为不变量和旧接口。
+   可改进肢体容量、物品容量、服装层次、时间/光照等尚未覆盖的语义条件，以及英文语法、摘要、释义和图示。
+   展示不必重复“adult”；不能以删除展示词为由删除内部年龄状态或必要的导入确认。
+
+6) 验证和交付
+   可新增有意义的正反例测试、代表画面、覆盖报告和新的便携包。
+   新版验证应写入新文件/目录，记录新词库哈希；历史验收结果保留。
+
+## 4. 哪些不能动：保护行为与保护资产
+
+这些是继续工作的边界。允许保持等价行为的局部重构，不能为了增加覆盖率或消除错误而削弱它们。
+
+A. 年龄、身份和资料真实性
+- 不得将出版许可、图片 g/s 评级、1girl/1boy 标签或“外观看起来成熟”写成明确成年证据。
+- 不得批量把 unknown/minor 身份改成 adult，或把它们送入成人内容随机池。
+- 成人内容的所有参与主体必须满足现有年龄和人形条件；不能只检查主要角色。
+- 不得伪造作品、年龄、默认外观、官方参考、帖子标签、来源时间或证据哈希。
+- 不得合并不同版本、借用其他角色属性，或由缺失字段自动编造稳定身份事实。
+- 不得加入绕过限制的通配放行、全局成人默认身份覆盖，或关闭真正有效的约束。
+
+B. 同一画面及主体归属
+- 两种输出必须来自同一份 ScenePlan；切换格式不得抽取新属性或改写人物关系。
+- A1–A4 的属性、道具所有者和有方向的互动参与者必须保留；不能把平铺标签误当成已确定归属。
+- 未知词和未核对词不能偷偷写入英文事实；多人归属不明确不能凭猜测生成完整描述。
+- 保留导入原文、权重和未知词，以及字面括号与权重括号的正确处理。
+
+C. 搜索与约束
+- 硬性矛盾始终禁止。自然/均衡/大胆只能改变软搭配偏好。
+- 同义和包含去重必须按主体及属性槽位判断；不能跨主体删掉合法不同属性。
+- 同槽位保留具体表达，不能借包含关系丢掉其他槽位的必要事实或绕过显式矛盾。
+- 动作、姿势、道具、人数、施受角色依赖必须实际满足；不能只输出动作名。
+- 保留一次请求共用的 2,000 次扩展上限、确定性、锁定语义以及无解保留上一份结果。
+
+D. 覆盖及验收真实性
+- 网站正文、分组、旧释义、别名和空规则模板不能直接计为 usable reviewed。
+- 不得降低覆盖门槛来宣称补齐；来源核对、规则完整性和身份审核不能由状态修改代替。
+- 不得把“零已建模违规”说成“所有真实语义问题已解决”。
+- 人工审阅尚未完成，不能由 AI 的结构检查或样例生成代替并标注已完成。
+- 旧版 745 项回归、10,000 种子和冻结一致性结果只适用于对应版本；改词库或引擎后不能套用旧结果宣称新版通过。
+
+E. 兼容性、用户文件和环境
+- 保留原抽词 API、GUI 控件、CLI、配置和三套后端：wd_v3、wd_2026_canary、pixai_v0_9。
+- 旧 --model-dir 的显式 ONNX 用法仍按 WD v3 处理；其他后端仍用 --tagger-backend 选择。
+- 随机功能运行时保持完全离线，不引入 API、密钥、联网请求或模型下载要求。
+- 不得覆盖或删除用户模型、配置、私有图片、此前发布包和无关改动。
+- 不执行 git reset/restore/clean 来清掉当前未提交工作；不要自动提交、推送或发布。
+- D:\tagger\release\prompt-semantics-preview\ 和 D:\tagger\release\prompt-semantics-expanded\ 是基线/交付证据，保留；新构建用新 output-root。
+- 保留导出服务的安全原子写入。沙盒禁止硬链接是环境问题，不能修改生产代码去削弱安全行为以让测试通过。
+- 递归删除或移动前确认绝对目标仍在明确允许的构建目录；不要清理未知文件。
+
+## 5. 文件结构与修改入口
+
+建议先读：
+- D:\tagger\docs\semantic-prompts.md：行为与采集/构建说明。
+- D:\tagger\docs\semantic-prompts-validation.md：当前验收和未验证事项。
+- D:\tagger\validation\semantic-expansion\词库覆盖与缺口.txt：分类统计和原因。
+- D:\tagger\validation\semantic-expansion\未完成词条.tsv：全部 5,641 条待处理记录。
+- D:\tagger\tests\test_prompt_semantics_compiler.py：44 个编译验证案例（含参数化）。
+
+运行时核心：
+- D:\tagger\app\prompts\semantic_catalog.py：schema 1 词库、身份、同义/包含关系、兼容默认字段。
+- D:\tagger\app\prompts\semantic_scene.py：ScenePlan、主体/道具/关系、结构校验及共同输出。
+- D:\tagger\app\prompts\semantic_prompt.py：采样、剪枝、回溯、依赖、锁定和无解处理。
+- D:\tagger\app\prompts\semantic_rules.py：槽位、规则原语和主题。
+- D:\tagger\app\prompts\injection.py：共享 tags 分词/括号/权重处理。
+- D:\tagger\app\prompts\random_prompt.py：原抽词接口。
+- D:\tagger\app\ui\semantic_prompt_panel.py：语义页、归属分配、锁定与诊断。
+- D:\tagger\app\ui\random_prompt_panel.py：双模式入口；旧控件保留。
+- D:\tagger\app\ui\semantic_prompt_smoke.py 和 application.py：独立 GUI 验收入口。
+
+构建规则入口，均位于 D:\tagger\scripts\：
+- build_prompt_semantics.py：全量登记、别名闭包、依赖完整性、身份核对、覆盖门槛和来源记录。
+- prompt_semantic_families.py：正面定义首句分类；限定回退，排除含糊或未核实定义。
+- prompt_semantic_explicit.py：精确词项和动作规则。
+- prompt_semantic_attributes.py：颜色、组件、身体特征、服装属性。
+- prompt_semantic_dependencies.py：服装/物品/姿势/参与者依赖及持有条件。
+- prompt_semantic_supplement.py：有证据的补充概念；不能改成泛化“所有词可用”。
+- prompt_semantic_characters.py：角色自身默认外观、稳定特征和年龄资料。
+- fetch_prompt_semantics.py、fetch_character_references.py：构建期采集。
+- export_prompt_semantics_review.py：待审批次及模板，不自动变成运行时规则。
+- report_prompt_semantics.py、audit_semantic_expansion.py：覆盖、缺口及诊断。
+- validate_prompt_semantics.py：分层种子审计。
+- verify_semantic_portable.py：源码/冻结模块/资源一致性。
+- build_portable.py：环境预检、完整回归和便携构建。
+
+资料与发布资源：
+- D:\tagger\data\prompt-semantics\：Wiki、别名、包含关系、分组、全量登记及角色参考缓存。
+- D:\tagger\data\prompt-semantics\review\bd5a02d2db5cefaf\：57 批 JSONL 候选资料与规则模板。
+- D:\tagger\resources\prompt_semantics\catalog.json：当前运行时词库。
+- 同目录 coverage.json、coverage.tsv：全量状态、来源、时间、哈希和缺口。
+
+采集缓存可重复利用，运行时不依赖它们。!asset 等参考未关联有效帖子时，不得编造帖子标签。
+
+## 6. 缺口优先级与已知限制
+
+当前报告的主要原因（各行是报告中各自状态分组的计数，不应重复累计）：
+- 2,355：definition_family_not_implemented；另有 64 条 lexical 的相同原因。
+- 1,274：no_default_appearance_reference。
+- 399：action_or_placement_dependencies_required；另有 30 条 lexical。
+- 312：reference_record_unavailable。
+- 181：reference_character_ownership_ambiguous。
+- 177：unresolved_or_restricted_definition；另有 18 条 lexical。
+- 150：reference_insufficient_stable_traits。
+- 147：action_dependencies_required；另有 16 条 lexical。
+- 103：reference_not_official_art。
+- 92：reference_contains_variant_or_transformation。
+- 66：缺对应 Wiki（一般词 52、角色 14）。
+- 48：identity_context_required；39：expression_adapter_required；29：ordered_participants_required。
+
+建议先补高频尚未可用的 58 条及可证明的一般词规则，再按来源完备程度处理角色和有序互动。不要为了追求全量，把证据不足的角色硬塞入身份池。
+
+仍未完成：
+- 全部 17,042 条可用化；当前最低门槛完成不等于全量完成。
+- 人工语义审阅：27 个代表画面经过 AI 结构/文本检查，但 human_reviewed=false。
+- 已建模规则之外的几何与语义：手/肢体容量、物品尺度和容量、穿戴层次、部分生理适配、时间光照等并未完全建模。
+- 部分英文词项表达仍可改善。扩大自由度也不能代替动作和几何条件。
+
+## 7. 成功结果与验收证据
+
+完整回归：745 passed，250.48 秒，无跳过项；构建同时执行依赖检查、源码编译、CLI、GUI 启动和既有真实图片检查。
+日志：D:\tagger\validation\semantic-build-expanded.txt。
+
+分布验收：10,000 种子，10,000 成功、0 失败、0 已建模规则违规、0 重复 ScenePlan、4,974 个不同事实 tag；耗时 1,116.812 秒。
+覆盖人数 1–4、三档自由度、两档内容、三档密度、三套 CSV，包含原创和已有角色。
+最终报告：D:\tagger\validation\semantic-distribution-expanded-final-v4.json。
+较早的同名试验报告或 v1/v2/v3 不是最终验收依据。
+
+原生 Windows Qt 便携验收：passed，frozen=true，Python socket 连接被诊断入口禁止。
+检查双模式、同一画面切换格式、锁定、无解保留、带权重/未知词导入、多主体分配，语义和旧模式剪贴板实际写入/读回均通过。
+记录及 5 张截图：D:\tagger\validation\semantic-gui-portable-expanded\。
+其中 semantic-smoke.json 为检查结果；Tags、English、旧模式截图已查看。
+
+冻结一致性：10 个相关代码模块、3 份词库资源均与当前源码/数据相等。
+记录：D:\tagger\validation\semantic-portable-expanded-integrity.json。
+汇总：D:\tagger\validation\semantic-expansion\交付验证.json。
+人工待审样例：同目录 代表画面.txt、代表画面.json（27 份）。
+
+当前可运行便携包：
+D:\tagger\release\prompt-semantics-expanded\portable\AnimeTaggerLite-1.3.0-win64-cuda-portable\AnimeTaggerLite.exe
+必须保留整个目录；3,378 个文件，总计 2,641,508,061 字节。
+EXE SHA-256：b6dac306ed2e7fc4911f800743632bc90037c8e00972f4b0f53785c41d1cf93d。
+包内含三套公共 CSV 和语义资源，不含模型权重；随机功能可独立运行，图片标注使用本机现有模型。
+GUI 记录中的 corpus_version=fc3b90fd9db7d158 是所选 CSV/词库的组合版本，不是 catalog 文件哈希。
+
+## 8. 已试方法、失败原因和环境注意
+
+来源获取和规则构建：公开资料已大量缓存；只在需要补来源时继续采集，不必从零下载。词库构建成功通过门槛。
+分类回退曾过宽，会把其他句子/角色的描述当成自身定义，现已限定正面首句及有界回退；不要重新放宽为全文关键词命中即通过。
+
+最近有意义的验证阻碍已解决：受限沙盒禁止导出测试的 os.link，Qt 出错弹窗令完整回归等待。把 pytest 临时目录换到工作区仍不能解决权限问题。在沙盒外完成该用例及 745 项回归后通过；未修改安全导出逻辑。
+
+冻结比较曾出现假阴性：验证脚本继承 __future__ annotations 编译标记，当前已用 compile(..., dont_inherit=True) 修复比较。不能据此把原模块误判为未更新。
+
+沙盒内 Git 曾误报“must be run in a work tree”；沙盒外只读 git status/branch/rev-parse 正常。本次已确认 main/上述 HEAD 和未提交状态；不要为了此环境现象修改仓库配置。
+
+构建日志有原生流重定向留下的 NUL 字节；检索用 rg -a，或先在读取的字节副本中移除 NUL，不要据此判断源码损坏。
+源码入口为 D:\tagger\app\__main__.py、D:\tagger\app\ui\__main__.py，便携入口在 app\portable_entry.py；不要按旧目录示意寻找根目录 main.py。
+当前没有仍在运行的采集、构建或分布审计任务，也没有待解决的已知回归失败。
+
+## 9. 构建、运行、测试命令
+
+下列 PowerShell 命令从 D:\tagger 执行；本次交接没有重跑昂贵测试。NEW 的文件/目录名应替换为本次新版本名，不覆盖旧证据。
+
+源码 GUI：
+.\.venv311-cuda\Scripts\python.exe -X utf8 -m app.ui
+CLI 帮助：
+.\.venv311-cuda\Scripts\python.exe -X utf8 -m app --help
+
+缓存编译和覆盖门槛：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\build_prompt_semantics.py --require-coverage
+
+有针对性的检查：
+.\.venv311-cuda\Scripts\python.exe -X utf8 -m pytest tests\test_prompt_semantics_compiler.py tests\test_semantic_prompt.py tests\test_prompt_semantics_acquisition.py tests\ui\test_semantic_prompt_panel.py -q --basetemp=validation\pytest-NEW-targeted
+
+完整回归（需要允许本地硬链接的环境）：
+.\.venv311-cuda\Scripts\python.exe -X utf8 -m pytest -q --basetemp=validation\pytest-NEW-full
+
+分布审计：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\validate_prompt_semantics.py --seeds 10000 --output validation\NEW-distribution.json --progress-log validation\NEW-distribution.log
+
+新覆盖报告（保留旧 3,082 基线）：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\report_prompt_semantics.py --output validation\NEW-expansion --baseline release\prompt-semantics-preview\portable\AnimeTaggerLite-1.3.0-win64-cuda-portable\resources\prompt_semantics\catalog.json
+
+待审批次导出（默认按新词库哈希建立快照）：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\export_prompt_semantics_review.py
+
+新便携构建（默认不含模型；--clean 清 PyInstaller 缓存）：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\build_portable.py --variant cuda --output-root release\NEW --clean
+
+冻结一致性：
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\verify_semantic_portable.py --portable release\NEW\portable\AnimeTaggerLite-1.3.0-win64-cuda-portable --output validation\NEW-integrity.json
+
+新便携原生诊断（自身使用隔离设置和禁止 socket 的探针）：
+& '.\release\NEW\portable\AnimeTaggerLite-1.3.0-win64-cuda-portable\AnimeTaggerLite.exe' --semantic-smoke 'D:\tagger\validation\NEW-gui'
+若用 Start-Process 启动辅助验收，指定 -WindowStyle Hidden；等待 semantic-smoke.json，检查实际 status、copy 结果和截图，不以进程启动即视为成功。
+
+新采集参数需要时先查对应脚本 --help；保留约 1 秒及以上的请求间隔和断点缓存。
+
+## 10. 当前 Git 改动（本次交接前的状态）
+
+已跟踪文件修改：
+README.md；app/prompts/injection.py；app/prompts/random_prompt.py；app/ui/application.py；app/ui/random_prompt_panel.py；scripts/build_portable.py；tests/test_random_prompt.py。
+
+未跟踪内容：
+app/prompts/semantic_catalog.py、semantic_prompt.py、semantic_rules.py、semantic_scene.py；
+app/ui/semantic_prompt_panel.py、semantic_prompt_smoke.py；
+docs/semantic-prompts.md、semantic-prompts-validation.md；resources/prompt_semantics/；
+本文件第 5 节列出的新增语义采集/规则/编译/报告/审计/冻结验证脚本；
+tests/test_prompt_semantics_acquisition.py、test_prompt_semantics_compiler.py、test_semantic_prompt.py、tests/ui/test_semantic_prompt_panel.py。
+
+没有已暂存改动。资料缓存、validation 和 release 多数为忽略文件，但本机保留，它们仍是交付证据。
+部分已有文件改动早于补全阶段，不能安全地假定全部归当前 AI 所有。保留现状；本交接文件也是新增文档。
+
+## 11. 下一位 AI 的建议执行顺序
+
+1. 读第 3、4 节边界和当前文档；核对 git status、词库哈希、覆盖报告，保存工作区快照，不清理未提交工作。
+2. 从 TSV 或 57 批资料中选一个小批次，优先高频、有明确自身定义且依赖可表达的词；核对原始缓存和身份来源。
+3. 为词项补正面证据、槽位、归属、互斥/依赖和英文；为方向性互动明确施受角色，为角色区分默认版本。
+4. 加相应正例和反例，先跑针对测试；无法核对的条目保留明确缺口原因，不编造资料。
+5. 编译词库、重新计算覆盖和来源哈希，导出新缺口及审阅批次；不要把模板或候选计入可用。
+6. 修改词库/引擎后完成适当回归及 10,000 种子审计，再构建新 output-root，核对冻结一致性和原生 GUI。
+7. 查看代表画面实际语义；人工确认前 human_reviewed 保持 false。修复肢体、穿戴或场景问题时同步补规则与测试。
+8. 更新文档和新验收记录，只报告实际测得的数量、失败率和未完成项，保留此前交付文件。
+
+边界结论：可以继续补资料、规则、表达和验证；不能以补齐或审查为理由更改资料事实、删除年龄/身份约束、破坏离线双模式兼容，或覆盖用户资产和旧验收证据。

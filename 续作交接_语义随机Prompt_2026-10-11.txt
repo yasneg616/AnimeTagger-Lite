@@ -1,0 +1,78 @@
+离线语义随机 Prompt 续作交接
+日期：2026-10-11；工作目录：D:\tagger；UTF-8。
+
+本文件补充原交接_语义随机Prompt_2026-10-11.txt。原文件和历史验收资料均保留；下面的版本与统计是本轮最新状态。
+
+当前状态
+- 最初交接快照：11,401 可用，词库 bd5a02d2db5cefaf…。
+- 本轮实际接手：11,478 可用，词库 6d702877a866fafa…；其间已有的 77 条不是本轮新增。
+- 本轮新增可用 204 条，撤回 21 条，净增加 183 条，当前 11,661 / 17,042（68.43%）。
+- 一般词 8,868 / 12,029；角色条目 2,793 / 5,013；高频一般词前 1,000 可用 957。
+- 仍未完成 5,381：candidate 5,192、lexical 123、missing 66；一般词缺口 3,161，角色条目缺口 2,220。
+- 角色档案 2,752 份，年龄状态仍为 adult 10、minor 13、unknown 2,729；合并普通身份池 2,752，成人身份池 9。条目数包含别名，不等于档案数。
+- 当前 catalog SHA-256：08a692f2e057ebeebf10fb6db3c6b2f7dc6a66eccac17f1267a6e0a10570c907。
+- Git main，HEAD e043749d296e75ef7536591d1495ab7c3d8f3588；语义工作仍未提交。保护已有未提交修改，不用 reset/restore/clean。
+
+本轮做了什么
+1. 新增 scripts/prompt_semantic_concepts.py，按自身引言证据补具体物品、服装、表情、兜帽状态、动作所需道具、可见年份文字、未知性别人数和普通原创人物关系。
+2. 修正继承来的物种匹配与缺失规则。物种须与词条名称吻合；具体缺失只排除对应物品，不能排除整个外套槽或身体细节槽。
+3. 19 条通常存在的身份属性缺失需要原有身份／版本参照，另两条物种定义不确定；撤回它们的生成规则，保留资料与原因。
+4. 人数核对包括 1other–4others，按实际人形主体计数；多色毛皮、鳞片区域可并存，已有角色不能增加无来源配色。
+5. 父母子女等中性关系只用于原创普通画面，不推断后代年龄或已有角色家系。导入中的原始内容检查仅对已核对中性关系里的 child 词义作精确区分，其他内容和年龄约束保留。
+6. facing_to_the_side 的闭眼依赖曾被通用视线规则覆盖为睁眼；已保留明确眼睛状态，实际看向目标及目光接触条件仍生效。
+7. 原 GUI 探针快速连续复制两种格式，会在 Windows 上读回空英文却仍标记整体 passed。现在处理事件并等待 100 ms，Tags、英文和旧模式复制都必须真实读回一致文本。生产复制处理器未改动。
+8. 本轮使用已有公开资料缓存，没有新增联网采集。运行时完全离线。
+
+已验证
+- 针对性测试：176 项通过，26.01 秒。
+- 本轮新增词条可达性：204 / 204 通过；这是最多八个固定种子的合法画面见证，不是随机失败率统计。
+- 最终正式构建完整回归：817 项通过，200.68 秒，无跳过项；依赖、编译、CLI、GUI 启动、现有 CUDA 模型检查通过。
+- 10,000 种子：全部成功，已建模违规 0，完整结构重复 0，5,177 个事实标签；432 个分层组合，耗时 1,186.063 秒。
+- 最终原生 Qt 探针：Windows、frozen=true，禁止 Python 网络连接；格式切换保持同一画面、锁定、无解保留、加权未知词导入、多主体分配、旧模式及三种系统剪贴板复制全部通过。
+- 10 个冻结代码模块、3 份语义资源和三套 CSV 与当前源码／数据一致；源码与冻结版生成的探针画面结构相同。
+- human_reviewed=false：27 个代表画面仍需人核对。零已建模违规不保证所有实际语义、几何、服装层次问题都已解决。
+
+交付位置
+- 最终程序：D:\tagger\release\prompt-semantics-continuation-final\portable\AnimeTaggerLite-1.3.0-win64-cuda-portable\AnimeTaggerLite.exe；保留整个目录。随机页含三套 CSV，不需加载模型；此包不含推理权重。
+- EXE SHA-256：f00d5f3fda34ff8358bc2db62a6e982cc078a4a8078a68565ce03595c923d269。
+- 发布时 3,378 个文件，2,641,729,547 字节。
+- 当前使用／验收文档：D:\tagger\docs\semantic-prompts.md、semantic-prompts-validation.md。
+- 整体证据：D:\tagger\validation\semantic-continuation\交付验证.json。
+- 同目录：词条变更.json、词库覆盖.json、词库覆盖与缺口.txt、未完成词条.tsv、代表画面.txt／json、新增词条可达性.json。
+- 新增词条可达性复现脚本：validation\semantic-continuation\check_new_terms.py。
+- 分布：validation\semantic-distribution-continuation-final.json。
+- 构建：validation\semantic-build-continuation-final.txt。
+- 冻结一致性：validation\semantic-portable-continuation-final-integrity.json。
+- GUI：validation\semantic-gui-portable-continuation-final\。
+- 当前待核对资料 54 批：data\prompt-semantics\review\08a692f2e057ebee\。
+- 本轮接手与当前快照：data\prompt-semantics\snapshots\6d702877a866fafa\ 和 08a692f2e057ebee\。
+- attempt1 日志、修正前可达性记录和初版 GUI 记录仅是中间证据，不能当作最终版验收。历史文档 semantic-prompts-validation-round1-history.md 也保留。
+
+接下来可以动
+- 按未完成词条.tsv 的逐项原因补明确含义、归属、依赖、互斥、英文句式和来源证据；可以精确纠正分类误判。
+- 一般词优先处理有确定正面定义的规则族、穿戴／持有歧义、衣物位置和动作目标；新增规则若需要部位、物品容量或事件模型，可小范围扩展结构并补相应正反例。
+- 角色可补自身作品、稳定外观、默认服装、版本参照及可靠年龄来源；未知年龄不妨碍普通身份资料整理。
+- 默认属性缺失和替代服装须先建模原有身份与具体版本，再解除待核对状态。
+- 可改构建、采集、报告和 GUI，保持原接口与行为约束；构建后重新运行验证，使用新的输出根和版本绑定证据。
+- 普通和允许的内容资料可以按准确来源整理；不能把全部缺口等同于审查，也不能用状态修改代替规则核对。
+
+不能动或不能削弱
+- 不能把出版许可、图片评级、外观成熟、1girl/1boy 当成年证据，不能批量改 unknown/minor 为 adult。成人内容仍须所有参与者已确定成年且为人形。
+- 不编造作品、身份、年龄、稳定属性、官方参考、源时间或哈希，不混用其他角色和不同版本资料。
+- 不对 unresolved 或全部词条通配放行；候选正文、空模板和旧释义不能直接计为 reviewed。
+- 两种输出必须共用 ScenePlan；格式切换不能重新采样。保留 A1–A4、道具所有者及有方向的互动。
+- 未知／未核对词只保留原文，不能变成英文事实；多人归属和方向不明时不能猜测。保留原文、权重和括号规则。
+- 硬矛盾、动作依赖、固定身份、内容条件继续有效；自由度只改变软偏好。保留确定性、一次请求 2,000 次候选扩展上限、锁定及无解保留。
+- 不用旧词库验收冒充新版本结果；不降低门槛，不把 AI 检查标成人工审阅。
+- 不改旧抽词 API／控件、CLI、配置或三套后端身份。旧 --model-dir 的显式 ONNX 仍按 WD v3；其他后端仍用 --tagger-backend。
+- 不添加运行时联网、密钥或模型下载要求，不覆盖用户模型、配置、私有图片、旧发布包和无关修改。
+- 保留安全原子导出；沙盒禁止硬链接时在授权环境运行正式测试，不能削弱生产导出服务。
+- 递归删除或移动前核对绝对目标。新构建使用新 output-root；本轮及更早发布目录都作为证据保留。
+
+命令（D:\tagger，PowerShell）
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\build_prompt_semantics.py --require-coverage
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\export_prompt_semantics_review.py
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\report_prompt_semantics.py --output validation\NEW-ROUND --baseline data\prompt-semantics\snapshots\08a692f2e057ebee\catalog.json
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\validate_prompt_semantics.py --seeds 10000 --output validation\NEW-ROUND-distribution.json --progress-log validation\NEW-ROUND-distribution.log
+.\.venv311-cuda\Scripts\python.exe -X utf8 scripts\build_portable.py --variant cuda --output-root release\NEW-ROUND
+NEW-ROUND 是下一轮的新目录名，不能照搬去覆盖现有证据。正式完整回归／原生剪贴板需要沙盒外的正常 Windows 环境；此前未削弱导出写入行为来适应沙盒。

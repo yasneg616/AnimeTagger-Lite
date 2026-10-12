@@ -1,5 +1,7 @@
 # AnimeTagger Lite
 
+随机 Prompt 支持离线语义生成与原分类抽词：先规划画面，再输出 Tags 或 English，可分配多人属性并锁定重随机。使用说明与当前词库覆盖情况见 [语义随机 Prompt](docs/semantic-prompts.md)。
+
 AnimeTagger Lite 是面向 Windows 的轻量、本地、离线动漫图片标签识别和提示词
 整理工具。当前版本 **1.3.0**：标签图示与中文释义、三栏现代界面、五种预设主题和自定义调色盘，
 支持 Canary 2026、PixAI v0.9、WD v3，以及批处理、随机 Prompt 和多个提示词 Profile。
